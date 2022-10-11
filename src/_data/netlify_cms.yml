@@ -1,0 +1,26 @@
+backend:
+  name: git-gateway
+  branch: master
+
+media_folder: statics
+format: yml
+
+collections:
+  - label: Posts
+    name: posts
+    description: List of posts
+    folder: src/posts
+    extension: md
+    create: true
+    fields:
+      - label: Title
+        name: title
+        widget: string
+      - label: Layout
+        name: layout
+        widget: hidden
+        default: post.njk
+      - label: Content
+        name: body
+        widget: markdown
+        sanitize_preview: true
