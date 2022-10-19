@@ -2,12 +2,10 @@
   "name": "dbrmn-circular-calendar",
   "version": "1.0.0",
   "description": "A little circular calendar",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs"
-  },
+  "source": "src/index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "parcel",
+    "build": "parcel build"
   },
   "repository": {
     "type": "git",
@@ -18,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/doberman/dbrmn-circular-calendar/issues"
   },
-  "homepage": "https://github.com/doberman/dbrmn-circular-calendar#readme"
+  "homepage": "https://github.com/doberman/dbrmn-circular-calendar#readme",
+  "dependencies": {
+    "parcel": "^2.7.0"
+  }
 }
