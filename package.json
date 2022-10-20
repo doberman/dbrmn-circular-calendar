@@ -20,7 +20,13 @@
   },
   "homepage": "https://github.com/doberman/dbrmn-circular-calendar#readme",
   "dependencies": {
+    "d3": "^7.6.1",
     "firebase-tools": "^11.15.0",
     "parcel": "^2.7.0"
-  }
+  },
+  "devDependencies": {
+    "@types/d3": "^7.4.0",
+    "prettier-config-standard": "^5.0.0"
+  },
+  "prettier": "prettier-config-standard"
 }
