@@ -1,4 +1,4 @@
 export interface Calender {
-    name: string
-    color: string
+  name: string
+  color: string
 }

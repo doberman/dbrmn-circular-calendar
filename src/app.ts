@@ -25,14 +25,14 @@ const svg = d3
 
 for (const [index, calander] of calenders.entries()) {
   const temp = d3
-  .arc()
-  .innerRadius(radius - lineWidth * (index + 1))
-  .outerRadius(radius - lineWidth * index)
-  .startAngle(100)
-  .endAngle(2 * 180)
+    .arc()
+    .innerRadius(radius - lineWidth * (index + 1))
+    .outerRadius(radius - lineWidth * index)
+    .startAngle(100)
+    .endAngle(2 * 180)
   svg
-  .append('path')
-  .attr("class", calander.name)
-  .attr('d', <any>temp)
-  .attr('fill', calander.color)
+    .append('path')
+    .attr('class', calander.name)
+    .attr('d', <any>temp)
+    .attr('fill', calander.color)
 }
