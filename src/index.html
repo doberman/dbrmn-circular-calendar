@@ -3,17 +3,37 @@
   <head>
     <meta charset="utf-8" />
     <title>CIRCULAR CALENDAR</title>
-    <script type="module" src="app.ts"></script>
     <style>
       svg {
         width: 100vw;
         height: 80vh;
+      }
+
+      .months {
+        visibility: hidden;
       }
     </style>
   </head>
   <body>
     <h1>DOBERMAN YEAR IS ROUND</h1>
     <div>Very welcome to the circular calendar</div>
+    <div>
+      <button id="weeks">Weeks</button>
+      <button id="months">Months</button>
+    </div>
     <svg id="calender"></svg>
+    <script type="module">
+      import { toggleIntervals, init } from './app'
+
+      init(() => {})
+
+      document
+        .getElementById('weeks')
+        .addEventListener('click', () => toggleIntervals('weeks'))
+
+      document
+        .getElementById('months')
+        .addEventListener('click', () => toggleIntervals('months'))
+    </script>
   </body>
 </html>
