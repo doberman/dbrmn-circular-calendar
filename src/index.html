@@ -9,15 +9,17 @@
         height: 80vh;
       }
 
-      .months {
-        visibility: hidden;
+      .buttons {
+        float: right;
       }
     </style>
   </head>
+
   <body>
     <h1>DOBERMAN YEAR IS ROUND</h1>
     <div>Very welcome to the circular calendar</div>
-    <div>
+    <div class="buttons">
+      <button id="days">Days</button>
       <button id="weeks">Weeks</button>
       <button id="months">Months</button>
     </div>
@@ -25,7 +27,12 @@
     <script type="module">
       import { toggleIntervals, init } from './app'
 
-      init(() => {})
+      init()
+      toggleIntervals('weeks')
+
+      document
+        .getElementById('days')
+        .addEventListener('click', () => toggleIntervals('days'))
 
       document
         .getElementById('weeks')

@@ -11,6 +11,7 @@ const calenders: Calender[] = [
 ]
 
 const intervals: Interval[] = [
+  { name: 'days', number: 365 },
   { name: 'weeks', number: 52 },
   { name: 'months', number: 12 }
 ]
