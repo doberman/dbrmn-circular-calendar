@@ -2,18 +2,46 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>CIRCULAR CALENDAR</title>
-    <script type="module" src="app.ts"></script>
     <style>
       svg {
         width: 100vw;
         height: 80vh;
       }
+
+      .buttons {
+        float: right;
+      }
     </style>
   </head>
+
   <body>
     <h1>DOBERMAN YEAR IS ROUND</h1>
     <div>Very welcome to the circular calendar</div>
+    <div class="buttons">
+      <button id="days">Days</button>
+      <button id="weeks">Weeks</button>
+      <button id="months">Months</button>
+    </div>
     <svg id="calender"></svg>
+    <script type="module">
+      import { toggleIntervals, init } from './app'
+
+      init()
+      toggleIntervals('weeks')
+
+      document
+        .getElementById('days')
+        .addEventListener('click', () => toggleIntervals('days'))
+
+      document
+        .getElementById('weeks')
+        .addEventListener('click', () => toggleIntervals('weeks'))
+
+      document
+        .getElementById('months')
+        .addEventListener('click', () => toggleIntervals('months'))
+    </script>
   </body>
 </html>
