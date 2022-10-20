@@ -75,7 +75,7 @@ export const init = () => {
       .attr('y2', function (p) {
         return p[3]
       })
-      .attr('stroke', 'grey')
+      .attr('stroke', '#6B6B6B')
       .attr('class', interval.name)
   }
 }
