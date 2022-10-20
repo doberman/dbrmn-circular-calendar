@@ -62,7 +62,7 @@ const arc = d3
 
 const path = svg
   .append('path')
-  .attr('d', arc)
+  .attr('d', <any>arc)
   .attr('id', 'path1')
   .attr('transform', 'translate(900,900)')
   .attr('fill', '#f00')
@@ -91,7 +91,7 @@ var radialPoints = []
 for (var k = startrads; k < radialLines; k++) {
   var x2 = r * Math.cos(angle * k) + cx
   var y2 = r * Math.sin(angle * k) + cy
-  radialPoints.push([x2, y2])
+  radialPoints.push([<any>x2, <any>y2])
 }
 //---your d3 SVG parent element---
 svg
