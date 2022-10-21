@@ -1,6 +1,7 @@
 export interface Calender {
   name: string
   color: string
+  eventColor: string
   id: string
 }
 

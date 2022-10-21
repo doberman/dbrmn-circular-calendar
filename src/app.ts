@@ -2,18 +2,25 @@ import * as d3 from 'd3'
 import { fetchCalenderData } from './calender'
 import { Calender, Interval } from './models'
 import { setInterval } from './state'
+import { daysIntoYear, daysToRadians } from './utils'
+
+const year = 2022
+const today = new Date()
+const tomorrow = new Date(today)
+tomorrow.setDate(tomorrow.getDate() + 1)
 
 const calenders: Calender[] = [
-  { name: 'nordic', color: '#FCC698', id: '' },
+  { name: 'nordic', color: '#FCC698', eventColor: '#EB3723', id: '' },
   {
     name: 'stockholm',
     color: '#F2B4C0',
+    eventColor: '#EA3223',
     id: 'c_2fe0659714526532f92a40cb05e4110bac72323435baf9d0b7352920f58620b4@group.calendar.google.com'
   },
-  { name: 'copenhagen', color: '#F2B8F9', id: '' },
-  { name: 'oslo', color: '#D4B8F7', id: '' },
-  { name: 'helsinki', color: '#BED0FA', id: '' },
-  { name: 'ey', color: '#FEFEC3', id: '' }
+  { name: 'copenhagen', color: '#F2B8F9', eventColor: '#E73EF3', id: '' },
+  { name: 'oslo', color: '#D4B8F7', eventColor: '#5E28F6', id: '' },
+  { name: 'helsinki', color: '#BED0FA', eventColor: '#0C47F5', id: '' },
+  { name: 'ey', color: '#FEFEC3', eventColor: '#FEFD54', id: '' }
 ]
 
 const intervals: Interval[] = [
@@ -36,33 +43,76 @@ const svg = d3
   .attr('transform', `translate(${centerX},${centerY})`)
 
 export const setupCalenders = async () => {
-  for (const [index, calander] of calenders.entries()) {
+  //draw background
+  for (const [index, calender] of calenders.entries()) {
     const temp = d3
       .arc()
       .innerRadius(radius - lineWidth * (index + 1))
       .outerRadius(radius - lineWidth * index)
-      .startAngle(100)
-      .endAngle(2 * 180)
+      .startAngle(0)
+      .endAngle(2 * Math.PI)
     svg
       .append('path')
-      .attr('class', `cal-${calander.name}`)
+      .attr('class', `cal-${calender.name}`)
       .attr('d', <any>temp)
-      .attr('fill', calander.color)
+      .attr('fill', calender.color)
 
-    if (calander.id) {
-      console.log('calender id not empty', calander.id)
-      const data = await fetchCalenderData(calenders[1].id)
+    //draw today
+    const now = d3
+      .arc()
+      .innerRadius(radius - lineWidth * (index + 1))
+      .outerRadius(radius - lineWidth * index)
+      .startAngle(daysToRadians(daysIntoYear(today, year)))
+      .endAngle(daysToRadians(daysIntoYear(tomorrow, year)))
+    svg
+      .append('path')
+      .attr('class', 'now')
+      .attr('d', <any>now)
+      .attr('fill', 'white')
+      .attr('opacity', 0.5)
+
+    //draw events
+    if (calender.id) {
+      const data = await fetchCalenderData(calender.id, year)
       for (const item of data.items) {
-        console.log(item.summary, item.start, item.end)
+        console.log(item.id, item.summary, item.start, item.end)
+        const event = d3
+          .arc()
+          .innerRadius(radius - lineWidth * (index + 1))
+          .outerRadius(radius - lineWidth * index)
+          .startAngle(
+            daysToRadians(daysIntoYear(new Date(item.start.date), year))
+          )
+          .endAngle(daysToRadians(daysIntoYear(new Date(item.end.date), year)))
+
+        svg
+          .append('path')
+          .attr('class', `cal-${calender.name}`)
+          .attr('id', item.id)
+          .attr('d', <any>event)
+          .attr('fill', calender.eventColor)
+          .append('svg:title')
+          .text(function (d) {
+            return item.summary
+          })
+        // svg
+        //   .append('text')
+        //   .append('textPath')
+        //   .attr('xlink:href', `#${item.id}`)
+        //   .style('text-anchor', 'start')
+        //   .attr('startOffset', '0%')
+        //   .text(function (d) {
+        //     return item.summary
+        //   })
       }
     }
   }
 
+  //draw intervals
   for (const interval of intervals) {
-    console.log(interval.name)
     const radialLines = interval.number
     const angle = (2 * Math.PI) / radialLines
-    const startrads = 0.5
+    const startrads = interval.name == 'days' ? 0.8 : 0 //dont know why this is needed, but days wont align if 0
     let radialPoints: number[][] = []
     for (let k = startrads; k < radialLines; k++) {
       let x1 = (radius - lineWidth * calenders.length) * Math.cos(angle * k)
@@ -71,7 +121,6 @@ export const setupCalenders = async () => {
       let y2 = radius * Math.sin(angle * k)
       radialPoints.push([x1, y1, x2, y2])
     }
-
     svg
       .selectAll(`.${interval.name}`)
       .data(radialPoints)
@@ -112,9 +161,8 @@ export const selectInterval = (name: string) => {
 
 export const toggleCalender = (name: string) => {
   const selectClass = 'text-gray-400'
-  const element = d3.select(`.cal-${name}`)
+  const element = d3.selectAll(`.cal-${name}`)
   const visibility = element.style('visibility')
-  console.log(visibility)
   visibility == 'visible'
     ? element.style('visibility', 'hidden')
     : element.style('visibility', 'visible')
