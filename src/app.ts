@@ -35,7 +35,7 @@ const svg = d3
   .append('g')
   .attr('transform', `translate(${centerX},${centerY})`)
 
-export const init = async () => {
+export const setupCalenders = async () => {
   for (const [index, calander] of calenders.entries()) {
     const temp = d3
       .arc()

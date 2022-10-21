@@ -32,49 +32,53 @@
     </div>
     <svg id="calender" class="w-screen h-[45vh] md:h-[85vh]"></svg>
     <script type="module">
-      import { init, selectInterval, toggleCalender } from './app'
+      import { setupCalenders, selectInterval, toggleCalender } from './app'
       import { getInterval } from './state'
 
+      const init = async () => {
+        await setupCalenders()
+        selectInterval(getInterval())
+
+        //Interval click handlers
+        document
+          .getElementById('days')
+          .addEventListener('click', () => selectInterval('days'))
+
+        document
+          .getElementById('weeks')
+          .addEventListener('click', () => selectInterval('weeks'))
+
+        document
+          .getElementById('months')
+          .addEventListener('click', () => selectInterval('months'))
+
+        //Calender click handlers
+        document
+          .getElementById('nordic')
+          .addEventListener('click', () => toggleCalender('nordic'))
+
+        document
+          .getElementById('stockholm')
+          .addEventListener('click', () => toggleCalender('stockholm'))
+
+        document
+          .getElementById('copenhagen')
+          .addEventListener('click', () => toggleCalender('copenhagen'))
+
+        document
+          .getElementById('oslo')
+          .addEventListener('click', () => toggleCalender('oslo'))
+
+        document
+          .getElementById('helsinki')
+          .addEventListener('click', () => toggleCalender('helsinki'))
+
+        document
+          .getElementById('ey')
+          .addEventListener('click', () => toggleCalender('ey'))
+      }
+
       init()
-      selectInterval(getInterval())
-
-      //Interval click handlers
-      document
-        .getElementById('days')
-        .addEventListener('click', () => selectInterval('days'))
-
-      document
-        .getElementById('weeks')
-        .addEventListener('click', () => selectInterval('weeks'))
-
-      document
-        .getElementById('months')
-        .addEventListener('click', () => selectInterval('months'))
-
-      //Calender click handlers
-      document
-        .getElementById('nordic')
-        .addEventListener('click', () => toggleCalender('nordic'))
-
-      document
-        .getElementById('stockholm')
-        .addEventListener('click', () => toggleCalender('stockholm'))
-
-      document
-        .getElementById('copenhagen')
-        .addEventListener('click', () => toggleCalender('copenhagen'))
-
-      document
-        .getElementById('oslo')
-        .addEventListener('click', () => toggleCalender('oslo'))
-
-      document
-        .getElementById('helsinki')
-        .addEventListener('click', () => toggleCalender('helsinki'))
-
-      document
-        .getElementById('ey')
-        .addEventListener('click', () => toggleCalender('ey'))
     </script>
   </body>
 </html>
