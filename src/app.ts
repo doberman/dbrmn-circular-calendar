@@ -36,7 +36,6 @@ const svg = d3
   .attr('transform', `translate(${centerX},${centerY})`)
 
 export const init = async () => {
-  
   for (const [index, calander] of calenders.entries()) {
     const temp = d3
       .arc()
@@ -56,7 +55,6 @@ export const init = async () => {
       for (const item of data.items) {
         console.log(item.summary, item.start, item.end)
       }
-
     }
   }
 
