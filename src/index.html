@@ -4,44 +4,76 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>CIRCULAR CALENDAR</title>
-    <style>
-      svg {
-        width: 100vw;
-        height: 80vh;
-      }
-
-      .buttons {
-        float: right;
-      }
-    </style>
+    <link href="./index.css" rel="stylesheet" />
   </head>
 
   <body>
-    <h1>DOBERMAN YEAR IS ROUND</h1>
-    <div>Very welcome to the circular calendar</div>
-    <div class="buttons">
-      <button id="days">Days</button>
-      <button id="weeks">Weeks</button>
-      <button id="months">Months</button>
+    <h1 class="text-2xl font-bold uppercase text-center">
+      Doberman year is round
+    </h1>
+    <p class="text-sm font-light text-center">
+      Very welcome to the circular calendar
+    </p>
+    <div class="flex flex-row justify-between my-5 mx-3">
+      <div class="flex flex-col md:flex-row space-x-1">
+        <button id="nordic" class="px-2 py-1">Nordic</button>
+        <button id="stockholm" class="px-2 py-1">Stockholm</button>
+        <button id="copenhagen" class="px-2 py-1">Copenhagen</button>
+        <button id="oslo" class="px-2 py-1">Oslo</button>
+        <button id="helsinki" class="px-2 py-1">Helsinki</button>
+        <button id="ey" class="px-2 py-1">EY</button>
+      </div>
+      <div class="flex flex-col md:flex-row space-x-1">
+        <button id="days" class="px-2 py-1">Days</button>
+        <button id="weeks" class="px-2 py-1">Weeks</button>
+        <button id="months" class="px-2 py-1">Months</button>
+      </div>
     </div>
-    <svg id="calender"></svg>
+    <svg id="calender" class="w-screen h-[50vh] md:h-[85vh]"></svg>
     <script type="module">
-      import { toggleIntervals, init } from './app'
+      import { init, selectInterval, toggleCalender } from './app'
+      import { getInterval } from './state'
 
       init()
-      toggleIntervals('weeks')
+      selectInterval(getInterval())
 
+      //Interval click handlers
       document
         .getElementById('days')
-        .addEventListener('click', () => toggleIntervals('days'))
+        .addEventListener('click', () => selectInterval('days'))
 
       document
         .getElementById('weeks')
-        .addEventListener('click', () => toggleIntervals('weeks'))
+        .addEventListener('click', () => selectInterval('weeks'))
 
       document
         .getElementById('months')
-        .addEventListener('click', () => toggleIntervals('months'))
+        .addEventListener('click', () => selectInterval('months'))
+
+      //Calender click handlers
+      document
+        .getElementById('nordic')
+        .addEventListener('click', () => toggleCalender('nordic'))
+
+      document
+        .getElementById('stockholm')
+        .addEventListener('click', () => toggleCalender('stockholm'))
+
+      document
+        .getElementById('copenhagen')
+        .addEventListener('click', () => toggleCalender('copenhagen'))
+
+      document
+        .getElementById('oslo')
+        .addEventListener('click', () => toggleCalender('oslo'))
+
+      document
+        .getElementById('helsinki')
+        .addEventListener('click', () => toggleCalender('helsinki'))
+
+      document
+        .getElementById('ey')
+        .addEventListener('click', () => toggleCalender('ey'))
     </script>
   </body>
 </html>
