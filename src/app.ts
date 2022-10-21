@@ -1,14 +1,19 @@
 import * as d3 from 'd3'
+import { fetchCalenderData } from './calender'
 import { Calender, Interval } from './models'
 import { setInterval } from './state'
 
 const calenders: Calender[] = [
-  { name: 'nordic', color: '#FCC698' },
-  { name: 'stockholm', color: '#F2B4C0' },
-  { name: 'copenhagen', color: '#F2B8F9' },
-  { name: 'oslo', color: '#D4B8F7' },
-  { name: 'helsinki', color: '#BED0FA' },
-  { name: 'ey', color: '#FEFEC3' }
+  { name: 'nordic', color: '#FCC698', id: '' },
+  {
+    name: 'stockholm',
+    color: '#F2B4C0',
+    id: 'c_2fe0659714526532f92a40cb05e4110bac72323435baf9d0b7352920f58620b4@group.calendar.google.com'
+  },
+  { name: 'copenhagen', color: '#F2B8F9', id: '' },
+  { name: 'oslo', color: '#D4B8F7', id: '' },
+  { name: 'helsinki', color: '#BED0FA', id: '' },
+  { name: 'ey', color: '#FEFEC3', id: '' }
 ]
 
 const intervals: Interval[] = [
@@ -30,7 +35,8 @@ const svg = d3
   .append('g')
   .attr('transform', `translate(${centerX},${centerY})`)
 
-export const init = () => {
+export const init = async () => {
+  
   for (const [index, calander] of calenders.entries()) {
     const temp = d3
       .arc()
@@ -43,6 +49,15 @@ export const init = () => {
       .attr('class', `cal-${calander.name}`)
       .attr('d', <any>temp)
       .attr('fill', calander.color)
+
+    if (calander.id) {
+      console.log('calnder id not empty', calander.id)
+      const data = await fetchCalenderData(calenders[1].id)
+      for (const item of data.items) {
+        console.log(item.summary, item.start, item.end)
+      }
+
+    }
   }
 
   for (const interval of intervals) {
