@@ -50,7 +50,7 @@ export const init = async () => {
       .attr('fill', calander.color)
 
     if (calander.id) {
-      console.log('calnder id not empty', calander.id)
+      console.log('calender id not empty', calander.id)
       const data = await fetchCalenderData(calenders[1].id)
       for (const item of data.items) {
         console.log(item.summary, item.start, item.end)
