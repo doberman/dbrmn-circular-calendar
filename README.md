@@ -18,7 +18,7 @@ TBD
 
 ## Deployment
 
-_main_ branch is deployed automatically with Github Actions to [dbrmn-circular-calendar.web.app](). PR:s gets deployed automatically as well and the unique URL can be found as a comment on the PR.
+_main_ branch is deployed automatically with Github Actions to [https://dbrmn-circular-calendar.web.app](). PR:s gets deployed automatically as well and the unique URL can be found as a comment on the PR.
 
 ## Documentation
 
