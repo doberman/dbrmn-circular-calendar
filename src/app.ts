@@ -1,5 +1,6 @@
 import * as d3 from 'd3'
 import { Calender, Interval } from './models'
+import { setInterval } from './state'
 
 const calenders: Calender[] = [
   { name: 'nordic', color: '#FCC698' },
@@ -39,7 +40,7 @@ export const init = () => {
       .endAngle(2 * 180)
     svg
       .append('path')
-      .attr('class', calander.name)
+      .attr('class', `cal-${calander.name}`)
       .attr('d', <any>temp)
       .attr('fill', calander.color)
   }
@@ -80,12 +81,29 @@ export const init = () => {
   }
 }
 
-export const toggleIntervals = (name: string) => {
+export const selectInterval = (name: string) => {
+  const selectClasslist = ['ring-2', 'ring-black', 'ring-inset']
   for (const interval of intervals) {
     if (interval.name == name) {
       d3.selectAll(`.${interval.name}`).style('visibility', 'visible')
+      document.getElementById(interval.name)?.classList.add(...selectClasslist)
+      setInterval(interval.name)
     } else {
       d3.selectAll(`.${interval.name}`).style('visibility', 'hidden')
+      document
+        .getElementById(interval.name)
+        ?.classList.remove(...selectClasslist)
     }
   }
+}
+
+export const toggleCalender = (name: string) => {
+  const selectClass = 'text-gray-400'
+  const element = d3.select(`.cal-${name}`)
+  const visibility = element.style('visibility')
+  console.log(visibility)
+  visibility == 'visible'
+    ? element.style('visibility', 'hidden')
+    : element.style('visibility', 'visible')
+  document.getElementById(name)?.classList.toggle(selectClass)
 }
