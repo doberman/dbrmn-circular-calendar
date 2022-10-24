@@ -4,6 +4,10 @@ A lil' tool for easy overview of the festivities and local holidays across the N
 
 ## Getting started
 
+Create an `.env.local` file by copying `.env.template`, find the API Key needed at [console.cloud.google.com/apis/credentials?project=dbrmn-circular-calendar](https://console.cloud.google.com/apis/credentials?project=dbrmn-circular-calendar)
+
+Then run:
+
 `npm install`
 
 `npm run dev`
