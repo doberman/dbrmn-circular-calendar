@@ -1,13 +1,13 @@
-const API_KEY = process.env.GOOGLE_CALENDER_API_KEY
+const API_KEY = process.env.GOOGLE_CALENDAR_API_KEY
 
-export const fetchCalenderData = async (calenderId: string, year: number) => {
+export const fetchCalendarData = async (calendarId: string, year: number) => {
   //https://developers.google.com/calendar/api/v3/reference/events/list
   const url =
     'https://www.googleapis.com/calendar/v3/calendars/' +
-    calenderId +
+    calendarId +
     '/events?key=' +
     API_KEY +
-    `&timeMax=${year}-01-01T00:00:00Z` +
+    `&timeMin=${year}-01-01T00:00:00Z` +
     `&timeMax=${year}-12-31T00:00:00Z`
 
   console.log(url)

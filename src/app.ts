@@ -1,6 +1,6 @@
 import * as d3 from 'd3'
-import { fetchCalenderData } from './calender'
-import { Calender, Interval } from './models'
+import { fetchCalendarData } from './calendar'
+import { Calendar, Interval } from './models'
 import { setInterval } from './state'
 import { daysIntoYear, daysToRadians } from './utils'
 
@@ -9,7 +9,7 @@ const today = new Date()
 const tomorrow = new Date(today)
 tomorrow.setDate(tomorrow.getDate() + 1)
 
-const calenders: Calender[] = [
+const calendars: Calendar[] = [
   { name: 'nordic', color: '#FCC698', eventColor: '#EB3723', id: '' },
   {
     name: 'stockholm',
@@ -29,22 +29,22 @@ const intervals: Interval[] = [
   { name: 'months', number: 12 }
 ]
 
-const calenderEl = document.getElementById('calender')
-const width = calenderEl?.clientWidth || 600
-const height = calenderEl?.clientHeight || 600
+const calendarEl = document.getElementById('calendar')
+const width = calendarEl?.clientWidth || 600
+const height = calendarEl?.clientHeight || 600
 const radius = Math.min(width, height) / 2
 const centerX = width / 2
 const centerY = height / 2
-const lineWidth = radius / (calenders.length + 2)
+const lineWidth = radius / (calendars.length + 2)
 
 const svg = d3
-  .select('#calender')
+  .select('#calendar')
   .append('g')
   .attr('transform', `translate(${centerX},${centerY})`)
 
-export const setupCalenders = async () => {
+export const setupCalendars = async () => {
   //draw background
-  for (const [index, calender] of calenders.entries()) {
+  for (const [index, calendar] of calendars.entries()) {
     const temp = d3
       .arc()
       .innerRadius(radius - lineWidth * (index + 1))
@@ -53,9 +53,9 @@ export const setupCalenders = async () => {
       .endAngle(2 * Math.PI)
     svg
       .append('path')
-      .attr('class', `cal-${calender.name}`)
+      .attr('class', `cal-${calendar.name}`)
       .attr('d', <any>temp)
-      .attr('fill', calender.color)
+      .attr('fill', calendar.color)
 
     //draw today
     const now = d3
@@ -72,8 +72,8 @@ export const setupCalenders = async () => {
       .attr('opacity', 0.5)
 
     //draw events
-    if (calender.id) {
-      const data = await fetchCalenderData(calender.id, year)
+    if (calendar.id) {
+      const data = await fetchCalendarData(calendar.id, year)
       for (const item of data.items) {
         console.log(item.id, item.summary, item.start, item.end)
         const event = d3
@@ -87,10 +87,10 @@ export const setupCalenders = async () => {
 
         svg
           .append('path')
-          .attr('class', `cal-${calender.name}`)
+          .attr('class', `cal-${calendar.name}`)
           .attr('id', item.id)
           .attr('d', <any>event)
-          .attr('fill', calender.eventColor)
+          .attr('fill', calendar.eventColor)
           .append('svg:title')
           .text(function (d) {
             return item.summary
@@ -115,8 +115,8 @@ export const setupCalenders = async () => {
     const startrads = interval.name == 'days' ? 0.8 : 0 //dont know why this is needed, but days wont align if 0
     let radialPoints: number[][] = []
     for (let k = startrads; k < radialLines; k++) {
-      let x1 = (radius - lineWidth * calenders.length) * Math.cos(angle * k)
-      let y1 = (radius - lineWidth * calenders.length) * Math.sin(angle * k)
+      let x1 = (radius - lineWidth * calendars.length) * Math.cos(angle * k)
+      let y1 = (radius - lineWidth * calendars.length) * Math.sin(angle * k)
       let x2 = radius * Math.cos(angle * k)
       let y2 = radius * Math.sin(angle * k)
       radialPoints.push([x1, y1, x2, y2])
@@ -159,7 +159,7 @@ export const selectInterval = (name: string) => {
   }
 }
 
-export const toggleCalender = (name: string) => {
+export const toggleCalendar = (name: string) => {
   const selectClass = 'text-gray-400'
   const element = d3.selectAll(`.cal-${name}`)
   const visibility = element.style('visibility')

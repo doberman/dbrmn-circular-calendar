@@ -1,4 +1,4 @@
-export interface Calender {
+export interface Calendar {
   name: string
   color: string
   eventColor: string
