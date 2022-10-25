@@ -16,16 +16,13 @@ export const daysIntoYear = (date: Date, year: number) => {
 }
 
 export const getMonthName = (month: number) => {
-    const date = new Date();
-    date.setMonth(month - 1);
-  
-    // Using the browser's default locale.
-    return date.toLocaleString([], { month: 'long' });
-  }
-  
+  const date = new Date()
+  date.setMonth(month - 1)
+
+  // Using the browser's default locale.
+  return date.toLocaleString([], { month: 'long' })
+}
 
 export const daysToRadians = (days: number) => {
   return ((days - 1) / 365) * 2 * Math.PI
 }
-
-
