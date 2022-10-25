@@ -1,6 +1,6 @@
-import jwtDecode from 'jwt-decode';
+import jwtDecode from 'jwt-decode'
 
-import { setUser } from './state';
+import { setUser } from './state'
 
 const code = window.location.search.substring(1)
 console.log(code, 'code')
