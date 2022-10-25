@@ -94,7 +94,7 @@ export const drawWeeks = (
 ) => {
   const name = 'weeks'
   const numberOfWeeks = 52
-  const offset = lineWidth * 2 - 25
+  const offset = lineWidth * 2 - 28
 
   let lines: any[] = []
   let labelLines: any[] = []
@@ -163,14 +163,14 @@ export const drawWeeks = (
       .attr('dy', i >= numberOfWeeks / 2 ? 6 : -4)
       .append('textPath')
       .attr('xlink:href', `#${name}_${i}`)
-      .style('text-anchor', i >= numberOfWeeks / 2 ? 'end' : 'start')
+      .style('text-anchor', i >= numberOfWeeks / 2 ? 'start' : 'end')
       .style(
         'alignment-baseline',
         i >= numberOfWeeks / 2 ? 'mathematical' : 'alphabetic'
       )
       .style('font-size', '0.5em')
       .style('text-transform', 'capitalize')
-      .attr('startOffset', i >= numberOfWeeks / 2 ? '99%' : '1%')
+      .attr('startOffset', i >= numberOfWeeks / 2 ? '15%' : '85%')
       .attr('class', `interval-${name}`)
       .text(`W ${i + 1}`)
   }
