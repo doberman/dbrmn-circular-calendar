@@ -1,33 +1,13 @@
 import * as d3 from 'd3'
+import { year, calendars, intervals } from './config'
 import { fetchCalendarData } from './calendar'
-import { Calendar, Interval } from './models'
 import { setInterval } from './state'
-import { daysIntoYear, getMonthName, daysToRadians } from './utils'
+import { daysIntoYear, daysToRadians } from './utils'
+import { drawMonths } from './intervals'
 
-const year = 2022
 const today = new Date()
 const tomorrow = new Date(today)
 tomorrow.setDate(tomorrow.getDate() + 1)
-
-const calendars: Calendar[] = [
-  { name: 'nordic', color: '#FCC698', eventColor: '#EB3723', id: '' },
-  {
-    name: 'stockholm',
-    color: '#F2B4C0',
-    eventColor: '#EA3223',
-    id: 'c_2fe0659714526532f92a40cb05e4110bac72323435baf9d0b7352920f58620b4@group.calendar.google.com'
-  },
-  { name: 'copenhagen', color: '#F2B8F9', eventColor: '#E73EF3', id: '' },
-  { name: 'oslo', color: '#D4B8F7', eventColor: '#5E28F6', id: '' },
-  { name: 'helsinki', color: '#BED0FA', eventColor: '#0C47F5', id: '' },
-  { name: 'ey', color: '#FEFEC3', eventColor: '#FEFD54', id: '' }
-]
-
-const intervals: Interval[] = [
-  { name: 'days', number: 365 },
-  { name: 'weeks', number: 52 },
-  { name: 'months', number: 12 }
-]
 
 const calendarEl = document.getElementById('calendar')
 const width = calendarEl?.clientWidth || 600
@@ -35,8 +15,7 @@ const height = calendarEl?.clientHeight || 600
 const radius = Math.min(width, height) / 2
 const centerX = width / 2
 const centerY = height / 2
-const lineWidth = radius / (calendars.length + 2)
-//const lineWidth2 = radius / (calendars.length - 2)
+const lineWidth = radius / (calendars.length + 3)
 
 const svg = d3
   .select('#calendar')
@@ -48,8 +27,8 @@ export const setupCalendars = async () => {
   for (const [index, calendar] of calendars.entries()) {
     const temp = d3
       .arc()
-      .innerRadius(radius - lineWidth * (index + 1))
-      .outerRadius(radius - lineWidth * index)
+      .innerRadius(radius - lineWidth * (index + 2))
+      .outerRadius(radius - lineWidth * (index + 1))
       .startAngle(0)
       .endAngle(2 * Math.PI)
     svg
@@ -61,8 +40,8 @@ export const setupCalendars = async () => {
     //draw today
     const now = d3
       .arc()
-      .innerRadius(radius - lineWidth * (index + 1))
-      .outerRadius(radius - lineWidth * index)
+      .innerRadius(radius - lineWidth * (index + 2))
+      .outerRadius(radius - lineWidth * (index + 1))
       .startAngle(daysToRadians(daysIntoYear(today, year)))
       .endAngle(daysToRadians(daysIntoYear(tomorrow, year)))
     svg
@@ -108,83 +87,7 @@ export const setupCalendars = async () => {
       }
     }
   }
-
-  //draw intervals
-  for (const interval of intervals) {
-    const radialLines = interval.number
-    const angle = (2 * Math.PI) / radialLines
-    const startrads = interval.name == 'days' ? 0.8 : 0 //dont know why this is needed, but days wont align if 0
-    let lines: any[] = []
-    let textLines: any[] = []
-    for (let k = startrads; k < radialLines; k++) {
-      let x1 = (radius - lineWidth * calendars.length) * Math.cos(angle * k)
-      let y1 = (radius - lineWidth * calendars.length) * Math.sin(angle * k)
-      let x2 = radius * Math.cos(angle * k)
-      let y2 = radius * Math.sin(angle * k)
-      let tx1 =
-        (radius - lineWidth * (calendars.length + 2)) * Math.cos(angle * k)
-      let ty1 =
-        (radius - lineWidth * (calendars.length + 2)) * Math.sin(angle * k)
-      lines.push(
-        d3.line()([
-          [x1, y1],
-          [x2, y2]
-        ])
-      )
-      if (k > radialLines / 2) {
-        textLines.push(
-          d3.line()([
-            [x1, y1],
-            [tx1, ty1]
-          ])
-        )
-      } else {
-        textLines.push(
-          d3.line()([
-            [tx1, ty1],
-            [x1, y1]
-          ])
-        )
-      }
-    }
-
-    const group = svg.append('g')
-    group
-      .selectAll(`.${interval.name}`)
-      .data(lines)
-      .enter()
-      .append('path')
-      .attr('d', (d, i) => lines[i])
-      .attr('stroke', '#6B6B6B')
-      .attr('class', interval.name)
-
-    group
-      .selectAll(`.${interval.name}_label`)
-      .data(textLines)
-      .enter()
-      .append('path')
-      .attr('id', (d, i) => `${interval.name}_${i}`)
-      .attr('d', (d, i) => textLines[i])
-      .attr('stroke', '#fff')
-      .attr('class', interval.name)
-      .attr('transform', 'rotate(-105)')
-
-    //draw labels
-    if (interval.name == 'months') {
-      for (const [i, line] of textLines.entries()) {
-        group
-          .append('text')
-          .append('textPath')
-          .attr('xlink:href', `#${interval.name}_${i}`)
-          .style('text-anchor', i > radialLines / 2 ? 'start' : 'end')
-          .style('alignment-baseline', 'middle')
-          .style('font-size', '0.75em')
-          .attr('startOffset', i > radialLines / 2 ? '5%' : '95%')
-          .attr('class', interval.name)
-          .text(getMonthName(i))
-      }
-    }
-  }
+  drawMonths(svg, radius, lineWidth, calendars.length)
 }
 
 export const selectInterval = (name: string) => {

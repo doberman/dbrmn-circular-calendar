@@ -17,10 +17,12 @@ export const daysIntoYear = (date: Date, year: number) => {
 
 export const getMonthName = (month: number) => {
   const date = new Date()
-  date.setMonth(month - 1)
-
-  // Using the browser's default locale.
+  date.setMonth(month)
   return date.toLocaleString([], { month: 'long' })
+}
+
+export const getDaysInMonth = (month: number, year: number) => {
+  return new Date(year, month, 0).getDate()
 }
 
 export const daysToRadians = (days: number) => {
