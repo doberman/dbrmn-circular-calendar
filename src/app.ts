@@ -2,7 +2,7 @@ import * as d3 from 'd3'
 import { fetchCalendarData } from './calendar'
 import { Calendar, Interval } from './models'
 import { setInterval } from './state'
-import { daysIntoYear, daysToRadians } from './utils'
+import { daysIntoYear, getMonthName, daysToRadians } from './utils'
 
 const year = 2022
 const today = new Date()
@@ -113,33 +113,43 @@ export const setupCalendars = async () => {
     const radialLines = interval.number
     const angle = (2 * Math.PI) / radialLines
     const startrads = interval.name == 'days' ? 0.8 : 0 //dont know why this is needed, but days wont align if 0
-    let radialPoints: number[][] = []
+    let lines: any[] = []
     for (let k = startrads; k < radialLines; k++) {
       let x1 = (radius - lineWidth * calendars.length) * Math.cos(angle * k)
       let y1 = (radius - lineWidth * calendars.length) * Math.sin(angle * k)
       let x2 = radius * Math.cos(angle * k)
       let y2 = radius * Math.sin(angle * k)
-      radialPoints.push([x1, y1, x2, y2])
+      lines.push(
+        d3.line()([
+          [x1, y1],
+          [x2, y2]
+        ])
+      )
     }
-    svg
+
+    const group = svg.append('g')
+    group
       .selectAll(`.${interval.name}`)
-      .data(radialPoints)
+      .data(lines)
       .enter()
-      .append('svg:line')
-      .attr('x1', function (p) {
-        return p[0]
-      })
-      .attr('y1', function (p) {
-        return p[1]
-      })
-      .attr('x2', function (p) {
-        return p[2]
-      })
-      .attr('y2', function (p) {
-        return p[3]
-      })
+      .append('path')
+      .attr('id', (d, i) => `${interval.name}_${i}`)
+      .attr('d', (d, i) => lines[i])
       .attr('stroke', '#6B6B6B')
       .attr('class', interval.name)
+
+    //draw labels
+    if (interval.name == 'months') {
+      for (const [i, line] of lines.entries()) {
+        group
+          .append('text')
+          .append('textPath')
+          .attr('xlink:href', `#${interval.name}_${i}`)
+          .style('text-anchor', 'start')
+          .attr('class', interval.name)
+          .text(getMonthName(i))
+      }
+    }
   }
 }
 
