@@ -36,6 +36,7 @@ const radius = Math.min(width, height) / 2
 const centerX = width / 2
 const centerY = height / 2
 const lineWidth = radius / (calendars.length + 2)
+//const lineWidth2 = radius / (calendars.length - 2)
 
 const svg = d3
   .select('#calendar')
@@ -114,15 +115,26 @@ export const setupCalendars = async () => {
     const angle = (2 * Math.PI) / radialLines
     const startrads = interval.name == 'days' ? 0.8 : 0 //dont know why this is needed, but days wont align if 0
     let lines: any[] = []
+    let textLines: any[] = []
     for (let k = startrads; k < radialLines; k++) {
       let x1 = (radius - lineWidth * calendars.length) * Math.cos(angle * k)
       let y1 = (radius - lineWidth * calendars.length) * Math.sin(angle * k)
       let x2 = radius * Math.cos(angle * k)
       let y2 = radius * Math.sin(angle * k)
+      let tx1 =
+        (radius - lineWidth * (calendars.length + 2)) * Math.cos(angle * k)
+      let ty1 =
+        (radius - lineWidth * (calendars.length + 2)) * Math.sin(angle * k)
       lines.push(
         d3.line()([
           [x1, y1],
           [x2, y2]
+        ])
+      )
+      textLines.push(
+        d3.line()([
+          [x1, y1],
+          [tx1, ty1]
         ])
       )
     }
@@ -133,19 +145,30 @@ export const setupCalendars = async () => {
       .data(lines)
       .enter()
       .append('path')
-      .attr('id', (d, i) => `${interval.name}_${i}`)
       .attr('d', (d, i) => lines[i])
       .attr('stroke', '#6B6B6B')
       .attr('class', interval.name)
 
+    group
+      .selectAll(`.${interval.name}_label`)
+      .data(textLines)
+      .enter()
+      .append('path')
+      .attr('id', (d, i) => `${interval.name}_${i}`)
+      .attr('d', (d, i) => textLines[i])
+      .attr('stroke', '#fff')
+      .attr('class', interval.name)
+
     //draw labels
     if (interval.name == 'months') {
-      for (const [i, line] of lines.entries()) {
+      for (const [i, line] of textLines.entries()) {
         group
           .append('text')
           .append('textPath')
           .attr('xlink:href', `#${interval.name}_${i}`)
           .style('text-anchor', 'start')
+          .style('font-size', '0.75em')
+          .attr('startOffset', '5%')
           .attr('class', interval.name)
           .text(getMonthName(i))
       }
