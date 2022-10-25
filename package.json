@@ -6,7 +6,7 @@
   "scripts": {
     "start": "parcel",
     "clear-build-cache": "rm -rf .cache/ dist/",
-    "dev": "parcel src/index.html",
+    "dev": "parcel --https './src/**/*.html'",
     "build": "NODE_ENV=production parcel build ./src/index.html --public-url ./",
     "prettier:check": "./node_modules/.bin/prettier --check .",
     "prettier:format": "./node_modules/.bin/prettier --write ."
@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/doberman/dbrmn-circular-calendar#readme",
   "dependencies": {
-    "d3": "^7.6.1"
+    "d3": "^7.6.1",
   },
   "devDependencies": {
     "@types/d3": "^7.4.0",
