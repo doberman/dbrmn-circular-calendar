@@ -131,12 +131,21 @@ export const setupCalendars = async () => {
           [x2, y2]
         ])
       )
-      textLines.push(
-        d3.line()([
-          [x1, y1],
-          [tx1, ty1]
-        ])
-      )
+      if (k > radialLines / 2) {
+        textLines.push(
+          d3.line()([
+            [x1, y1],
+            [tx1, ty1]
+          ])
+        )
+      } else {
+        textLines.push(
+          d3.line()([
+            [tx1, ty1],
+            [x1, y1]
+          ])
+        )
+      }
     }
 
     const group = svg.append('g')
@@ -158,6 +167,7 @@ export const setupCalendars = async () => {
       .attr('d', (d, i) => textLines[i])
       .attr('stroke', '#fff')
       .attr('class', interval.name)
+      .attr('transform', 'rotate(-105)')
 
     //draw labels
     if (interval.name == 'months') {
@@ -166,9 +176,10 @@ export const setupCalendars = async () => {
           .append('text')
           .append('textPath')
           .attr('xlink:href', `#${interval.name}_${i}`)
-          .style('text-anchor', 'start')
+          .style('text-anchor', i > radialLines / 2 ? 'start' : 'end')
+          .style('alignment-baseline', 'middle')
           .style('font-size', '0.75em')
-          .attr('startOffset', '5%')
+          .attr('startOffset', i > radialLines / 2 ? '5%' : '95%')
           .attr('class', interval.name)
           .text(getMonthName(i))
       }
