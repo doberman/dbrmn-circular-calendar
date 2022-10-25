@@ -1,6 +1,6 @@
-import jwtDecode from 'jwt-decode'
+import jwtDecode from 'jwt-decode';
 
-import { setUser } from './state'
+import { setUser } from './state';
 
 const code = window.location.search.substring(1)
 console.log(code, 'code')
@@ -8,11 +8,11 @@ if (code) {
   fetch(
     `https://slack.com/api/openid.connect.token?${[
       code,
-      `client_id=${process.env.SIGNIN_CLIENT_ID}`,
-      `client_secret=${process.env.SIGNIN_CLIENT_SECRET}`,
+      `client_id=${process.env.SIGN_IN_CLIENT_ID}`,
+      `client_secret=${process.env.SIGN_IN_CLIENT_SECRET}`,
       `grant_type=authorization_code`,
       `redirect_uri=${encodeURIComponent(
-        `https://${process.env.SIGNIN_REDIRECT_URL}/callback.html`
+        `https://${process.env.SIGN_IN_REDIRECT_URL}/callback.html`
       )}`
     ].join('&')}`,
     {
