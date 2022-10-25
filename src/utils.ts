@@ -15,16 +15,27 @@ export const daysIntoYear = (date: Date, year: number) => {
   }
 }
 
-export const getMonthName = (month: number) => {
+export const daysInYear = (year: number) => {
+  return (year % 4 === 0 && year % 100 > 0) || year % 400 == 0 ? 366 : 365
+}
+
+export const monthName = (month: number) => {
   const date = new Date()
   date.setMonth(month)
   return date.toLocaleString([], { month: 'long' })
 }
 
-export const getDaysInMonth = (month: number, year: number) => {
+export const daysInMonth = (month: number, year: number) => {
   return new Date(year, month, 0).getDate()
 }
 
-export const daysToRadians = (days: number) => {
-  return ((days - 1) / 365) * 2 * Math.PI
+export const dayInMonth = (daysInYear: number, year: number) => {
+  const date = new Date(year, 0, 1)
+  date.setDate(date.getDate() + daysInYear + 1)
+  console.log(daysInYear, date.getUTCDate())
+  return date.getUTCDate()
+}
+
+export const daysToRadians = (days: number, year: number) => {
+  return ((days - 1) / daysInYear(year)) * 2 * Math.PI
 }

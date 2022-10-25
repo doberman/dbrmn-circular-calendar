@@ -1,9 +1,8 @@
 import * as d3 from 'd3'
-import { year, calendars, intervals } from './config'
+import { year, calendars } from './config'
 import { fetchCalendarData } from './calendar'
-import { setInterval } from './state'
 import { daysIntoYear, daysToRadians } from './utils'
-import { drawMonths } from './intervals'
+import { drawMonths, drawWeeks, drawDays } from './intervals'
 
 const today = new Date()
 const tomorrow = new Date(today)
@@ -42,8 +41,8 @@ export const setupCalendars = async () => {
       .arc()
       .innerRadius(radius - lineWidth * (index + 2))
       .outerRadius(radius - lineWidth * (index + 1))
-      .startAngle(daysToRadians(daysIntoYear(today, year)))
-      .endAngle(daysToRadians(daysIntoYear(tomorrow, year)))
+      .startAngle(daysToRadians(daysIntoYear(today, year), year))
+      .endAngle(daysToRadians(daysIntoYear(tomorrow, year), year))
     svg
       .append('path')
       .attr('class', 'now')
@@ -61,9 +60,11 @@ export const setupCalendars = async () => {
           .innerRadius(radius - lineWidth * (index + 1))
           .outerRadius(radius - lineWidth * index)
           .startAngle(
-            daysToRadians(daysIntoYear(new Date(item.start.date), year))
+            daysToRadians(daysIntoYear(new Date(item.start.date), year), year)
           )
-          .endAngle(daysToRadians(daysIntoYear(new Date(item.end.date), year)))
+          .endAngle(
+            daysToRadians(daysIntoYear(new Date(item.end.date), year), year)
+          )
 
         svg
           .append('path')
@@ -88,22 +89,18 @@ export const setupCalendars = async () => {
     }
   }
   drawMonths(svg, radius, lineWidth, calendars.length)
+  drawWeeks(svg, radius, lineWidth, calendars.length)
+  drawDays(svg, radius, lineWidth, calendars.length)
 }
 
-export const selectInterval = (name: string) => {
-  const selectClasslist = ['ring-2', 'ring-black', 'ring-inset']
-  for (const interval of intervals) {
-    if (interval.name == name) {
-      d3.selectAll(`.${interval.name}`).style('visibility', 'visible')
-      document.getElementById(interval.name)?.classList.add(...selectClasslist)
-      setInterval(interval.name)
-    } else {
-      d3.selectAll(`.${interval.name}`).style('visibility', 'hidden')
-      document
-        .getElementById(interval.name)
-        ?.classList.remove(...selectClasslist)
-    }
-  }
+export const toggleInterval = (name: string) => {
+  const selectClass = 'text-gray-400'
+  const element = d3.selectAll(`.interval-${name}`)
+  const visibility = element.style('visibility')
+  visibility == 'visible'
+    ? element.style('visibility', 'hidden')
+    : element.style('visibility', 'visible')
+  document.getElementById(name)?.classList.toggle(selectClass)
 }
 
 export const toggleCalendar = (name: string) => {
