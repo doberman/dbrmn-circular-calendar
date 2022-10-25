@@ -7,7 +7,7 @@
     "start": "parcel",
     "clear-build-cache": "rm -rf .cache/ dist/",
     "dev": "parcel --https './src/**/*.html'",
-    "build": "NODE_ENV=production parcel build ./src/index.html --public-url ./",
+    "build": "NODE_ENV=production parcel build './src/**/*.html' --public-url ./",
     "prettier:check": "./node_modules/.bin/prettier --check .",
     "prettier:format": "./node_modules/.bin/prettier --write ."
   },
