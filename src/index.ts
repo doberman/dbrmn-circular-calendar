@@ -1,4 +1,4 @@
-import { getUser } from './state';
+import { getUser } from './state'
 
 // kolla om user finns
 const user = getUser()
