@@ -78,7 +78,7 @@ export const drawMonths = (
       .attr('xlink:href', `#${name}_${i + 1}`)
       .style('text-anchor', i >= numberOfMonths / 2 ? 'end' : 'start')
       .style('alignment-baseline', 'middle')
-      .style('font-size', '0.8em')
+      .style('font-size', '0.6em')
       .style('text-transform', 'capitalize')
       .attr('startOffset', i >= numberOfMonths / 2 ? '80%' : '20%')
       .attr('class', `interval-${name}`)
@@ -160,7 +160,7 @@ export const drawWeeks = (
   for (const [i] of labelLines.entries()) {
     group
       .append('text')
-      .attr('dy', i >= numberOfWeeks / 2 ? 6 : -4)
+      .attr('dy', i >= numberOfWeeks / 2 ? 3 : -2)
       .append('textPath')
       .attr('xlink:href', `#${name}_${i}`)
       .style('text-anchor', i >= numberOfWeeks / 2 ? 'start' : 'end')
