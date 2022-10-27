@@ -1,5 +1,12 @@
 import * as d3 from 'd3'
-import { daysIntoYear, daysInYear, dayInMonth, monthName } from './utils'
+import {
+  daysIntoYear,
+  daysInYear,
+  dayInMonth,
+  monthName,
+  weekOneStartOffset,
+  numberOfWeeksInYear
+} from './utils'
 import { year } from './config'
 
 export const drawMonths = (
@@ -10,7 +17,6 @@ export const drawMonths = (
 ) => {
   const name = 'months'
   const numberOfMonths = 12
-  const offset = 0
   let lines: any[] = []
   let labelLines: any[] = []
   for (let n = 1; n <= numberOfMonths; n++) {
@@ -20,8 +26,8 @@ export const drawMonths = (
     const y1 = (radius - lineWidth * (numberOfCalendars + 1)) * Math.sin(angle)
     const x2 = (radius - lineWidth) * Math.cos(angle)
     const y2 = (radius - lineWidth) * Math.sin(angle)
-    const x3 = (radius + offset) * Math.cos(angle)
-    const y3 = (radius + offset) * Math.sin(angle)
+    const x3 = radius * Math.cos(angle)
+    const y3 = radius * Math.sin(angle)
 
     lines.push(
       d3.line()([
@@ -93,8 +99,9 @@ export const drawWeeks = (
   numberOfCalendars: number
 ) => {
   const name = 'weeks'
-  const numberOfWeeks = 52
-  const offset = lineWidth * 2 - 28
+  const numberOfWeeks = numberOfWeeksInYear(year)
+  const labelMargin = lineWidth * 2 - 18
+  const weekOneOffset = -90 + weekOneStartOffset(year)
 
   let lines: any[] = []
   let labelLines: any[] = []
@@ -106,15 +113,15 @@ export const drawWeeks = (
       (radius - lineWidth * (numberOfCalendars + 1)) * Math.sin(angle * n)
     const x2 = (radius - lineWidth) * Math.cos(angle * n)
     const y2 = (radius - lineWidth) * Math.sin(angle * n)
-    const x3 = offset * Math.cos(angle * n)
-    const y3 = offset * Math.sin(angle * n)
+    const x3 = labelMargin * Math.cos(angle * n)
+    const y3 = labelMargin * Math.sin(angle * n)
     lines.push(
       d3.line()([
         [x1, y1],
         [x2, y2]
       ])
     )
-    if (n > numberOfWeeks / 2) {
+    if (n > Math.ceil(numberOfWeeks / 2)) {
       labelLines.push(
         d3.line()([
           [x1, y1],
@@ -142,7 +149,7 @@ export const drawWeeks = (
     .attr('stroke', '#000')
     .style('opacity', 0.4)
     .attr('stroke-width', '1')
-    .attr('transform', 'rotate(-90)')
+    .attr('transform', `rotate(${weekOneOffset})`)
     .attr('class', `interval-${name}`)
 
   //draw labels
@@ -156,7 +163,7 @@ export const drawWeeks = (
     .attr('stroke', '#000')
     .style('opacity', 0.4)
     .attr('class', `interval-${name}`)
-    .attr('transform', 'rotate(-90)')
+    .attr('transform', `rotate(${weekOneOffset})`)
   for (const [i] of labelLines.entries()) {
     group
       .append('text')
@@ -172,7 +179,7 @@ export const drawWeeks = (
       .style('text-transform', 'capitalize')
       .attr('startOffset', i >= numberOfWeeks / 2 ? '15%' : '85%')
       .attr('class', `interval-${name}`)
-      .text(`W ${i + 1}`)
+      .text(`${i + 1}`)
   }
 }
 
@@ -186,7 +193,7 @@ export const drawDays = (
   const numberOfDays = daysInYear(year)
   let lines: any[] = []
   let labelLines: any[] = []
-  for (let n = 1; n <= numberOfDays; n++) {
+  for (let n = 0; n < numberOfDays; n++) {
     const angle = (2 * Math.PI) / numberOfDays
     const x1 =
       (radius - lineWidth * (numberOfCalendars + 1)) * Math.cos(angle * n)
@@ -202,7 +209,7 @@ export const drawDays = (
         [x2, y2]
       ])
     )
-    if (n >= (numberOfDays - 1) / 2) {
+    if (n > numberOfDays / 2) {
       labelLines.push(
         d3.line()([
           [x3, y3],
@@ -250,11 +257,11 @@ export const drawDays = (
       .append('text')
       .append('textPath')
       .attr('xlink:href', `#${name}_${i}`)
-      .style('text-anchor', i >= (numberOfDays - 3) / 2 ? 'end' : 'start')
+      .style('text-anchor', i >= numberOfDays / 2 ? 'end' : 'start')
       .style('alignment-baseline', 'middle')
       .style('font-size', '0.4em')
       .style('text-transform', 'capitalize')
-      .attr('startOffset', i >= (numberOfDays - 3) / 2 ? '99%' : '1%')
+      .attr('startOffset', i >= numberOfDays / 2 ? '99%' : '1%')
       .attr('class', `interval-${name}`)
       .text(dayInMonth(i, year))
   }
