@@ -35,13 +35,11 @@
       import { setupCalendars, selectInterval, toggleCalendar } from './app'
       import { getInterval, getUser } from './state'
       const user = getUser()
+      const body = document.querySelector('body')
       if (!user) location.replace('index.html')
 
       const init = async () => {
-        const body = document.querySelector('body')
-        if (user) {
-          body.classList.remove('hidden')
-        }
+
         await setupCalendars()
         selectInterval(getInterval())
 
@@ -84,7 +82,10 @@
           .addEventListener('click', () => toggleCalendar('ey'))
       }
 
-      init()
+        if (user) {
+          body.classList.remove('hidden')
+          init()
+        }
     </script>
   </body>
 </html>
