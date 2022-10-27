@@ -11,6 +11,9 @@
     "prettier:check": "./node_modules/.bin/prettier --check .",
     "prettier:format": "./node_modules/.bin/prettier --write ."
   },
+  "engines": {
+    "node": "16"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/doberman/dbrmn-circular-calendar.git"
