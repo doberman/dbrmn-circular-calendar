@@ -9,7 +9,7 @@ export const daysIntoYear = (date: Date, year: number) => {
       1000
     )
   } else if (date.getFullYear() > year) {
-    return 365
+    return daysInYear(year)
   } else {
     return 0
   }
@@ -38,4 +38,10 @@ export const dayInMonth = (daysInYear: number, year: number) => {
 
 export const daysToRadians = (days: number, year: number) => {
   return ((days - 1) / daysInYear(year)) * 2 * Math.PI
+}
+
+export const weekOneStartOffset = (year: number) => {
+  const date = new Date(year, 0, 1)
+  const dayOfWeek = date.getUTCDay()
+  return dayOfWeek == 0 ? 0 : 7 - dayOfWeek
 }

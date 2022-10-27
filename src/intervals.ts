@@ -1,5 +1,11 @@
 import * as d3 from 'd3'
-import { daysIntoYear, daysInYear, dayInMonth, monthName } from './utils'
+import {
+  daysIntoYear,
+  daysInYear,
+  dayInMonth,
+  monthName,
+  weekOneStartOffset
+} from './utils'
 import { year } from './config'
 
 export const drawMonths = (
@@ -10,7 +16,6 @@ export const drawMonths = (
 ) => {
   const name = 'months'
   const numberOfMonths = 12
-  const offset = 0
   let lines: any[] = []
   let labelLines: any[] = []
   for (let n = 1; n <= numberOfMonths; n++) {
@@ -20,8 +25,8 @@ export const drawMonths = (
     const y1 = (radius - lineWidth * (numberOfCalendars + 1)) * Math.sin(angle)
     const x2 = (radius - lineWidth) * Math.cos(angle)
     const y2 = (radius - lineWidth) * Math.sin(angle)
-    const x3 = (radius + offset) * Math.cos(angle)
-    const y3 = (radius + offset) * Math.sin(angle)
+    const x3 = radius * Math.cos(angle)
+    const y3 = radius * Math.sin(angle)
 
     lines.push(
       d3.line()([
@@ -94,7 +99,8 @@ export const drawWeeks = (
 ) => {
   const name = 'weeks'
   const numberOfWeeks = 52
-  const offset = lineWidth * 2 - 28
+  const labelMargin = lineWidth * 2 - 18
+  const weekOneOffset = -90 + weekOneStartOffset(year)
 
   let lines: any[] = []
   let labelLines: any[] = []
@@ -106,8 +112,8 @@ export const drawWeeks = (
       (radius - lineWidth * (numberOfCalendars + 1)) * Math.sin(angle * n)
     const x2 = (radius - lineWidth) * Math.cos(angle * n)
     const y2 = (radius - lineWidth) * Math.sin(angle * n)
-    const x3 = offset * Math.cos(angle * n)
-    const y3 = offset * Math.sin(angle * n)
+    const x3 = labelMargin * Math.cos(angle * n)
+    const y3 = labelMargin * Math.sin(angle * n)
     lines.push(
       d3.line()([
         [x1, y1],
@@ -142,7 +148,7 @@ export const drawWeeks = (
     .attr('stroke', '#000')
     .style('opacity', 0.4)
     .attr('stroke-width', '1')
-    .attr('transform', 'rotate(-90)')
+    .attr('transform', `rotate(${weekOneOffset})`)
     .attr('class', `interval-${name}`)
 
   //draw labels
@@ -156,7 +162,7 @@ export const drawWeeks = (
     .attr('stroke', '#000')
     .style('opacity', 0.4)
     .attr('class', `interval-${name}`)
-    .attr('transform', 'rotate(-90)')
+    .attr('transform', `rotate(${weekOneOffset})`)
   for (const [i] of labelLines.entries()) {
     group
       .append('text')
@@ -172,7 +178,7 @@ export const drawWeeks = (
       .style('text-transform', 'capitalize')
       .attr('startOffset', i >= numberOfWeeks / 2 ? '15%' : '85%')
       .attr('class', `interval-${name}`)
-      .text(`W ${i + 1}`)
+      .text(`${i + 1}`)
   }
 }
 
