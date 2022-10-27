@@ -31,7 +31,7 @@ export const daysInMonth = (month: number, year: number) => {
 
 export const dayInMonth = (daysInYear: number, year: number) => {
   const date = new Date(year, 0, 1)
-  date.setDate(date.getDate() + daysInYear + 1)
+  date.setDate(date.getDate() + daysInYear)
   console.log(daysInYear, date.getUTCDate())
   return date.getUTCDate()
 }
@@ -41,7 +41,34 @@ export const daysToRadians = (days: number, year: number) => {
 }
 
 export const weekOneStartOffset = (year: number) => {
-  const date = new Date(year, 0, 1)
+  const date = new Date(year, 0, 1, 12)
   const dayOfWeek = date.getUTCDay()
-  return dayOfWeek == 0 ? 0 : 7 - dayOfWeek
+  console.log(dayOfWeek)
+
+  if (numberOfWeeksInYear(year) > 52) {
+    switch (dayOfWeek) {
+      case 3: //wednesday
+        return -1
+      default: //thursday
+        return -2
+    }
+  } else {
+    switch (dayOfWeek) {
+      case 0: //sunday
+        return 1
+      case 1: //monday
+        return 0
+      default:
+        return 8 - dayOfWeek
+    }
+  }
+}
+
+export const numberOfWeeksInYear = (year: number) => {
+  const date = new Date(year, 0, 1, 12)
+  const isLeap = daysInYear(year) == 366
+
+  //check for a Jan 1 that's a Thursday or a leap year that has a
+  //Wednesday Jan 1. Otherwise it's 52
+  return date.getUTCDay() === 4 || (isLeap && date.getUTCDay() === 3) ? 53 : 52
 }
