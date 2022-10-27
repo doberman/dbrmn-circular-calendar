@@ -8,7 +8,7 @@
     <link href="./index.css" rel="stylesheet" />
   </head>
 
-  <body>
+  <body class="hidden">
     <h1 class="text-2xl font-bold uppercase text-center">
       Doberman year is round
     </h1>
@@ -33,9 +33,15 @@
     <svg id="calendar" class="w-screen h-[45vh] md:h-[85vh]"></svg>
     <script type="module">
       import { setupCalendars, selectInterval, toggleCalendar } from './app'
-      import { getInterval } from './state'
+      import { getInterval, getUser } from './state'
+      const user = getUser()
+      if (!user) location.replace('index.html')
 
       const init = async () => {
+        const body = document.querySelector('body')
+        if (user) {
+          body.classList.remove('hidden')
+        }
         await setupCalendars()
         selectInterval(getInterval())
 
