@@ -1,8 +1,9 @@
-import * as d3 from 'd3'
-import { fetchCalendarData } from './calendar'
-import { Calendar, Interval } from './models'
-import { setInterval } from './state'
-import { daysIntoYear, daysToRadians } from './utils'
+import * as d3 from 'd3';
+
+import { fetchCalendarData } from './calendar';
+import { Calendar, Interval } from './models';
+import { setInterval } from './state';
+import { daysIntoYear, daysToRadians } from './utils';
 
 const year = 2022
 const today = new Date()
@@ -29,6 +30,8 @@ const intervals: Interval[] = [
   { name: 'months', number: 12 }
 ]
 
+
+export const setupCalendars = async () => {
 const calendarEl = document.getElementById('calendar')
 const width = calendarEl?.clientWidth || 600
 const height = calendarEl?.clientHeight || 600
@@ -42,7 +45,6 @@ const svg = d3
   .append('g')
   .attr('transform', `translate(${centerX},${centerY})`)
 
-export const setupCalendars = async () => {
   //draw background
   for (const [index, calendar] of calendars.entries()) {
     const temp = d3
