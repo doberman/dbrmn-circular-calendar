@@ -10,7 +10,7 @@ export const drawMonths = (
 ) => {
   const name = 'months'
   const numberOfMonths = 12
-  const offset = 20
+  const offset = 0
   let lines: any[] = []
   let labelLines: any[] = []
   for (let n = 1; n <= numberOfMonths; n++) {
@@ -160,7 +160,7 @@ export const drawWeeks = (
   for (const [i] of labelLines.entries()) {
     group
       .append('text')
-      .attr('dy', i >= numberOfWeeks / 2 ? 3 : -2)
+      .attr('dy', i >= numberOfWeeks / 2 ? 5 : -3)
       .append('textPath')
       .attr('xlink:href', `#${name}_${i}`)
       .style('text-anchor', i >= numberOfWeeks / 2 ? 'start' : 'end')
