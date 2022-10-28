@@ -13,7 +13,7 @@
       Doberman year is round
     </h1>
     <p class="text-sm font-light text-center">
-      Very welcome to the circular calendar
+      Very welcome to the circular calendar for <span id="currentYear"></span>
     </p>
     <div class="flex flex-row justify-between my-5 mx-3">
       <div class="flex flex-col md:flex-row space-x-1">
@@ -30,29 +30,31 @@
         <button id="months" class="p-2">Months</button>
       </div>
     </div>
-    <svg id="calendar" class="w-screen h-[45vh] md:h-[85vh]"></svg>
+    <svg id="calendar" class="w-screen h-[45vh] md:h-[85vh] tabular-nums"></svg>
     <script type="module">
-      import { setupCalendars, toggleCalendar } from './app'
+      import { setupCalendars, toggleInterval, toggleCalendar } from './app'
+      import { year } from './config'
       import { getUser } from './state'
       const user = getUser()
       const body = document.querySelector('body')
       if (!user) location.replace('index.html')
 
       const init = async () => {
+        document.getElementById('currentYear').textContent = year
         await setupCalendars()
 
         //Interval click handlers
         document
           .getElementById('days')
-          .addEventListener('click', () => selectInterval('days'))
+          .addEventListener('click', () => toggleInterval('days'))
 
         document
           .getElementById('weeks')
-          .addEventListener('click', () => selectInterval('weeks'))
+          .addEventListener('click', () => toggleInterval('weeks'))
 
         document
           .getElementById('months')
-          .addEventListener('click', () => selectInterval('months'))
+          .addEventListener('click', () => toggleInterval('months'))
 
         //Calendar click handlers
         document
