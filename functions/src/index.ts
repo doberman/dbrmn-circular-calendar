@@ -44,10 +44,8 @@ export const events = functions
             console.log("got res:", res);
             return res;
           })));
-          // const res = await fetchCalendarData(calIds[0] as string);
           console.log("got data:", data);
-          // response.send(res);
-          // return;
+          response.set("Access-Control-Allow-Origin", "*");
           response.send(data);
           return;
         }
