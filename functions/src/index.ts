@@ -31,16 +31,25 @@ const fetchCalendarData = async (calendarId: string) => {
 
   return {"DBRMN_COP_STUDIO": events};
 };
-
-const calId = process.env.DBRMN_COP_STUDIO_CAL_ID;
+// process.env.DBRMN_COP_STUDIO_PUBLIC_HOLIDAYS_CAL_ID
+const calIds = [process.env.DBRMN_COP_STUDIO_CAL_ID];
 
 export const events = functions
     .region("europe-west1").https.onRequest(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
         async (req: https.Request, response: Response<any>) => {
-          const res = await fetchCalendarData(calId as string);
-          console.log("got res:", res);
-          response.send(res);
+          const data = await Promise.all(calIds.map((async (id) => {
+            functions.logger.log("id", id);
+            const res = await fetchCalendarData(id as string);
+            console.log("got res:", res);
+            return res;
+          })));
+          // const res = await fetchCalendarData(calIds[0] as string);
+          console.log("got data:", data);
+          // response.send(res);
+          // return;
+          response.send(data);
           return;
         }
+
     );
