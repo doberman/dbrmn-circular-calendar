@@ -10,9 +10,10 @@ import {google} from "googleapis";
 
 const fetchCalendarData = async (calendarId: string) => {
   const auth: GoogleAuth = new google.auth.GoogleAuth({
-    // keyFile: "./dbrmn-circular-calendar-68e12e96e845.json",
+    keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
     scopes: ["https://www.googleapis.com/auth/cloud-platform", "https://www.googleapis.com/auth/calendar"],
   });
+
   const calendar = google.calendar({version: "v3", auth});
   const res = await calendar.events.list({
     calendarId: calendarId,
