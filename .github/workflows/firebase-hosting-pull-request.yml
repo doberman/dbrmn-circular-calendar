@@ -5,6 +5,9 @@ name: Deploy to Firebase Hosting on PR
 'on': pull_request
 env:
   GOOGLE_CALENDAR_API_KEY: '${{ secrets.GOOGLE_CALENDAR_API_KEY }}'
+  SIGN_IN_CLIENT_ID: '${{ secrets.SIGN_IN_CLIENT_ID }}'
+  SIGN_IN_CLIENT_SECRET: '${{ secrets.SIGN_IN_CLIENT_SECRET }}'
+  SIGN_IN_REDIRECT_URL: '${{ secrets.SIGN_IN_REDIRECT_URL }}'
 jobs:
   build_and_preview:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'

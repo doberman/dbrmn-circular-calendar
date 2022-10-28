@@ -6,8 +6,8 @@
   "scripts": {
     "start": "parcel",
     "clear-build-cache": "rm -rf .cache/ dist/",
-    "dev": "parcel src/index.html",
-    "build": "NODE_ENV=production parcel build ./src/index.html --public-url ./",
+    "dev": "parcel --https './src/**/*.html'",
+    "build": "NODE_ENV=production parcel build './src/**/*.html' --public-url ./",
     "prettier:check": "./node_modules/.bin/prettier --check .",
     "prettier:format": "./node_modules/.bin/prettier --write .",
     "test": "jest --watch",
@@ -24,7 +24,8 @@
   },
   "homepage": "https://github.com/doberman/dbrmn-circular-calendar#readme",
   "dependencies": {
-    "d3": "^7.6.1"
+    "d3": "^7.6.1",
+    "jwt-decode": "^3.1.2"
   },
   "devDependencies": {
     "@types/d3": "^7.4.0",
@@ -37,7 +38,8 @@
     "prettier-config-standard": "^5.0.0",
     "process": "^0.11.10",
     "tailwindcss": "^3.2.0",
-    "ts-jest": "^29.0.3"
+    "ts-jest": "^29.0.3",
+    "prettier": "^2.7.1"
   },
   "prettier": "prettier-config-standard",
   "jest": {
