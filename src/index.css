@@ -9,7 +9,3 @@
   src: url('../public/fonts/GerstnerProgWeb-Regular.woff'),
     url('../public/fonts/GerstnerProgWeb-Regular.woff2');
 }
-
-#calendar {
-  font-variant-numeric: tabular-nums;
-}
