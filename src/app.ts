@@ -35,6 +35,7 @@ export const setupCalendars = async () => {
       .attr('class', `cal-${calendar.name}`)
       .attr('d', <any>temp)
       .attr('fill', calendar.color)
+      .attr('opacity', 0.5)
 
     //draw today
     const now = d3
@@ -57,8 +58,8 @@ export const setupCalendars = async () => {
         console.log(item.id, item.summary, item.start, item.end)
         const event = d3
           .arc()
-          .innerRadius(radius - lineWidth * (index + 1))
-          .outerRadius(radius - lineWidth * index)
+          .innerRadius(radius - lineWidth * (index + 2))
+          .outerRadius(radius - lineWidth * (index + 1))
           .startAngle(
             daysToRadians(daysIntoYear(new Date(item.start.date), year), year)
           )
