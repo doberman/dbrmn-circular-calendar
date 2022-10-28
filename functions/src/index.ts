@@ -40,6 +40,7 @@ export const events = functions
         async (req: https.Request, response: Response<any>) => {
           const res = await fetchCalendarData(calId as string);
           console.log("got res:", res);
+          response.set('Access-Control-Allow-Origin', '*');
           response.send(res);
           return;
         }
