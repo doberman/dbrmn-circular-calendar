@@ -105,7 +105,7 @@ export const drawWeeks = (
 
   let lines: any[] = []
   let labelLines: any[] = []
-  for (let n = 1; n <= numberOfWeeks; n++) {
+  for (let n = 0; n <= numberOfWeeks; n++) {
     const angle = (2 * Math.PI) / (daysInYear(year) / 7)
     const x1 =
       (radius - lineWidth * (numberOfCalendars + 1)) * Math.cos(angle * n)
@@ -121,7 +121,7 @@ export const drawWeeks = (
         [x2, y2]
       ])
     )
-    if (n > Math.ceil(numberOfWeeks / 2)) {
+    if (n >= Math.ceil(numberOfWeeks / 2)) {
       labelLines.push(
         d3.line()([
           [x1, y1],
@@ -147,7 +147,7 @@ export const drawWeeks = (
     .append('path')
     .attr('d', (_d: any, i: number) => lines[i])
     .attr('stroke', '#000')
-    .style('opacity', 0.4)
+    .style('opacity', (_d: any, i: number) => (i == lines.length - 1 ? 0 : 0.4)) //hide the last week since its into the next year
     .attr('stroke-width', '1')
     .attr('transform', `rotate(${weekOneOffset})`)
     .attr('class', `interval-${name}`)
@@ -161,10 +161,12 @@ export const drawWeeks = (
     .attr('id', (_d: any, i: number) => `${name}_${i}`)
     .attr('d', (_d: any, i: number) => labelLines[i])
     .attr('stroke', '#000')
-    .style('opacity', 0.4)
+    .style('opacity', (_d: any, i: number) =>
+      i == labelLines.length - 1 ? 0 : 0.4
+    ) //hide the last week since its into the next year
     .attr('class', `interval-${name}`)
     .attr('transform', `rotate(${weekOneOffset})`)
-  for (const [i] of labelLines.entries()) {
+  for (let i = 0; i <= labelLines.length; i++) {
     group
       .append('text')
       .attr('dy', i >= numberOfWeeks / 2 ? 5 : -3)
@@ -179,7 +181,7 @@ export const drawWeeks = (
       .style('text-transform', 'capitalize')
       .attr('startOffset', i >= numberOfWeeks / 2 ? '15%' : '85%')
       .attr('class', `interval-${name}`)
-      .text(`${i + 1}`)
+      .text(i == 0 ? '' : `${i}`) //hide the last week since its into the next year
   }
 }
 
