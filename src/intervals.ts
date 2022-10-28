@@ -106,7 +106,7 @@ export const drawWeeks = (
   let lines: any[] = []
   let labelLines: any[] = []
   for (let n = 1; n <= numberOfWeeks; n++) {
-    const angle = (2 * Math.PI) / numberOfWeeks
+    const angle = (2 * Math.PI) / (daysInYear(year) / 7)
     const x1 =
       (radius - lineWidth * (numberOfCalendars + 1)) * Math.cos(angle * n)
     const y1 =
