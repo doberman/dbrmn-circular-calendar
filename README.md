@@ -18,7 +18,9 @@ What environments are there and how does this project manage those environments.
 
 ## Tests
 
-TBD
+We are using jest for unit testing
+
+`npm run test`
 
 ## Deployment
 
