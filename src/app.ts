@@ -4,24 +4,23 @@ import { fetchCalendarData } from './calendar'
 import { daysIntoYear, daysToRadians } from './utils'
 import { drawMonths, drawWeeks, drawDays } from './intervals'
 
-const today = new Date()
-const tomorrow = new Date(today)
-tomorrow.setDate(tomorrow.getDate() + 1)
-
-const calendarEl = document.getElementById('calendar')
-const width = calendarEl?.clientWidth || 600
-const height = calendarEl?.clientHeight || 600
-const radius = Math.min(width, height) / 2
-const centerX = width / 2
-const centerY = height / 2
-const lineWidth = radius / (calendars.length + 3)
-
-const svg = d3
-  .select('#calendar')
-  .append('g')
-  .attr('transform', `translate(${centerX},${centerY})`)
-
 export const setupCalendars = async () => {
+  const calendarEl = document.getElementById('calendar')
+  const width = calendarEl?.clientWidth || 600
+  const height = calendarEl?.clientHeight || 600
+  const radius = Math.min(width, height) / 2
+  const centerX = width / 2
+  const centerY = height / 2
+  const lineWidth = radius / (calendars.length + 3)
+  const svg = d3
+    .select('#calendar')
+    .append('g')
+    .attr('transform', `translate(${centerX},${centerY})`)
+
+  const today = new Date()
+  const tomorrow = new Date(today)
+  tomorrow.setDate(tomorrow.getDate() + 1)
+
   //draw background
   for (const [index, calendar] of calendars.entries()) {
     const temp = d3
@@ -35,6 +34,7 @@ export const setupCalendars = async () => {
       .attr('class', `cal-${calendar.name}`)
       .attr('d', <any>temp)
       .attr('fill', calendar.color)
+      .attr('opacity', 0.5)
 
     //draw today
     const now = d3
@@ -57,8 +57,8 @@ export const setupCalendars = async () => {
         console.log(item.id, item.summary, item.start, item.end)
         const event = d3
           .arc()
-          .innerRadius(radius - lineWidth * (index + 1))
-          .outerRadius(radius - lineWidth * index)
+          .innerRadius(radius - lineWidth * (index + 2))
+          .outerRadius(radius - lineWidth * (index + 1))
           .startAngle(
             daysToRadians(daysIntoYear(new Date(item.start.date), year), year)
           )

@@ -5,7 +5,7 @@ export interface Calendar {
   id: string
 }
 
-export interface Interval {
+export interface User {
   name: string
-  number: number
+  'https://slack.com/user_id': string
 }
