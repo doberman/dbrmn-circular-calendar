@@ -21,7 +21,8 @@ export const drawMonths = (
   let labelLines: any[] = []
   for (let n = 1; n <= numberOfMonths; n++) {
     const angle =
-      (2 * Math.PI) / (365 / daysIntoYear(new Date(year, n, 0), year))
+      (2 * Math.PI) /
+      (daysInYear(year) / daysIntoYear(new Date(year, n, 0), year))
     const x1 = (radius - lineWidth * (numberOfCalendars + 1)) * Math.cos(angle)
     const y1 = (radius - lineWidth * (numberOfCalendars + 1)) * Math.sin(angle)
     const x2 = (radius - lineWidth) * Math.cos(angle)
