@@ -32,16 +32,14 @@
     </div>
     <svg id="calendar" class="w-screen h-[45vh] md:h-[85vh]"></svg>
     <script type="module">
-      import { setupCalendars, selectInterval, toggleCalendar } from './app'
-      import { getInterval, getUser } from './state'
+      import { setupCalendars, toggleCalendar } from './app'
+      import { getUser } from './state'
       const user = getUser()
       const body = document.querySelector('body')
       if (!user) location.replace('index.html')
 
       const init = async () => {
-
         await setupCalendars()
-        selectInterval(getInterval())
 
         //Interval click handlers
         document
@@ -82,10 +80,10 @@
           .addEventListener('click', () => toggleCalendar('ey'))
       }
 
-        if (user) {
-          body.classList.remove('hidden')
-          init()
-        }
+      if (user) {
+        body.classList.remove('hidden')
+        init()
+      }
     </script>
   </body>
 </html>
