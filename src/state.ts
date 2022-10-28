@@ -1,3 +1,5 @@
+import { User } from './models'
+
 export const setUser = (user: User) =>
   localStorage.setItem('user', JSON.stringify(user))
 export const getUser = () =>

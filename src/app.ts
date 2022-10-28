@@ -4,24 +4,23 @@ import { fetchCalendarData } from './calendar'
 import { daysIntoYear, daysToRadians } from './utils'
 import { drawMonths, drawWeeks, drawDays } from './intervals'
 
-const today = new Date()
-const tomorrow = new Date(today)
-tomorrow.setDate(tomorrow.getDate() + 1)
-
-const calendarEl = document.getElementById('calendar')
-const width = calendarEl?.clientWidth || 600
-const height = calendarEl?.clientHeight || 600
-const radius = Math.min(width, height) / 2
-const centerX = width / 2
-const centerY = height / 2
-const lineWidth = radius / (calendars.length + 3)
-
-const svg = d3
-  .select('#calendar')
-  .append('g')
-  .attr('transform', `translate(${centerX},${centerY})`)
-
 export const setupCalendars = async () => {
+  const calendarEl = document.getElementById('calendar')
+  const width = calendarEl?.clientWidth || 600
+  const height = calendarEl?.clientHeight || 600
+  const radius = Math.min(width, height) / 2
+  const centerX = width / 2
+  const centerY = height / 2
+  const lineWidth = radius / (calendars.length + 3)
+  const svg = d3
+    .select('#calendar')
+    .append('g')
+    .attr('transform', `translate(${centerX},${centerY})`)
+
+  const today = new Date()
+  const tomorrow = new Date(today)
+  tomorrow.setDate(tomorrow.getDate() + 1)
+
   //draw background
   for (const [index, calendar] of calendars.entries()) {
     const temp = d3

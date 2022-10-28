@@ -32,7 +32,6 @@ export const daysInMonth = (month: number, year: number) => {
 export const dayInMonth = (daysInYear: number, year: number) => {
   const date = new Date(year, 0, 1)
   date.setDate(date.getDate() + daysInYear)
-  console.log(daysInYear, date.getUTCDate())
   return date.getUTCDate()
 }
 
@@ -43,7 +42,6 @@ export const daysToRadians = (days: number, year: number) => {
 export const weekOneStartOffset = (year: number) => {
   const date = new Date(year, 0, 1, 12)
   const dayOfWeek = date.getUTCDay()
-  console.log(dayOfWeek)
 
   if (numberOfWeeksInYear(year) > 52) {
     switch (dayOfWeek) {

@@ -1,5 +1,5 @@
 import jwtDecode from 'jwt-decode'
-
+import { User } from './models'
 import { setUser } from './state'
 
 const code = window.location.search.substring(1)
