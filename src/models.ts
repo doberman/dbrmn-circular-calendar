@@ -4,8 +4,3 @@ export interface Calendar {
   eventColor: string
   id: string
 }
-
-export interface Interval {
-  name: string
-  number: number
-}
