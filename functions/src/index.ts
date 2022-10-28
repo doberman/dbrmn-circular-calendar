@@ -10,7 +10,7 @@ import {google} from "googleapis";
 
 const fetchCalendarData = async (calendarId: string) => {
   const auth: GoogleAuth = new google.auth.GoogleAuth({
-    keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+    keyFile: process.env.GOOGLE_SERVICE_ACCOUNT,
     scopes: ["https://www.googleapis.com/auth/cloud-platform", "https://www.googleapis.com/auth/calendar"],
   });
 
@@ -29,20 +29,18 @@ const fetchCalendarData = async (calendarId: string) => {
   }
   console.log("Upcoming 10 events:", events);
 
-  return events;
+  return {"DBRMN_COP_STUDIO": events};
 };
 
-// eslint-disable-next-line max-len
-// const calId =
-// process.env.DBRMN_COP_STUDIO_PUBLIC_HOLIDAYS_CAL_ID;
 const calId = process.env.DBRMN_COP_STUDIO_CAL_ID;
 
-export const helloEurope = functions.region("europe-west1").https.onRequest(
+export const events = functions
+    .region("europe-west1").https.onRequest(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async (req: https.Request, response: Response<any>) => {
-      const res = await fetchCalendarData(calId as string);
-      console.log("got res:", res);
-      response.send(res);
-      return;
-    }
-);
+        async (req: https.Request, response: Response<any>) => {
+          const res = await fetchCalendarData(calId as string);
+          console.log("got res:", res);
+          response.send(res);
+          return;
+        }
+    );
