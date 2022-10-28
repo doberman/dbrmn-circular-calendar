@@ -72,3 +72,7 @@ export const numberOfWeeksInYear = (year: number) => {
   //Wednesday Jan 1. Otherwise it's 52
   return date.getUTCDay() === 4 || (isLeap && date.getUTCDay() === 3) ? 53 : 52
 }
+
+export const padWithZero = (number: number) => {
+  return String(number).padStart(2, '0')
+}

@@ -5,7 +5,8 @@ import {
   dayInMonth,
   monthName,
   weekOneStartOffset,
-  numberOfWeeksInYear
+  numberOfWeeksInYear,
+  padWithZero
 } from './utils'
 import { year } from './config'
 
@@ -182,7 +183,7 @@ export const drawWeeks = (
       .style('text-transform', 'capitalize')
       .attr('startOffset', i >= numberOfWeeks / 2 ? '15%' : '85%')
       .attr('class', `interval-${name}`)
-      .text(i == 0 ? '' : `${i}`) //hide the last week since its into the next year
+      .text(i == 0 ? '' : padWithZero(i)) //hide the last week since its into the next year
   }
 }
 
@@ -266,6 +267,6 @@ export const drawDays = (
       .style('text-transform', 'capitalize')
       .attr('startOffset', i >= numberOfDays / 2 ? '99%' : '1%')
       .attr('class', `interval-${name}`)
-      .text(dayInMonth(i, year))
+      .text(padWithZero(dayInMonth(i, year)))
   }
 }
