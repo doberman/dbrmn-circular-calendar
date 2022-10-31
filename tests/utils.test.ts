@@ -2,7 +2,8 @@ import {
   daysIntoYear,
   daysInYear,
   weekOneStartOffset,
-  numberOfWeeksInYear
+  numberOfWeeksInYear,
+  monthName
 } from '../src/utils'
 
 describe('daysIntoYear', () => {
@@ -22,6 +23,16 @@ describe('daysIntoYear', () => {
     const year = 2022
     const date = new Date(year, 11, 31, 12)
     expect(daysIntoYear(date, year)).toBe(365)
+  })
+})
+
+describe('monthName', () => {
+  test('month number 0 should be January', () => {
+    expect(monthName(0)).toBe('January')
+  })
+
+  test('month number 1 should be February', () => {
+    expect(monthName(1)).toBe('February')
   })
 })
 

@@ -22,6 +22,8 @@ export const setupCalendars = async () => {
   const tomorrow = new Date(today)
   tomorrow.setDate(tomorrow.getDate() + 1)
 
+  const data = await fetchCalendarData(year)
+
   //draw background
   for (const [index, calendar] of calendars.entries()) {
     const temp = d3
@@ -41,51 +43,57 @@ export const setupCalendars = async () => {
     const now = d3
       .arc()
       .innerRadius(radius - lineWidth * (index + 2))
-      .outerRadius(radius - lineWidth * (index + 1))
+      .outerRadius(radius - lineWidth * index)
       .startAngle(daysToRadians(daysIntoYear(today, year), year))
       .endAngle(daysToRadians(daysIntoYear(tomorrow, year), year))
     svg
       .append('path')
       .attr('class', 'now')
       .attr('d', <any>now)
-      .attr('fill', 'white')
-      .attr('opacity', 0.5)
+      .attr('fill', 'black')
+      .attr('opacity', 0.2)
 
     //draw events
     if (calendar.id) {
-      const data = await fetchCalendarData(calendar.id, year)
-      for (const item of data.items) {
-        console.log(item.id, item.summary, item.start, item.end)
-        const event = d3
-          .arc()
-          .innerRadius(radius - lineWidth * (index + 2))
-          .outerRadius(radius - lineWidth * (index + 1))
-          .startAngle(
-            daysToRadians(daysIntoYear(new Date(item.start.date), year), year)
-          )
-          .endAngle(
-            daysToRadians(daysIntoYear(new Date(item.end.date), year), year)
-          )
+      console.log(data, calendar.id)
+      const calendarData = data.find(
+        (el: { key: string }) => el.key == calendar.id
+      )
+      if (calendarData) {
+        console.log(calendarData)
+        for (const item of calendarData.events) {
+          console.log(item.id, item.summary, item.start, item.end)
+          const event = d3
+            .arc()
+            .innerRadius(radius - lineWidth * (index + 2))
+            .outerRadius(radius - lineWidth * (index + 1))
+            .startAngle(
+              daysToRadians(daysIntoYear(new Date(item.start.date), year), year)
+            )
+            .endAngle(
+              daysToRadians(daysIntoYear(new Date(item.end.date), year), year)
+            )
 
-        svg
-          .append('path')
-          .attr('class', `cal-${calendar.name}`)
-          .attr('id', item.id)
-          .attr('d', <any>event)
-          .attr('fill', calendar.eventColor)
-          .append('svg:title')
-          .text(function (d) {
-            return item.summary
-          })
-        // svg
-        //   .append('text')
-        //   .append('textPath')
-        //   .attr('xlink:href', `#${item.id}`)
-        //   .style('text-anchor', 'start')
-        //   .attr('startOffset', '0%')
-        //   .text(function (d) {
-        //     return item.summary
-        //   })
+          svg
+            .append('path')
+            .attr('class', `cal-${calendar.name}`)
+            .attr('id', item.id)
+            .attr('d', <any>event)
+            .attr('fill', calendar.eventColor)
+            .append('svg:title')
+            .text(function (d) {
+              return item.summary
+            })
+          // svg
+          //   .append('text')
+          //   .append('textPath')
+          //   .attr('xlink:href', `#${item.id}`)
+          //   .style('text-anchor', 'start')
+          //   .attr('startOffset', '0%')
+          //   .text(function (d) {
+          //     return item.summary
+          //   })
+        }
       }
     }
   }
