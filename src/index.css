@@ -9,3 +9,20 @@
   src: url('../public/fonts/GerstnerProgWeb-Regular.woff'),
     url('../public/fonts/GerstnerProgWeb-Regular.woff2');
 }
+
+@layer components {
+  .btn-calendar {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+
+  .btn-calendar:before {
+    border: 1px solid #000;
+    content: '';
+    display: inline-block;
+    height: 30px;
+    margin-right: 15px;
+    width: 30px;
+  }
+}
