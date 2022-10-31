@@ -1,9 +1,9 @@
-import * as d3 from 'd3';
+import * as d3 from 'd3'
 
-import { fetchCalendarData } from './calendar';
-import { calendars, year } from './config';
-import { drawDays, drawMonths, drawWeeks } from './intervals';
-import { daysIntoYear, daysToRadians } from './utils';
+import { fetchCalendarData } from './calendar'
+import { calendars, year } from './config'
+import { drawDays, drawMonths, drawWeeks } from './intervals'
+import { daysIntoYear, daysToRadians } from './utils'
 
 export const setupCalendars = async () => {
   const calendarEl = document.getElementById('calendar')
@@ -96,7 +96,7 @@ export const setupCalendars = async () => {
 
 export const toggleInterval = (name: string) => {
   const disabledTextColor = 'text-gray-400'
-  const opacity='opacity-50'
+  const opacity = 'opacity-50'
   const element = d3.selectAll(`.interval-${name}`)
   const visibility = element.style('visibility')
   visibility == 'visible'
