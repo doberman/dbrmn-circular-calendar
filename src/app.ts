@@ -21,6 +21,8 @@ export const setupCalendars = async () => {
   const tomorrow = new Date(today)
   tomorrow.setDate(tomorrow.getDate() + 1)
 
+  const data = await fetchCalendarData(year)
+
   //draw background
   for (const [index, calendar] of calendars.entries()) {
     const temp = d3
@@ -52,8 +54,12 @@ export const setupCalendars = async () => {
 
     //draw events
     if (calendar.id) {
-      const data = await fetchCalendarData(calendar.id, year)
-      for (const item of data.items) {
+      console.log(data, calendar.id)
+      const calendarData = data.find(
+        (el: { key: string }) => el.key == calendar.id
+      )
+      console.log(calendarData)
+      for (const item of calendarData.events) {
         console.log(item.id, item.summary, item.start, item.end)
         const event = d3
           .arc()
