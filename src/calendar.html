@@ -37,7 +37,8 @@
       import { getUser } from './state'
       const user = getUser()
       const body = document.querySelector('body')
-      if (!user) location.replace('index.html')
+      if (!user && process.env.IS_IN_PRODUCTION === 'true')
+        location.replace('index.html')
 
       const init = async () => {
         document.getElementById('currentYear').textContent = year
@@ -82,7 +83,7 @@
           .addEventListener('click', () => toggleCalendar('ey'))
       }
 
-      if (user) {
+      if (user || process.env.IS_IN_PRODUCTION === 'false') {
         body.classList.remove('hidden')
         init()
       }
