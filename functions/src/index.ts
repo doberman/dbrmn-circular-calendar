@@ -45,7 +45,11 @@ const calendars: Calendar[] = [
   }
 ]
 
-const fetchCalendarData = async (auth: GoogleAuth, calendarId: string, year: number) => {
+const fetchCalendarData = async (
+  auth: GoogleAuth,
+  calendarId: string,
+  year: number
+) => {
   if (!calendarId) {
     console.log('No calendar id found for key')
     return []
@@ -78,7 +82,7 @@ export const events = functions.region('europe-west1').https.onRequest(
         'https://www.googleapis.com/auth/calendar'
       ]
     })
-    console.log('got auth',auth)
+    console.log('got auth', auth)
     const data = await Promise.all(
       calendars.map(async (calendar) => {
         functions.logger.log('id', calendar.id)
