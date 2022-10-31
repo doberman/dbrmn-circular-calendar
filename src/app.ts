@@ -42,7 +42,7 @@ export const setupCalendars = async () => {
     const now = d3
       .arc()
       .innerRadius(radius - lineWidth * (index + 2))
-      .outerRadius(radius - lineWidth * (index))
+      .outerRadius(radius - lineWidth * index)
       .startAngle(daysToRadians(daysIntoYear(today, year), year))
       .endAngle(daysToRadians(daysIntoYear(tomorrow, year), year))
     svg
