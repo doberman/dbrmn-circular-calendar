@@ -21,8 +21,9 @@ export const daysInYear = (year: number) => {
 
 export const monthName = (month: number) => {
   const date = new Date()
+  date.setDate(1)
   date.setMonth(month)
-  return date.toLocaleString([], { month: 'long' })
+  return date.toLocaleString('en-us', { month: 'long' })
 }
 
 export const daysInMonth = (month: number, year: number) => {
