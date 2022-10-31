@@ -42,15 +42,15 @@ export const setupCalendars = async () => {
     const now = d3
       .arc()
       .innerRadius(radius - lineWidth * (index + 2))
-      .outerRadius(radius - lineWidth * (index + 1))
+      .outerRadius(radius - lineWidth * (index))
       .startAngle(daysToRadians(daysIntoYear(today, year), year))
       .endAngle(daysToRadians(daysIntoYear(tomorrow, year), year))
     svg
       .append('path')
       .attr('class', 'now')
       .attr('d', <any>now)
-      .attr('fill', 'white')
-      .attr('opacity', 0.5)
+      .attr('fill', 'black')
+      .attr('opacity', 0.2)
 
     //draw events
     if (calendar.id) {
