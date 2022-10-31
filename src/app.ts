@@ -58,39 +58,41 @@ export const setupCalendars = async () => {
       const calendarData = data.find(
         (el: { key: string }) => el.key == calendar.id
       )
-      console.log(calendarData)
-      for (const item of calendarData.events) {
-        console.log(item.id, item.summary, item.start, item.end)
-        const event = d3
-          .arc()
-          .innerRadius(radius - lineWidth * (index + 2))
-          .outerRadius(radius - lineWidth * (index + 1))
-          .startAngle(
-            daysToRadians(daysIntoYear(new Date(item.start.date), year), year)
-          )
-          .endAngle(
-            daysToRadians(daysIntoYear(new Date(item.end.date), year), year)
-          )
+      if (calendarData) {
+        console.log(calendarData)
+        for (const item of calendarData.events) {
+          console.log(item.id, item.summary, item.start, item.end)
+          const event = d3
+            .arc()
+            .innerRadius(radius - lineWidth * (index + 2))
+            .outerRadius(radius - lineWidth * (index + 1))
+            .startAngle(
+              daysToRadians(daysIntoYear(new Date(item.start.date), year), year)
+            )
+            .endAngle(
+              daysToRadians(daysIntoYear(new Date(item.end.date), year), year)
+            )
 
-        svg
-          .append('path')
-          .attr('class', `cal-${calendar.name}`)
-          .attr('id', item.id)
-          .attr('d', <any>event)
-          .attr('fill', calendar.eventColor)
-          .append('svg:title')
-          .text(function (d) {
-            return item.summary
-          })
-        // svg
-        //   .append('text')
-        //   .append('textPath')
-        //   .attr('xlink:href', `#${item.id}`)
-        //   .style('text-anchor', 'start')
-        //   .attr('startOffset', '0%')
-        //   .text(function (d) {
-        //     return item.summary
-        //   })
+          svg
+            .append('path')
+            .attr('class', `cal-${calendar.name}`)
+            .attr('id', item.id)
+            .attr('d', <any>event)
+            .attr('fill', calendar.eventColor)
+            .append('svg:title')
+            .text(function (d) {
+              return item.summary
+            })
+          // svg
+          //   .append('text')
+          //   .append('textPath')
+          //   .attr('xlink:href', `#${item.id}`)
+          //   .style('text-anchor', 'start')
+          //   .attr('startOffset', '0%')
+          //   .text(function (d) {
+          //     return item.summary
+          //   })
+        }
       }
     }
   }

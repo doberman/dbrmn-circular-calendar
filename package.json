@@ -13,9 +13,6 @@
     "test": "jest --watch",
     "test:ci": "jest --ci"
   },
-  "engines": {
-    "node": "16"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/doberman/dbrmn-circular-calendar.git"
@@ -27,7 +24,6 @@
   },
   "homepage": "https://github.com/doberman/dbrmn-circular-calendar#readme",
   "dependencies": {
-    "@parcel/css": "^1.14.0",
     "d3": "^7.6.1",
     "jwt-decode": "^3.1.2"
   },
