@@ -1,9 +1,9 @@
-import { getUser } from './state'
+import { getUser } from './state';
 
 // kolla om user finns
 const user = getUser()
 // om user finns, gå till play
-if (user) setTimeout(() => location.replace('/calendar.html'), 1000)
+if (user || process.env.IS_IN_PRODUCTION === 'false') setTimeout(() => location.replace('/calendar.html'), 1000)
 else {
   // annars, finns det en login-knapp
   const slackButton = document.querySelector('#slack')! as HTMLAnchorElement

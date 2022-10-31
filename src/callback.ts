@@ -1,9 +1,11 @@
-import jwtDecode from 'jwt-decode'
-import { User } from './models'
-import { setUser } from './state'
+import jwtDecode from 'jwt-decode';
+
+import { User } from './models';
+import { setUser } from './state';
 
 const code = window.location.search.substring(1)
 console.log(code, 'code')
+
 if (code) {
   fetch(
     `https://slack.com/api/openid.connect.token?${[
