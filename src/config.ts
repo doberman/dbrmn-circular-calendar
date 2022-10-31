@@ -10,7 +10,12 @@ export const calendars: Calendar[] = [
     eventColor: '#FF002D',
     id: 'DBRMN_STO_STUDIO_PUBLIC_HOLIDAYS'
   },
-  { name: 'copenhagen', color: '#F3BAFA', eventColor: '#E300FF', id: '' },
+  {
+    name: 'copenhagen',
+    color: '#F3BAFA',
+    eventColor: '#E300FF',
+    id: 'DBRMN_COP_STUDIO_PUBLIC_HOLIDAYS'
+  },
   { name: 'oslo', color: '#D4B9F9', eventColor: '#6C00FF', id: '' },
   { name: 'helsinki', color: '#BDD0FB', eventColor: '#004EFF', id: '' },
   { name: 'ey', color: '#E2FFA5', eventColor: '#ADFF00', id: '' }
