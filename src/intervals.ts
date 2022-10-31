@@ -63,7 +63,8 @@ export const drawMonths = (
     .append('path')
     .attr('d', (_d: any, i: number) => lines[i])
     .attr('stroke', '#000')
-    .attr('stroke-width', '2')
+    .attr('stroke-width', '1.5')
+    .style('opacity', 0.7)
     .attr('transform', 'rotate(-90)') // TODO figure out a better way to start from top
     .attr('class', `interval-${name}`)
 
