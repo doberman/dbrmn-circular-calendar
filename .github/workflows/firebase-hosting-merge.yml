@@ -10,6 +10,7 @@ env:
   SIGN_IN_CLIENT_ID: '${{ secrets.SIGN_IN_CLIENT_ID }}'
   SIGN_IN_CLIENT_SECRET: '${{ secrets.SIGN_IN_CLIENT_SECRET }}'
   SIGN_IN_REDIRECT_URL: '${{ secrets.SIGN_IN_REDIRECT_URL }}'
+  IS_IN_PRODUCTION: '${{ secrets.IS_IN_PRODUCTION }}'
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
