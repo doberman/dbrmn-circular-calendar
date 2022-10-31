@@ -95,17 +95,19 @@ export const setupCalendars = async () => {
 }
 
 export const toggleInterval = (name: string) => {
-  const selectClass = 'text-gray-400'
+  const disabledTextColor = 'text-gray-400'
+  const opacity='opacity-50'
   const element = d3.selectAll(`.interval-${name}`)
   const visibility = element.style('visibility')
   visibility == 'visible'
     ? element.style('visibility', 'hidden')
     : element.style('visibility', 'visible')
-  document.getElementById(name)?.classList.toggle(selectClass)
+  document.getElementById(name)?.classList.toggle(disabledTextColor)
+  document.getElementById(name)?.classList.toggle(opacity)
 }
 
 export const toggleCalendar = (name: string) => {
-  const textColor = 'text-gray-400'
+  const disabledTextColor = 'text-gray-400'
   const opacity = 'opacity-50'
   const border = 'before:border-0'
   const element = d3.selectAll(`.cal-${name}`)
@@ -113,7 +115,7 @@ export const toggleCalendar = (name: string) => {
   visibility == 'visible'
     ? element.style('visibility', 'hidden')
     : element.style('visibility', 'visible')
-  document.getElementById(name)?.classList.toggle(textColor)
+  document.getElementById(name)?.classList.toggle(disabledTextColor)
   document.getElementById(name)?.classList.toggle(opacity)
   document.getElementById(name)?.classList.toggle(border)
 }
