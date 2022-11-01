@@ -14,7 +14,8 @@ export const drawMonths = (
   svg: any,
   radius: number,
   lineWidth: number,
-  numberOfCalendars: number
+  numberOfCalendars: number,
+  outerMargin: number
 ) => {
   const name = 'months'
   const numberOfMonths = 12
@@ -24,10 +25,12 @@ export const drawMonths = (
     const angle =
       (2 * Math.PI) /
       (daysInYear(year) / daysIntoYear(new Date(year, n, 0), year))
-    const x1 = (radius - lineWidth * (numberOfCalendars + 1)) * Math.cos(angle)
-    const y1 = (radius - lineWidth * (numberOfCalendars + 1)) * Math.sin(angle)
-    const x2 = (radius - lineWidth) * Math.cos(angle)
-    const y2 = (radius - lineWidth) * Math.sin(angle)
+    const x1 =
+      (radius - outerMargin - lineWidth * numberOfCalendars) * Math.cos(angle)
+    const y1 =
+      (radius - outerMargin - lineWidth * numberOfCalendars) * Math.sin(angle)
+    const x2 = (radius - outerMargin) * Math.cos(angle)
+    const y2 = (radius - outerMargin) * Math.sin(angle)
     const x3 = radius * Math.cos(angle)
     const y3 = radius * Math.sin(angle)
 
@@ -87,7 +90,7 @@ export const drawMonths = (
       .attr('xlink:href', `#${name}_${i + 1}`)
       .style('text-anchor', i >= numberOfMonths / 2 ? 'end' : 'start')
       .style('alignment-baseline', 'middle')
-      .style('font-size', '0.6em')
+      .style('font-size', '0.7em')
       .style('text-transform', 'capitalize')
       .attr('startOffset', i >= numberOfMonths / 2 ? '80%' : '20%')
       .attr('class', `interval-${name}`)
@@ -99,11 +102,12 @@ export const drawWeeks = (
   svg: any,
   radius: number,
   lineWidth: number,
-  numberOfCalendars: number
+  numberOfCalendars: number,
+  outerMargin: number
 ) => {
   const name = 'weeks'
   const numberOfWeeks = numberOfWeeksInYear(year)
-  const labelMargin = lineWidth * 2 - 18
+  const labelMargin = lineWidth * 2 - 20
   const weekOneOffset = -90 + weekOneStartOffset(year)
 
   let lines: any[] = []
@@ -111,11 +115,13 @@ export const drawWeeks = (
   for (let n = 0; n <= numberOfWeeks; n++) {
     const angle = (2 * Math.PI) / (daysInYear(year) / 7)
     const x1 =
-      (radius - lineWidth * (numberOfCalendars + 1)) * Math.cos(angle * n)
+      (radius - outerMargin - lineWidth * numberOfCalendars) *
+      Math.cos(angle * n)
     const y1 =
-      (radius - lineWidth * (numberOfCalendars + 1)) * Math.sin(angle * n)
-    const x2 = (radius - lineWidth) * Math.cos(angle * n)
-    const y2 = (radius - lineWidth) * Math.sin(angle * n)
+      (radius - outerMargin - lineWidth * numberOfCalendars) *
+      Math.sin(angle * n)
+    const x2 = (radius - outerMargin) * Math.cos(angle * n)
+    const y2 = (radius - outerMargin) * Math.sin(angle * n)
     const x3 = labelMargin * Math.cos(angle * n)
     const y3 = labelMargin * Math.sin(angle * n)
     lines.push(
@@ -182,7 +188,7 @@ export const drawWeeks = (
       )
       .style('font-size', '0.5em')
       .style('text-transform', 'capitalize')
-      .attr('startOffset', i >= numberOfWeeks / 2 ? '15%' : '85%')
+      .attr('startOffset', i >= numberOfWeeks / 2 ? '20%' : '80%')
       .attr('class', `interval-${name}`)
       .text(i == 0 ? '' : padWithZero(i)) //hide the last week since its into the next year
   }
@@ -192,7 +198,8 @@ export const drawDays = (
   svg: any,
   radius: number,
   lineWidth: number,
-  numberOfCalendars: number
+  numberOfCalendars: number,
+  outerMargin: number
 ) => {
   const name = 'days'
   const numberOfDays = daysInYear(year)
@@ -201,11 +208,13 @@ export const drawDays = (
   for (let n = 0; n < numberOfDays; n++) {
     const angle = (2 * Math.PI) / numberOfDays
     const x1 =
-      (radius - lineWidth * (numberOfCalendars + 1)) * Math.cos(angle * n)
+      (radius - outerMargin - lineWidth * numberOfCalendars) *
+      Math.cos(angle * n)
     const y1 =
-      (radius - lineWidth * (numberOfCalendars + 1)) * Math.sin(angle * n)
-    const x2 = (radius - lineWidth) * Math.cos(angle * n)
-    const y2 = (radius - lineWidth) * Math.sin(angle * n)
+      (radius - outerMargin - lineWidth * numberOfCalendars) *
+      Math.sin(angle * n)
+    const x2 = (radius - outerMargin) * Math.cos(angle * n)
+    const y2 = (radius - outerMargin) * Math.sin(angle * n)
     const x3 = radius * Math.cos(angle * n)
     const y3 = radius * Math.sin(angle * n)
     lines.push(
