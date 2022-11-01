@@ -74,8 +74,8 @@ export const setupCalendars = async () => {
         }
       }
     }
-     //draw holidays
-     if (calendar.holidayId) {
+    //draw holidays
+    if (calendar.holidayId) {
       console.log(data, calendar.holidayId)
       const calendarData = data.find(
         (el: { key: string }) => el.key == calendar.holidayId
