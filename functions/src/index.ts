@@ -34,24 +34,22 @@ const calendars: Calendar[] = [
   {
     key: 'DBRMN_HEL_STUDIO_PUBLIC_HOLIDAYS',
     id: process.env.DBRMN_HEL_STUDIO_PUBLIC_HOLIDAYS_CAL_ID
+  },
+  {
+    key: 'DBRMN_NORDIC',
+    id: process.env.DBRMN_NORDIC_CAL_ID
+  },
+  {
+    key: 'DBRMN_EY',
+    id: process.env.DBRMN_EY_CAL_ID
   }
 ]
 
-const fetchCalendarData = async (calendarId: string, year: number) => {
-  const auth: GoogleAuth = new google.auth.GoogleAuth({
-    keyFile: process.env.GOOGLE_SERVICE_ACCOUNT,
-    scopes: [
-      'https://www.googleapis.com/auth/cloud-platform',
-      'https://www.googleapis.com/auth/calendar'
-    ]
-  })
-
-  console.log('GOOGLE_SERVICE_ACCOUNT', process.env.GOOGLE_SERVICE_ACCOUNT)
-  console.log(
-    'GOOGLE_APPLICATION_CREDENTIALS',
-    process.env.GOOGLE_APPLICATION_CREDENTIALS
-  )
-
+const fetchCalendarData = async (
+  auth: GoogleAuth,
+  calendarId: string,
+  year: number
+) => {
   if (!calendarId) {
     console.log('No calendar id found for key')
     return []
@@ -68,7 +66,7 @@ const fetchCalendarData = async (calendarId: string, year: number) => {
   const events = res.data.items
   if (!events || events.length === 0) {
     console.log('No upcoming events found.')
-    return 'error'
+    return []
   }
 
   return events
@@ -77,10 +75,18 @@ const fetchCalendarData = async (calendarId: string, year: number) => {
 export const events = functions.region('europe-west1').https.onRequest(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async (req: https.Request, response: Response<any>) => {
+    const auth: GoogleAuth = new google.auth.GoogleAuth({
+      keyFile: process.env.GOOGLE_SERVICE_ACCOUNT,
+      scopes: [
+        'https://www.googleapis.com/auth/cloud-platform',
+        'https://www.googleapis.com/auth/calendar'
+      ]
+    })
+    console.log('got auth', auth)
     const data = await Promise.all(
       calendars.map(async (calendar) => {
         functions.logger.log('id', calendar.id)
-        const res = await fetchCalendarData(calendar.id as string, 2022)
+        const res = await fetchCalendarData(auth, calendar.id as string, 2022)
         return { key: calendar.key, events: res }
       })
     )
