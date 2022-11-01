@@ -14,11 +14,12 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
   const outerMargin = (radius / calendars.length) * 1.1
   const innerMargin = (radius / calendars.length) * 1.2
   const lineWidth = (radius - outerMargin - innerMargin) / calendars.length
-  const svg = d3.select(calendarEl)
 
-  const g = svg
-    .append('g')
-    .attr('transform', `translate(${centerX},${centerY})`)
+  const svg = d3.select(calendarEl).attr('viewBox', [0, 0, width, height])
+
+  const og = svg.append('g')
+
+  const g = og.append('g').attr('transform', `translate(${centerX},${centerY})`)
 
   const today = new Date()
   const tomorrow = new Date(today)
@@ -124,19 +125,22 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
   drawDays(g, radius, lineWidth, calendars.length, outerMargin)
 
   const zoomed = ({ transform }) => {
-    g.attr(
+    og.attr(
       'transform',
-      'translate(' +
-        (transform.x + centerX) +
-        ', ' +
-        (transform.y + centerY) +
-        ') scale(' +
-        transform.k +
-        ')'
+      `translate(${transform.x},${transform.y}) scale(${transform.k})`
     )
   }
 
-  svg.call(d3.zoom().on('zoom', zoomed))
+  svg.call(
+    d3
+      .zoom()
+      .scaleExtent([1, 8])
+      .translateExtent([
+        [0, 0],
+        [width, height]
+      ])
+      .on('zoom', zoomed) as any
+  )
 }
 
 export const toggleInterval = (name: string) => {
