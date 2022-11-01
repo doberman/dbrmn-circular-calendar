@@ -5,8 +5,7 @@ import { calendars, year } from './config'
 import { drawDays, drawMonths, drawWeeks } from './intervals'
 import { daysIntoYear, daysToRadians } from './utils'
 
-export const setupCalendars = async () => {
-  const calendarEl = document.getElementById('calendar')
+export const setupCalendars = async (calendarEl: HTMLElement) => {
   const width = calendarEl?.clientWidth || 600
   const height = calendarEl?.clientHeight || 600
   const radius = Math.min(width, height) / 2
@@ -15,8 +14,9 @@ export const setupCalendars = async () => {
   const outerMargin = (radius / calendars.length) * 1.1
   const innerMargin = (radius / calendars.length) * 1.2
   const lineWidth = (radius - outerMargin - innerMargin) / calendars.length
-  const svg = d3
-    .select('#calendar')
+  const svg = d3.select(calendarEl)
+
+  const g = svg
     .append('g')
     .attr('transform', `translate(${centerX},${centerY})`)
 
@@ -34,8 +34,7 @@ export const setupCalendars = async () => {
       .outerRadius(radius - outerMargin - lineWidth * (index + 1))
       .startAngle(0)
       .endAngle(2 * Math.PI)
-    svg
-      .append('path')
+    g.append('path')
       .attr('class', `cal-${calendar.name}`)
       .attr('d', <any>temp)
       .attr('fill', calendar.color)
@@ -61,8 +60,7 @@ export const setupCalendars = async () => {
             .endAngle(
               daysToRadians(daysIntoYear(new Date(item.end.date), year), year)
             )
-          svg
-            .append('path')
+          g.append('path')
             .attr('class', `cal-${calendar.name}`)
             .attr('id', item.id)
             .attr('d', <any>event)
@@ -94,8 +92,7 @@ export const setupCalendars = async () => {
             .endAngle(
               daysToRadians(daysIntoYear(new Date(item.end.date), year), year)
             )
-          svg
-            .append('path')
+          g.append('path')
             .attr('class', `cal-${calendar.name}`)
             .attr('id', item.id)
             .attr('d', <any>event)
@@ -116,16 +113,30 @@ export const setupCalendars = async () => {
     .outerRadius(radius)
     .startAngle(daysToRadians(daysIntoYear(today, year), year))
     .endAngle(daysToRadians(daysIntoYear(tomorrow, year), year))
-  svg
-    .append('path')
+  g.append('path')
     .attr('class', 'now')
     .attr('d', <any>now)
     .attr('fill', 'black')
     .attr('opacity', 0.2)
 
-  drawMonths(svg, radius, lineWidth, calendars.length, outerMargin)
-  drawWeeks(svg, radius, lineWidth, calendars.length, outerMargin)
-  drawDays(svg, radius, lineWidth, calendars.length, outerMargin)
+  drawMonths(g, radius, lineWidth, calendars.length, outerMargin)
+  drawWeeks(g, radius, lineWidth, calendars.length, outerMargin)
+  drawDays(g, radius, lineWidth, calendars.length, outerMargin)
+
+  const zoomed = ({ transform }) => {
+    g.attr(
+      'transform',
+      'translate(' +
+        (transform.x + centerX) +
+        ', ' +
+        (transform.y + centerY) +
+        ') scale(' +
+        transform.k +
+        ')'
+    )
+  }
+
+  svg.call(d3.zoom().on('zoom', zoomed))
 }
 
 export const toggleInterval = (name: string) => {

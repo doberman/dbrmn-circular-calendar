@@ -52,6 +52,7 @@
     <svg id="calendar" class="w-screen h-[45vh] md:h-[85vh] tabular-nums"></svg>
     <script type="module">
       import { setupCalendars, toggleInterval, toggleCalendar } from './app'
+      import { setupZoom } from './zoom'
       import { year } from './config'
       import { getUser } from './state'
       const user = getUser()
@@ -61,7 +62,11 @@
 
       const init = async () => {
         //document.getElementById('currentYear').textContent = year
-        await setupCalendars()
+
+        const calendarEl = document.getElementById('calendar')
+
+        await setupCalendars(calendarEl)
+        //setupZoom(calendarEl)
 
         //Interval click handlers
         document
