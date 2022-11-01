@@ -107,7 +107,11 @@
           .addEventListener('click', () => toggleCalendar('ey'))
       }
 
-      if (user || !process.env.IS_IN_PRODUCTION) {
+      if (
+        user ||
+        !process.env.IS_IN_PRODUCTION ||
+        process.env.IS_IN_PRODUCTION === 'false'
+      ) {
         body.classList.remove('hidden')
         init()
       }

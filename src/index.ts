@@ -3,7 +3,11 @@ import { getUser } from './state'
 // kolla om user finns
 const user = getUser()
 // om user finns, gå till play
-if (user || !process.env.IS_IN_PRODUCTION)
+if (
+  user ||
+  !process.env.IS_IN_PRODUCTION ||
+  process.env.IS_IN_PRODUCTION === 'false'
+)
   setTimeout(() => location.replace('/calendar.html'), 1000)
 else {
   // annars, finns det en login-knapp

@@ -74,6 +74,39 @@ export const setupCalendars = async () => {
         }
       }
     }
+     //draw holidays
+     if (calendar.holidayId) {
+      console.log(data, calendar.holidayId)
+      const calendarData = data.find(
+        (el: { key: string }) => el.key == calendar.holidayId
+      )
+      if (calendarData) {
+        console.log(calendarData)
+        for (const item of calendarData.events) {
+          console.log(item.id, item.summary, item.start, item.end)
+          const event = d3
+            .arc()
+            .innerRadius(radius - outerMargin - lineWidth * index)
+            .outerRadius(radius - outerMargin - lineWidth * (index + 1))
+            .startAngle(
+              daysToRadians(daysIntoYear(new Date(item.start.date), year), year)
+            )
+            .endAngle(
+              daysToRadians(daysIntoYear(new Date(item.end.date), year), year)
+            )
+          svg
+            .append('path')
+            .attr('class', `cal-${calendar.name}`)
+            .attr('id', item.id)
+            .attr('d', <any>event)
+            .attr('fill', 'white')
+            .append('svg:title')
+            .text(function (d) {
+              return item.summary
+            })
+        }
+      }
+    }
   }
 
   //draw today
