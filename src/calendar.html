@@ -4,17 +4,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
-    <title>CIRCULAR CALENDAR</title>
+    <title>DOBERMAN CALENDAR</title>
+    <link rel="icon" href="../public/favicon.png" type="image/png" />
     <link href="./index.css" rel="stylesheet" />
   </head>
 
   <body class="hidden">
-    <h1 class="text-2xl font-bold uppercase text-center">
-      Doberman year is round
-    </h1>
-    <p class="text-sm font-light text-center">
-      Very welcome to the circular calendar for <span id="currentYear"></span>
-    </p>
     <div class="flex flex-row justify-between my-5 mx-3">
       <div class="grid grid-cols-2 lg:flex lg:flex-row lg:space-x-2">
         <button id="nordic" class="p-2 btn-calendar before:bg-bright-orange">
@@ -65,7 +60,7 @@
         location.replace('index.html')
 
       const init = async () => {
-        document.getElementById('currentYear').textContent = year
+        //document.getElementById('currentYear').textContent = year
         await setupCalendars()
 
         //Interval click handlers
