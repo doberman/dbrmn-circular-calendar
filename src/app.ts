@@ -1,8 +1,9 @@
 import * as d3 from 'd3'
-import { year, calendars } from './config'
+
 import { fetchCalendarData } from './calendar'
+import { calendars, year } from './config'
+import { drawDays, drawMonths, drawWeeks } from './intervals'
 import { daysIntoYear, daysToRadians } from './utils'
-import { drawMonths, drawWeeks, drawDays } from './intervals'
 
 export const setupCalendars = async () => {
   const calendarEl = document.getElementById('calendar')
@@ -102,21 +103,27 @@ export const setupCalendars = async () => {
 }
 
 export const toggleInterval = (name: string) => {
-  const selectClass = 'text-gray-400'
+  const disabledTextColor = 'text-gray-400'
+  const opacity = 'opacity-50'
   const element = d3.selectAll(`.interval-${name}`)
   const visibility = element.style('visibility')
   visibility == 'visible'
     ? element.style('visibility', 'hidden')
     : element.style('visibility', 'visible')
-  document.getElementById(name)?.classList.toggle(selectClass)
+  document.getElementById(name)?.classList.toggle(disabledTextColor)
+  document.getElementById(name)?.classList.toggle(opacity)
 }
 
 export const toggleCalendar = (name: string) => {
-  const selectClass = 'text-gray-400'
+  const disabledTextColor = 'text-gray-400'
+  const opacity = 'opacity-50'
+  const border = 'before:border-0'
   const element = d3.selectAll(`.cal-${name}`)
   const visibility = element.style('visibility')
   visibility == 'visible'
     ? element.style('visibility', 'hidden')
     : element.style('visibility', 'visible')
-  document.getElementById(name)?.classList.toggle(selectClass)
+  document.getElementById(name)?.classList.toggle(disabledTextColor)
+  document.getElementById(name)?.classList.toggle(opacity)
+  document.getElementById(name)?.classList.toggle(border)
 }
