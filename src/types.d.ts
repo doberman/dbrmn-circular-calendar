@@ -2,7 +2,8 @@ export interface Calendar {
   name: string
   color: string
   eventColor: string
-  id: string
+  calendarId: string
+  holidayId?: string
 }
 
 export interface User {
