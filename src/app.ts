@@ -5,8 +5,7 @@ import { calendars, year } from './config'
 import { drawDays, drawMonths, drawWeeks } from './intervals'
 import { daysIntoYear, daysToRadians } from './utils'
 
-export const setupCalendars = async () => {
-  const calendarEl = document.getElementById('calendar')
+export const setupCalendars = async (calendarEl: HTMLElement) => {
   const width = calendarEl?.clientWidth || 600
   const height = calendarEl?.clientHeight || 600
   const radius = Math.min(width, height) / 2
@@ -15,10 +14,16 @@ export const setupCalendars = async () => {
   const outerMargin = (radius / calendars.length) * 1.1
   const innerMargin = (radius / calendars.length) * 1.2
   const lineWidth = (radius - outerMargin - innerMargin) / calendars.length
-  const svg = d3
-    .select('#calendar')
+  const baseFontSize = (radius / 400) * 100
+
+  const svg = d3.select(calendarEl).attr('viewBox', [0, 0, width, height])
+
+  const og = svg.append('g')
+
+  const g = og
     .append('g')
     .attr('transform', `translate(${centerX},${centerY})`)
+    .attr('font-size', `${baseFontSize}%`)
 
   const today = new Date()
   const tomorrow = new Date(today)
@@ -34,8 +39,7 @@ export const setupCalendars = async () => {
       .outerRadius(radius - outerMargin - lineWidth * (index + 1))
       .startAngle(0)
       .endAngle(2 * Math.PI)
-    svg
-      .append('path')
+    g.append('path')
       .attr('class', `cal-${calendar.name}`)
       .attr('d', <any>temp)
       .attr('fill', calendar.color)
@@ -59,8 +63,7 @@ export const setupCalendars = async () => {
             .outerRadius(radius - outerMargin - lineWidth * (index + 1))
             .startAngle(daysToRadians(daysIntoYear(startDate, year), year))
             .endAngle(daysToRadians(daysIntoYear(endDate, year), year))
-          svg
-            .append('path')
+          g.append('path')
             .attr('class', `cal-${calendar.name}`)
             .attr('id', item.id)
             .attr('d', <any>event)
@@ -69,9 +72,9 @@ export const setupCalendars = async () => {
             .on('click', function () {
               d3.select('#centerArea').style('fill', calendar.eventColor)
               d3.select('#centerText1').text(item.summary)
-              d3.select('#centerText1').attr('dy', -14)
+              d3.select('#centerText1').attr('dy', '-1.0em')
               d3.select('#centerText2').text(item.location)
-              d3.select('#centerText2').attr('dy', 2)
+              d3.select('#centerText2').attr('dy', '0.3em')
               let dateString = `${startDate.getDate()}/${
                 startDate.getMonth() + 1
               } - ${endDate.getDate()}/${endDate.getMonth() + 1}`
@@ -84,7 +87,7 @@ export const setupCalendars = async () => {
                 }`
               }
               d3.select('#centerText3').text(dateString)
-              d3.select('#centerText3').attr('dy', 18)
+              d3.select('#centerText3').attr('dy', '1.6em')
             })
         }
       }
@@ -107,8 +110,7 @@ export const setupCalendars = async () => {
             .outerRadius(radius - outerMargin - lineWidth * (index + 1))
             .startAngle(daysToRadians(daysIntoYear(startDate, year), year))
             .endAngle(daysToRadians(daysIntoYear(endDate, year), year))
-          svg
-            .append('path')
+          g.append('path')
             .attr('class', `cal-${calendar.name}`)
             .attr('id', item.id)
             .attr('d', <any>event)
@@ -117,7 +119,7 @@ export const setupCalendars = async () => {
             .on('click', function () {
               d3.select('#centerArea').style('fill', 'white')
               d3.select('#centerText1').text(item.summary)
-              d3.select('#centerText1').attr('dy', -4)
+              d3.select('#centerText1').attr('dy', '-0.4em')
               let dateString = `${startDate.getDate()}/${
                 startDate.getMonth() + 1
               } - ${endDate.getDate()}/${endDate.getMonth() + 1}`
@@ -130,7 +132,7 @@ export const setupCalendars = async () => {
                 }`
               }
               d3.select('#centerText2').text(dateString)
-              d3.select('#centerText2').attr('dy', 12)
+              d3.select('#centerText2').attr('dy', '1.1em')
               d3.select('#centerText3').text('')
             })
         }
@@ -145,8 +147,7 @@ export const setupCalendars = async () => {
     .outerRadius(radius)
     .startAngle(daysToRadians(daysIntoYear(today, year), year))
     .endAngle(daysToRadians(daysIntoYear(tomorrow, year), year))
-  svg
-    .append('path')
+  g.append('path')
     .attr('class', 'now')
     .attr('d', <any>now)
     .attr('fill', 'black')
@@ -159,42 +160,56 @@ export const setupCalendars = async () => {
     .outerRadius(radius - innerMargin * 1.33 - lineWidth * calendars.length)
     .startAngle(0)
     .endAngle(2 * Math.PI)
-  svg
-    .append('path')
+  g.append('path')
     .attr('id', 'centerArea')
     .attr('d', <any>centerArea)
     .attr('fill', 'white')
     .attr('opacity', 0.8)
     .style('stroke', 'black')
-    .style('stroke-width', 1)
-  svg
-    .append('text')
+    .style('stroke-width', '0.05em')
+  g.append('text')
     .attr('id', 'centerText1')
     .attr('d', <any>centerArea)
-    .attr('dy', -14)
+    .attr('dy', '-1.0em')
     .style('text-anchor', 'middle')
     .style('font-size', '0.8em')
     .text('Doberman')
-  svg
-    .append('text')
+  g.append('text')
     .attr('id', 'centerText2')
     .attr('d', <any>centerArea)
-    .attr('dy', 2)
+    .attr('dy', '0.3em')
     .style('text-anchor', 'middle')
     .style('font-size', '0.8em')
     .text('Calendar')
-  svg
-    .append('text')
+  g.append('text')
     .attr('id', 'centerText3')
     .attr('d', <any>centerArea)
-    .attr('dy', 18)
+    .attr('dy', '1.6em')
     .style('text-anchor', 'middle')
     .style('font-size', '0.8em')
     .text(year)
 
-  drawMonths(svg, radius, lineWidth, calendars.length, outerMargin)
-  drawWeeks(svg, radius, lineWidth, calendars.length, outerMargin)
-  drawDays(svg, radius, lineWidth, calendars.length, outerMargin)
+  drawDays(g, radius, lineWidth, calendars.length, outerMargin)
+  drawWeeks(g, radius, lineWidth, calendars.length, outerMargin, baseFontSize)
+  drawMonths(g, radius, lineWidth, calendars.length, outerMargin)
+
+  const zoomed = ({ transform }) => {
+    og.attr(
+      'transform',
+      `translate(${transform.x},${transform.y}) scale(${transform.k})`
+    )
+  }
+
+  svg.call(
+    d3
+      .zoom()
+      .scaleExtent([1, 8])
+      .translateExtent([
+        [0, 0],
+        [width, height]
+      ])
+      .on('zoom', zoomed) as any
+  )
 }
 
 export const toggleInterval = (name: string) => {

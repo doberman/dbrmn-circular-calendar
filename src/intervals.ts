@@ -66,9 +66,8 @@ export const drawMonths = (
     .append('path')
     .attr('d', (_d: any, i: number) => lines[i])
     .attr('stroke', '#000')
-    .attr('stroke-width', '1.5')
-    .style('opacity', 0.7)
-    .attr('transform', 'rotate(-90)') // TODO figure out a better way to start from top
+    .attr('stroke-width', '0.06em')
+    .attr('transform', 'rotate(-90)')
     .attr('class', `interval-${name}`)
 
   //draw labels
@@ -103,11 +102,13 @@ export const drawWeeks = (
   radius: number,
   lineWidth: number,
   numberOfCalendars: number,
-  outerMargin: number
+  outerMargin: number,
+  baseFontSize: number
 ) => {
   const name = 'weeks'
   const numberOfWeeks = numberOfWeeksInYear(year)
-  const labelMargin = lineWidth * 2 - 20
+  const labelMargin =
+    radius - outerMargin - lineWidth * numberOfCalendars - baseFontSize / 7
   const weekOneOffset = -90 + weekOneStartOffset(year)
 
   let lines: any[] = []
@@ -155,9 +156,9 @@ export const drawWeeks = (
     .enter()
     .append('path')
     .attr('d', (_d: any, i: number) => lines[i])
-    .attr('stroke', '#000')
-    .style('opacity', (_d: any, i: number) => (i == lines.length - 1 ? 0 : 0.4)) //hide the last week since its into the next year
-    .attr('stroke-width', '1')
+    .attr('stroke', '#808080')
+    .style('opacity', (_d: any, i: number) => (i == lines.length - 1 ? 0 : 1)) //hide the last week since its into the next year
+    .attr('stroke-width', '0.03em')
     .attr('transform', `rotate(${weekOneOffset})`)
     .attr('class', `interval-${name}`)
 
@@ -169,16 +170,17 @@ export const drawWeeks = (
     .append('path')
     .attr('id', (_d: any, i: number) => `${name}_${i}`)
     .attr('d', (_d: any, i: number) => labelLines[i])
-    .attr('stroke', '#000')
+    .attr('stroke', '#808080')
+    .attr('stroke-width', '0.03em')
     .style('opacity', (_d: any, i: number) =>
-      i == labelLines.length - 1 ? 0 : 0.4
+      i == labelLines.length - 1 ? 0 : 1
     ) //hide the last week since its into the next year
     .attr('class', `interval-${name}`)
     .attr('transform', `rotate(${weekOneOffset})`)
   for (let i = 0; i <= labelLines.length; i++) {
     group
       .append('text')
-      .attr('dy', i >= numberOfWeeks / 2 ? 5 : -3)
+      .attr('dy', i >= numberOfWeeks / 2 ? '0.25em' : '-0.1em')
       .append('textPath')
       .attr('xlink:href', `#${name}_${i}`)
       .style('text-anchor', i >= numberOfWeeks / 2 ? 'start' : 'end')
@@ -186,8 +188,8 @@ export const drawWeeks = (
         'alignment-baseline',
         i >= numberOfWeeks / 2 ? 'mathematical' : 'alphabetic'
       )
-      .style('font-size', '0.5em')
-      .style('text-transform', 'capitalize')
+      .style('font-size', '0.45em')
+      .style('font-variant-numeric', 'tabular-nums')
       .attr('startOffset', i >= numberOfWeeks / 2 ? '20%' : '80%')
       .attr('class', `interval-${name}`)
       .text(i == 0 ? '' : padWithZero(i)) //hide the last week since its into the next year
@@ -248,9 +250,8 @@ export const drawDays = (
     .enter()
     .append('path')
     .attr('d', (_d: any, i: number) => lines[i])
-    .attr('stroke', '#000')
-    .style('opacity', 0.3)
-    .attr('stroke-width', '0.5')
+    .attr('stroke', '#C8C8C8')
+    .attr('stroke-width', '0.02em')
     .attr('transform', 'rotate(-90)')
     .attr('class', `interval-${name}`)
 
@@ -265,7 +266,7 @@ export const drawDays = (
     .attr('stroke', '#fff')
     .style('opacity', 0)
     .attr('class', `interval-${name}`)
-    .attr('transform', 'rotate(-90.5)')
+    .attr('transform', 'rotate(-90.6)')
   for (const [i] of labelLines.entries()) {
     group
       .append('text')
@@ -273,9 +274,9 @@ export const drawDays = (
       .attr('xlink:href', `#${name}_${i}`)
       .style('text-anchor', i >= numberOfDays / 2 ? 'end' : 'start')
       .style('alignment-baseline', 'middle')
-      .style('font-size', '0.4em')
-      .style('text-transform', 'capitalize')
-      .attr('startOffset', i >= numberOfDays / 2 ? '99%' : '1%')
+      .style('font-size', '0.35em')
+      .style('font-variant-numeric', 'tabular-nums')
+      .attr('startOffset', i >= numberOfDays / 2 ? '98%' : '2%')
       .attr('class', `interval-${name}`)
       .text(padWithZero(dayInMonth(i, year)))
   }
