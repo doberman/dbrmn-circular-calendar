@@ -166,7 +166,7 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
     .attr('fill', 'white')
     .attr('opacity', 0.8)
     .style('stroke', 'black')
-    .style('stroke-width', 1)
+    .style('stroke-width', '0.05em')
   g.append('text')
     .attr('id', 'centerText1')
     .attr('d', <any>centerArea)
@@ -189,9 +189,9 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
     .style('font-size', '0.8em')
     .text(year)
 
-  drawMonths(g, radius, lineWidth, calendars.length, outerMargin)
-  drawWeeks(g, radius, lineWidth, calendars.length, outerMargin)
   drawDays(g, radius, lineWidth, calendars.length, outerMargin)
+  drawWeeks(g, radius, lineWidth, calendars.length, outerMargin, baseFontSize)
+  drawMonths(g, radius, lineWidth, calendars.length, outerMargin)
 
   const zoomed = ({ transform }) => {
     og.attr(

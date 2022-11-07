@@ -66,8 +66,7 @@ export const drawMonths = (
     .append('path')
     .attr('d', (_d: any, i: number) => lines[i])
     .attr('stroke', '#000')
-    .attr('stroke-width', '1.5')
-    .style('opacity', 0.7)
+    .attr('stroke-width', '0.06em')
     .attr('transform', 'rotate(-90)')
     .attr('class', `interval-${name}`)
 
@@ -103,11 +102,13 @@ export const drawWeeks = (
   radius: number,
   lineWidth: number,
   numberOfCalendars: number,
-  outerMargin: number
+  outerMargin: number,
+  baseFontSize: number
 ) => {
   const name = 'weeks'
   const numberOfWeeks = numberOfWeeksInYear(year)
-  const labelMargin = lineWidth * 2 - 20
+  const labelMargin =
+    radius - outerMargin - lineWidth * numberOfCalendars - baseFontSize / 7
   const weekOneOffset = -90 + weekOneStartOffset(year)
 
   let lines: any[] = []
@@ -155,9 +156,9 @@ export const drawWeeks = (
     .enter()
     .append('path')
     .attr('d', (_d: any, i: number) => lines[i])
-    .attr('stroke', '#000')
-    .style('opacity', (_d: any, i: number) => (i == lines.length - 1 ? 0 : 0.4)) //hide the last week since its into the next year
-    .attr('stroke-width', '1')
+    .attr('stroke', '#808080')
+    .style('opacity', (_d: any, i: number) => (i == lines.length - 1 ? 0 : 1)) //hide the last week since its into the next year
+    .attr('stroke-width', '0.03em')
     .attr('transform', `rotate(${weekOneOffset})`)
     .attr('class', `interval-${name}`)
 
@@ -169,9 +170,10 @@ export const drawWeeks = (
     .append('path')
     .attr('id', (_d: any, i: number) => `${name}_${i}`)
     .attr('d', (_d: any, i: number) => labelLines[i])
-    .attr('stroke', '#000')
+    .attr('stroke', '#808080')
+    .attr('stroke-width', '0.03em')
     .style('opacity', (_d: any, i: number) =>
-      i == labelLines.length - 1 ? 0 : 0.4
+      i == labelLines.length - 1 ? 0 : 1
     ) //hide the last week since its into the next year
     .attr('class', `interval-${name}`)
     .attr('transform', `rotate(${weekOneOffset})`)
@@ -248,9 +250,8 @@ export const drawDays = (
     .enter()
     .append('path')
     .attr('d', (_d: any, i: number) => lines[i])
-    .attr('stroke', '#000')
-    .style('opacity', 0.3)
-    .attr('stroke-width', '0.5')
+    .attr('stroke', '#C8C8C8')
+    .attr('stroke-width', '0.02em')
     .attr('transform', 'rotate(-90)')
     .attr('class', `interval-${name}`)
 
