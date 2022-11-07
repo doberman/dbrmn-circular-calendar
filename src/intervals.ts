@@ -189,7 +189,7 @@ export const drawWeeks = (
         i >= numberOfWeeks / 2 ? 'mathematical' : 'alphabetic'
       )
       .style('font-size', '0.45em')
-      .style('text-transform', 'capitalize')
+      .style('font-variant-numeric', 'tabular-nums')
       .attr('startOffset', i >= numberOfWeeks / 2 ? '20%' : '80%')
       .attr('class', `interval-${name}`)
       .text(i == 0 ? '' : padWithZero(i)) //hide the last week since its into the next year
@@ -275,7 +275,7 @@ export const drawDays = (
       .style('text-anchor', i >= numberOfDays / 2 ? 'end' : 'start')
       .style('alignment-baseline', 'middle')
       .style('font-size', '0.35em')
-      .style('text-transform', 'capitalize')
+      .style('font-variant-numeric', 'tabular-nums')
       .attr('startOffset', i >= numberOfDays / 2 ? '98%' : '2%')
       .attr('class', `interval-${name}`)
       .text(padWithZero(dayInMonth(i, year)))
