@@ -71,6 +71,11 @@ export const setupCalendars = async () => {
             .text(function (d) {
               return item.summary
             })
+          document.getElementById(item.id)?.addEventListener('click', () => {
+            console.log('event: ', item.summary)
+            
+           document.querySelector('#weeks_0')?.
+          })
         }
       }
     }
