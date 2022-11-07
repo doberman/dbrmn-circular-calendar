@@ -68,7 +68,7 @@ export const drawMonths = (
     .attr('stroke', '#000')
     .attr('stroke-width', '1.5')
     .style('opacity', 0.7)
-    .attr('transform', 'rotate(-90)') // TODO figure out a better way to start from top
+    .attr('transform', 'rotate(-90)')
     .attr('class', `interval-${name}`)
 
   //draw labels
@@ -178,7 +178,7 @@ export const drawWeeks = (
   for (let i = 0; i <= labelLines.length; i++) {
     group
       .append('text')
-      .attr('dy', i >= numberOfWeeks / 2 ? 5 : -3)
+      .attr('dy', i >= numberOfWeeks / 2 ? '0.25em' : '-0.1em')
       .append('textPath')
       .attr('xlink:href', `#${name}_${i}`)
       .style('text-anchor', i >= numberOfWeeks / 2 ? 'start' : 'end')
@@ -186,7 +186,7 @@ export const drawWeeks = (
         'alignment-baseline',
         i >= numberOfWeeks / 2 ? 'mathematical' : 'alphabetic'
       )
-      .style('font-size', '0.5em')
+      .style('font-size', '0.45em')
       .style('text-transform', 'capitalize')
       .attr('startOffset', i >= numberOfWeeks / 2 ? '20%' : '80%')
       .attr('class', `interval-${name}`)
@@ -265,7 +265,7 @@ export const drawDays = (
     .attr('stroke', '#fff')
     .style('opacity', 0)
     .attr('class', `interval-${name}`)
-    .attr('transform', 'rotate(-90.5)')
+    .attr('transform', 'rotate(-90.6)')
   for (const [i] of labelLines.entries()) {
     group
       .append('text')
@@ -273,9 +273,9 @@ export const drawDays = (
       .attr('xlink:href', `#${name}_${i}`)
       .style('text-anchor', i >= numberOfDays / 2 ? 'end' : 'start')
       .style('alignment-baseline', 'middle')
-      .style('font-size', '0.4em')
+      .style('font-size', '0.35em')
       .style('text-transform', 'capitalize')
-      .attr('startOffset', i >= numberOfDays / 2 ? '99%' : '1%')
+      .attr('startOffset', i >= numberOfDays / 2 ? '98%' : '2%')
       .attr('class', `interval-${name}`)
       .text(padWithZero(dayInMonth(i, year)))
   }

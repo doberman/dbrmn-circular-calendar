@@ -14,12 +14,16 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
   const outerMargin = (radius / calendars.length) * 1.1
   const innerMargin = (radius / calendars.length) * 1.2
   const lineWidth = (radius - outerMargin - innerMargin) / calendars.length
+  const baseFontSize = (radius / 400) * 100
 
   const svg = d3.select(calendarEl).attr('viewBox', [0, 0, width, height])
 
   const og = svg.append('g')
 
-  const g = og.append('g').attr('transform', `translate(${centerX},${centerY})`)
+  const g = og
+    .append('g')
+    .attr('transform', `translate(${centerX},${centerY})`)
+    .attr('font-size', `${baseFontSize}%`)
 
   const today = new Date()
   const tomorrow = new Date(today)
@@ -68,9 +72,9 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
             .on('click', function () {
               d3.select('#centerArea').style('fill', calendar.eventColor)
               d3.select('#centerText1').text(item.summary)
-              d3.select('#centerText1').attr('dy', -14)
+              d3.select('#centerText1').attr('dy', '-1.0em')
               d3.select('#centerText2').text(item.location)
-              d3.select('#centerText2').attr('dy', 2)
+              d3.select('#centerText2').attr('dy', '0.3em')
               let dateString = `${startDate.getDate()}/${
                 startDate.getMonth() + 1
               } - ${endDate.getDate()}/${endDate.getMonth() + 1}`
@@ -83,7 +87,7 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
                 }`
               }
               d3.select('#centerText3').text(dateString)
-              d3.select('#centerText3').attr('dy', 18)
+              d3.select('#centerText3').attr('dy', '1.6em')
             })
         }
       }
@@ -115,7 +119,7 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
             .on('click', function () {
               d3.select('#centerArea').style('fill', 'white')
               d3.select('#centerText1').text(item.summary)
-              d3.select('#centerText1').attr('dy', -4)
+              d3.select('#centerText1').attr('dy', '-0.4em')
               let dateString = `${startDate.getDate()}/${
                 startDate.getMonth() + 1
               } - ${endDate.getDate()}/${endDate.getMonth() + 1}`
@@ -128,7 +132,7 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
                 }`
               }
               d3.select('#centerText2').text(dateString)
-              d3.select('#centerText2').attr('dy', 12)
+              d3.select('#centerText2').attr('dy', '1.1em')
               d3.select('#centerText3').text('')
             })
         }
@@ -166,21 +170,21 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
   g.append('text')
     .attr('id', 'centerText1')
     .attr('d', <any>centerArea)
-    .attr('dy', -14)
+    .attr('dy', '-1.0em')
     .style('text-anchor', 'middle')
     .style('font-size', '0.8em')
     .text('Doberman')
   g.append('text')
     .attr('id', 'centerText2')
     .attr('d', <any>centerArea)
-    .attr('dy', 2)
+    .attr('dy', '0.3em')
     .style('text-anchor', 'middle')
     .style('font-size', '0.8em')
     .text('Calendar')
   g.append('text')
     .attr('id', 'centerText3')
     .attr('d', <any>centerArea)
-    .attr('dy', 18)
+    .attr('dy', '1.6em')
     .style('text-anchor', 'middle')
     .style('font-size', '0.8em')
     .text(year)
