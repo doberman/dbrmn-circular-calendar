@@ -51,24 +51,39 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
         console.log(calendarData)
         for (const item of calendarData.events) {
           console.log(item.id, item.summary, item.start, item.end)
+          const startDate = new Date(item.start.date)
+          const endDate = new Date(item.end.date)
           const event = d3
             .arc()
             .innerRadius(radius - outerMargin - lineWidth * index)
             .outerRadius(radius - outerMargin - lineWidth * (index + 1))
-            .startAngle(
-              daysToRadians(daysIntoYear(new Date(item.start.date), year), year)
-            )
-            .endAngle(
-              daysToRadians(daysIntoYear(new Date(item.end.date), year), year)
-            )
+            .startAngle(daysToRadians(daysIntoYear(startDate, year), year))
+            .endAngle(daysToRadians(daysIntoYear(endDate, year), year))
           g.append('path')
             .attr('class', `cal-${calendar.name}`)
             .attr('id', item.id)
             .attr('d', <any>event)
             .attr('fill', calendar.eventColor)
-            .append('svg:title')
-            .text(function (d) {
-              return item.summary
+            .style('cursor', 'pointer')
+            .on('click', function () {
+              d3.select('#centerArea').style('fill', calendar.eventColor)
+              d3.select('#centerText1').text(item.summary)
+              d3.select('#centerText1').attr('dy', -14)
+              d3.select('#centerText2').text(item.location)
+              d3.select('#centerText2').attr('dy', 2)
+              let dateString = `${startDate.getDate()}/${
+                startDate.getMonth() + 1
+              } - ${endDate.getDate()}/${endDate.getMonth() + 1}`
+              if (
+                endDate.valueOf() - startDate.valueOf() <=
+                24 * 60 * 60 * 1000
+              ) {
+                dateString = `${startDate.getDate()}/${
+                  startDate.getMonth() + 1
+                }`
+              }
+              d3.select('#centerText3').text(dateString)
+              d3.select('#centerText3').attr('dy', 18)
             })
         }
       }
@@ -83,24 +98,38 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
         console.log(calendarData)
         for (const item of calendarData.events) {
           console.log(item.id, item.summary, item.start, item.end)
+          const startDate = new Date(item.start.date)
+          const endDate = new Date(item.end.date)
           const event = d3
             .arc()
             .innerRadius(radius - outerMargin - lineWidth * index)
             .outerRadius(radius - outerMargin - lineWidth * (index + 1))
-            .startAngle(
-              daysToRadians(daysIntoYear(new Date(item.start.date), year), year)
-            )
-            .endAngle(
-              daysToRadians(daysIntoYear(new Date(item.end.date), year), year)
-            )
+            .startAngle(daysToRadians(daysIntoYear(startDate, year), year))
+            .endAngle(daysToRadians(daysIntoYear(endDate, year), year))
           g.append('path')
             .attr('class', `cal-${calendar.name}`)
             .attr('id', item.id)
             .attr('d', <any>event)
             .attr('fill', 'white')
-            .append('svg:title')
-            .text(function (d) {
-              return item.summary
+            .style('cursor', 'pointer')
+            .on('click', function () {
+              d3.select('#centerArea').style('fill', 'white')
+              d3.select('#centerText1').text(item.summary)
+              d3.select('#centerText1').attr('dy', -4)
+              let dateString = `${startDate.getDate()}/${
+                startDate.getMonth() + 1
+              } - ${endDate.getDate()}/${endDate.getMonth() + 1}`
+              if (
+                endDate.valueOf() - startDate.valueOf() <=
+                24 * 60 * 60 * 1000
+              ) {
+                dateString = `${startDate.getDate()}/${
+                  startDate.getMonth() + 1
+                }`
+              }
+              d3.select('#centerText2').text(dateString)
+              d3.select('#centerText2').attr('dy', 12)
+              d3.select('#centerText3').text('')
             })
         }
       }
