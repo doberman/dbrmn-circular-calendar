@@ -180,7 +180,7 @@ export const drawWeeks = (
   for (let i = 0; i <= labelLines.length; i++) {
     group
       .append('text')
-      .attr('dy', i >= numberOfWeeks / 2 ? '0.25em' : '-0.1em')
+      .attr('dy', i >= numberOfWeeks / 2 ? '0.2em' : '-0.1em')
       .append('textPath')
       .attr('xlink:href', `#${name}_${i}`)
       .style('text-anchor', i >= numberOfWeeks / 2 ? 'start' : 'end')
