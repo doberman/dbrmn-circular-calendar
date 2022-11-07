@@ -1,4 +1,5 @@
 import * as d3 from 'd3'
+import { csvFormatBody, text } from 'd3'
 
 import { fetchCalendarData } from './calendar'
 import { calendars, year } from './config'
@@ -73,8 +74,14 @@ export const setupCalendars = async () => {
             })
           document.getElementById(item.id)?.addEventListener('click', () => {
             console.log('event: ', item.summary)
-            
-           document.querySelector('#weeks_0')?.
+            document.getElementById('text-detail')?.remove()
+            const elemDiv = document.createElement('div')
+            elemDiv.id = 'text-detail'
+            elemDiv.style.cssText =
+              'position:absolute;margin-left:auto;margin-right:auto;top:50%;z-index:100;left:0;right:0;text-align:center;'
+
+            elemDiv.innerHTML = item.summary
+            document.body.appendChild(elemDiv)
           })
         }
       }
