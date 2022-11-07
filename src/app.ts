@@ -8,7 +8,7 @@ import { daysIntoYear, daysToRadians } from './utils'
 export const setupCalendars = async (calendarEl: HTMLElement) => {
   const width = calendarEl?.clientWidth || 600
   const height = calendarEl?.clientHeight || 600
-  const radius = Math.min(width, height) / 2
+  const radius = Math.min(width, height) / 2 - 10
   const centerX = width / 2
   const centerY = height / 2
   const outerMargin = (radius / calendars.length) * 1.1
