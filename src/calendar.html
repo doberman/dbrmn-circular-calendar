@@ -50,7 +50,10 @@
           </button>
         </div>
       </div>
-      <svg id="calendar" class="flex grow"></svg>
+      <div id="loading" class="flex grow items-center justify-center">
+        Loading...
+      </div>
+      <svg id="calendar" class="hidden grow"></svg>
     </div>
     <script type="module">
       import { setupCalendars, toggleInterval, toggleCalendar } from './app'
@@ -62,11 +65,12 @@
         location.replace('index.html')
 
       const init = async () => {
-        //document.getElementById('currentYear').textContent = year
-
         const calendarEl = document.getElementById('calendar')
 
         await setupCalendars(calendarEl)
+
+        document.getElementById('loading').classList.replace('flex', 'hidden')
+        calendarEl.classList.replace('hidden', 'flex')
 
         //Interval click handlers
         document

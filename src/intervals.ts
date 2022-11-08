@@ -8,9 +8,9 @@ import {
   numberOfWeeksInYear,
   padWithZero
 } from './utils'
-import { year } from './config'
 
 export const drawMonths = (
+  year: number,
   svg: any,
   radius: number,
   lineWidth: number,
@@ -98,6 +98,7 @@ export const drawMonths = (
 }
 
 export const drawWeeks = (
+  year: number,
   svg: any,
   radius: number,
   lineWidth: number,
@@ -197,6 +198,7 @@ export const drawWeeks = (
 }
 
 export const drawDays = (
+  year: number,
   svg: any,
   radius: number,
   lineWidth: number,

@@ -1,7 +1,7 @@
 import * as d3 from 'd3'
 
 import { fetchCalendarData } from './calendar'
-import { calendars, year } from './config'
+import { calendars } from './config'
 import { drawDays, drawMonths, drawWeeks } from './intervals'
 import { daysIntoYear, daysToRadians } from './utils'
 
@@ -28,6 +28,8 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
   const today = new Date()
   const tomorrow = new Date(today)
   tomorrow.setDate(tomorrow.getDate() + 1)
+
+  const year = today.getFullYear()
 
   const data = await fetchCalendarData(year)
 
@@ -189,9 +191,17 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
     .style('font-size', '0.7em')
     .text(year)
 
-  drawDays(g, radius, lineWidth, calendars.length, outerMargin)
-  drawWeeks(g, radius, lineWidth, calendars.length, outerMargin, baseFontSize)
-  drawMonths(g, radius, lineWidth, calendars.length, outerMargin)
+  drawDays(year, g, radius, lineWidth, calendars.length, outerMargin)
+  drawWeeks(
+    year,
+    g,
+    radius,
+    lineWidth,
+    calendars.length,
+    outerMargin,
+    baseFontSize
+  )
+  drawMonths(year, g, radius, lineWidth, calendars.length, outerMargin)
 
   const zoomed = ({ transform }) => {
     og.attr(

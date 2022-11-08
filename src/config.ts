@@ -1,7 +1,5 @@
 import type { Calendar } from './types'
 
-export const year = 2022
-
 export const calendars: Calendar[] = [
   {
     name: 'nordic',
