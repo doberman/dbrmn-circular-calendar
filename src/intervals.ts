@@ -273,7 +273,10 @@ export const drawDays = (
       .append('textPath')
       .attr('xlink:href', `#${name}_${i}`)
       .style('text-anchor', i >= numberOfDays / 2 ? 'end' : 'start')
-      .style('alignment-baseline', i >= numberOfDays / 2 ? 'text-before-edge' : 'text-after-edge')
+      .style(
+        'alignment-baseline',
+        i >= numberOfDays / 2 ? 'text-before-edge' : 'text-after-edge'
+      )
       .style('font-size', '0.35em')
       .style('font-variant-numeric', 'tabular-nums')
       .attr('startOffset', i >= numberOfDays / 2 ? '98%' : '2%')
