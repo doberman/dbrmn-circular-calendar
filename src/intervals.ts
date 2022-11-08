@@ -272,12 +272,13 @@ export const drawDays = (
   for (const [i] of labelLines.entries()) {
     group
       .append('text')
+      .attr('dy', i >= numberOfDays / 2 ? '0.15em' : '-0.05em')
       .append('textPath')
       .attr('xlink:href', `#${name}_${i}`)
       .style('text-anchor', i >= numberOfDays / 2 ? 'end' : 'start')
       .style(
         'alignment-baseline',
-        i >= numberOfDays / 2 ? 'text-before-edge' : 'text-after-edge'
+        i >= numberOfDays / 2 ? 'mathematical' : 'alphabetical'
       )
       .style('font-size', '0.35em')
       .style('font-variant-numeric', 'tabular-nums')
