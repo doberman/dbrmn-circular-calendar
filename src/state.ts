@@ -1,11 +1,10 @@
+import ls from 'localstorage-slim'
 import type { User } from './types'
 
-export const setUser = (user: User) =>
-  localStorage.setItem('user', JSON.stringify(user))
-export const getUser = () =>
-  JSON.parse(localStorage.getItem('user') ?? 'null') as User | null
+export const setUser = (user: User) => ls.set('user', JSON.stringify(user))
+export const getUser = () => JSON.parse(ls.get('user') ?? 'null') as User | null
 
 export const setCalendarData = (data: any) =>
-  sessionStorage.setItem('calendarData', JSON.stringify(data))
+  ls.set('calendarData', JSON.stringify(data), { ttl: 120 })
 export const getCalendarData = () =>
-  JSON.parse(sessionStorage.getItem('calendarData') ?? 'null')
+  JSON.parse(ls.get('calendarData') ?? 'null')
