@@ -71,25 +71,13 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
             .attr('d', <any>event)
             .attr('fill', calendar.eventColor)
             .style('cursor', 'pointer')
-            .on('click', function () {
-              d3.select('#centerArea').style('fill', calendar.eventColor)
-              d3.select('#centerText1').text(item.summary)
-              d3.select('#centerText1').attr('dy', '-1.0em')
-              d3.select('#centerText2').text(item.location)
-              d3.select('#centerText2').attr('dy', '0.3em')
-              let dateString = `${startDate.getDate()}/${
-                startDate.getMonth() + 1
-              } - ${endDate.getDate()}/${endDate.getMonth() + 1}`
-              if (
-                endDate.valueOf() - startDate.valueOf() <=
-                24 * 60 * 60 * 1000
-              ) {
-                dateString = `${startDate.getDate()}/${
-                  startDate.getMonth() + 1
-                }`
-              }
-              d3.select('#centerText3').text(dateString)
-              d3.select('#centerText3').attr('dy', '1.6em')
+            .on('click', () => {
+              drawCenterText(
+                item.summary,
+                startDate,
+                endDate,
+                calendar.eventColor
+              )
             })
         }
       }
@@ -118,24 +106,8 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
             .attr('d', <any>event)
             .attr('fill', 'white')
             .style('cursor', 'pointer')
-            .on('click', function () {
-              d3.select('#centerArea').style('fill', 'white')
-              d3.select('#centerText1').text(item.summary)
-              d3.select('#centerText1').attr('dy', '-0.4em')
-              let dateString = `${startDate.getDate()}/${
-                startDate.getMonth() + 1
-              } - ${endDate.getDate()}/${endDate.getMonth() + 1}`
-              if (
-                endDate.valueOf() - startDate.valueOf() <=
-                24 * 60 * 60 * 1000
-              ) {
-                dateString = `${startDate.getDate()}/${
-                  startDate.getMonth() + 1
-                }`
-              }
-              d3.select('#centerText2').text(dateString)
-              d3.select('#centerText2').attr('dy', '1.1em')
-              d3.select('#centerText3').text('')
+            .on('click', () => {
+              drawCenterText(item.summary, startDate, endDate, 'white')
             })
         }
       }
@@ -165,31 +137,43 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
   g.append('path')
     .attr('id', 'centerArea')
     .attr('d', <any>centerArea)
+    .attr('transform', 'rotate(-90)')
     .attr('fill', 'white')
     .attr('opacity', 0.8)
-    .style('stroke', 'black')
-    .style('stroke-width', '0.05em')
+  //.style('stroke', 'black')
+  //.style('stroke-width', '0.05em')
+
+  g.append('text')
+    .attr('id', 'centerTextStart')
+    .attr('dy', '-0.1em')
+    .append('textPath')
+    .attr('xlink:href', '#centerArea')
+    .style('font-size', '0.96em')
+    .attr('startOffset', '100%')
+    .style('text-anchor', 'end')
+    .attr('font-weight', 800)
+    .text('PREFERABLE FUTURE OF THE YEAR.')
   g.append('text')
     .attr('id', 'centerText1')
     .attr('d', <any>centerArea)
     .attr('dy', '-1.0em')
     .style('text-anchor', 'middle')
     .style('font-size', '0.7em')
-    .text('Doberman')
+    .text('')
   g.append('text')
     .attr('id', 'centerText2')
     .attr('d', <any>centerArea)
     .attr('dy', '0.3em')
     .style('text-anchor', 'middle')
     .style('font-size', '0.7em')
-    .text('Calendar')
+    .text('')
   g.append('text')
     .attr('id', 'centerText3')
     .attr('d', <any>centerArea)
     .attr('dy', '1.6em')
     .style('text-anchor', 'middle')
     .style('font-size', '0.7em')
-    .text(year)
+    .text()
 
   drawDays(year, g, radius, lineWidth, calendars.length, outerMargin)
   drawWeeks(
@@ -220,6 +204,27 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
       ])
       .on('zoom', zoomed) as any
   )
+}
+
+const drawCenterText = (
+  text: string,
+  startDate: Date,
+  endDate: Date,
+  color: string
+) => {
+  d3.select('#centerTextStart').text('')
+  d3.select('#centerArea').style('fill', color)
+  d3.select('#centerText1').text(text)
+  d3.select('#centerText1').attr('dy', '-0.4em')
+  let dateString = `${startDate.getDate()}/${
+    startDate.getMonth() + 1
+  } - ${endDate.getDate()}/${endDate.getMonth() + 1}`
+  if (endDate.valueOf() - startDate.valueOf() <= 24 * 60 * 60 * 1000) {
+    dateString = `${startDate.getDate()}/${startDate.getMonth() + 1}`
+  }
+  d3.select('#centerText2').text(dateString)
+  d3.select('#centerText2').attr('dy', '1.1em')
+  d3.select('#centerText3').text('')
 }
 
 export const toggleInterval = (name: string) => {

@@ -10,6 +10,14 @@
     url('../public/fonts/GerstnerProgWeb-Regular.woff2');
 }
 
+@font-face {
+  font-family: 'Gerstner-Programm';
+  font-weight: 800;
+  font-display: swap;
+  src: url('../public/fonts/GerstnerProgramm-Bold.woff'),
+    url('../public/fonts/GerstnerProgramm-Bold.woff2');
+}
+
 @layer components {
   .btn-calendar {
     align-items: center;
