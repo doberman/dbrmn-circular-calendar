@@ -74,6 +74,7 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
             .on('click', () => {
               drawCenterText(
                 item.summary,
+                item.location,
                 startDate,
                 endDate,
                 calendar.eventColor
@@ -107,7 +108,7 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
             .attr('fill', 'white')
             .style('cursor', 'pointer')
             .on('click', () => {
-              drawCenterText(item.summary, startDate, endDate, 'white')
+              drawCenterText(item.summary, '', startDate, endDate, 'white')
             })
         }
       }
@@ -208,6 +209,7 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
 
 const drawCenterText = (
   text: string,
+  location: string,
   startDate: Date,
   endDate: Date,
   color: string
@@ -215,16 +217,27 @@ const drawCenterText = (
   d3.select('#centerTextStart').text('')
   d3.select('#centerArea').style('fill', color)
   d3.select('#centerText1').text(text)
-  d3.select('#centerText1').attr('dy', '-0.4em')
+
   let dateString = `${startDate.getDate()}/${
     startDate.getMonth() + 1
   } - ${endDate.getDate()}/${endDate.getMonth() + 1}`
   if (endDate.valueOf() - startDate.valueOf() <= 24 * 60 * 60 * 1000) {
     dateString = `${startDate.getDate()}/${startDate.getMonth() + 1}`
   }
-  d3.select('#centerText2').text(dateString)
-  d3.select('#centerText2').attr('dy', '1.1em')
-  d3.select('#centerText3').text('')
+
+  if (location) {
+    d3.select('#centerText1').attr('dy', '-1.0em')
+    d3.select('#centerText2').text(location)
+    d3.select('#centerText2').attr('dy', '0.3em')
+
+    d3.select('#centerText3').text(dateString)
+    d3.select('#centerText3').attr('dy', '1.6em')
+  } else {
+    d3.select('#centerText1').attr('dy', '-0.4em')
+    d3.select('#centerText2').text(dateString)
+    d3.select('#centerText2').attr('dy', '1.1em')
+    d3.select('#centerText3').text('')
+  }
 }
 
 export const toggleInterval = (name: string) => {
