@@ -25,12 +25,15 @@ export const drawMonths = (
     const angle =
       (2 * Math.PI) /
       (daysInYear(year) / daysIntoYear(new Date(year, n, 0), year))
+    const angle2 =
+      (2 * Math.PI) /
+      (daysInYear(year) / daysIntoYear(new Date(year, n - 1, 0), year))
     const x1 =
       (radius - outerMargin - lineWidth * numberOfCalendars) * Math.cos(angle)
     const y1 =
       (radius - outerMargin - lineWidth * numberOfCalendars) * Math.sin(angle)
-    const x2 = (radius - outerMargin) * Math.cos(angle)
-    const y2 = (radius - outerMargin) * Math.sin(angle)
+    const x2 = radius * Math.cos(angle2)
+    const y2 = radius * Math.sin(angle2)
     const x3 = radius * Math.cos(angle)
     const y3 = radius * Math.sin(angle)
 
@@ -40,21 +43,12 @@ export const drawMonths = (
         [x3, y3]
       ])
     )
-    if (n > numberOfMonths / 2) {
-      labelLines.push(
-        d3.line()([
-          [x3, y3],
-          [x2, y2]
-        ])
-      )
-    } else {
-      labelLines.push(
-        d3.line()([
-          [x2, y2],
-          [x3, y3]
-        ])
-      )
-    }
+    labelLines.push(
+      d3.line()([
+        [x2, y2],
+        [x3, y3]
+      ])
+    )
   }
 
   //draw lines
@@ -70,6 +64,20 @@ export const drawMonths = (
     .attr('transform', 'rotate(-90)')
     .attr('class', `interval-${name}`)
 
+  //draw outer circle
+  const outerCircle = d3
+    .arc()
+    .innerRadius(radius)
+    .outerRadius(radius)
+    .startAngle(0)
+    .endAngle(2 * Math.PI)
+  group
+    .append('path')
+    .attr('d', <any>outerCircle)
+    .attr('stroke', 'black')
+    .attr('id', 'outerCircle')
+    .style('stroke-width', '0.01em')
+
   //draw labels
   group
     .selectAll(`.${name}_label`)
@@ -78,20 +86,19 @@ export const drawMonths = (
     .append('path')
     .attr('id', (_d: any, i: number) => `${name}_${i + 1}`)
     .attr('d', (_d: any, i: number) => labelLines[i])
-    .attr('stroke', '#fff')
+    .attr('stroke', '#f00')
     .style('opacity', 0)
     .attr('class', `interval-${name}`)
-    .attr('transform', 'rotate(-105)')
+    .attr('transform', 'rotate(-90)')
   for (const [i] of labelLines.entries()) {
     group
       .append('text')
+      .attr('dy', '0.5em')
       .append('textPath')
       .attr('xlink:href', `#${name}_${i + 1}`)
-      .style('text-anchor', i >= numberOfMonths / 2 ? 'end' : 'start')
-      .style('alignment-baseline', 'middle')
+      .style('text-anchor', 'middle')
       .style('font-size', '0.7em')
-      .style('text-transform', 'capitalize')
-      .attr('startOffset', i >= numberOfMonths / 2 ? '80%' : '20%')
+      .attr('startOffset', '50%')
       .attr('class', `interval-${name}`)
       .text(monthName(i))
   }

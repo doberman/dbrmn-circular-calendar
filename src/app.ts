@@ -11,7 +11,7 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
   const radius = Math.min(width, height) / 2 - 10
   const centerX = width / 2
   const centerY = height / 2
-  const outerMargin = (radius / calendars.length) * 1.1
+  const outerMargin = (radius / calendars.length) * 0.8
   const innerMargin = (radius / calendars.length) * 1.2
   const lineWidth = (radius - outerMargin - innerMargin) / calendars.length
   const baseFontSize = (radius / 400) * 100
@@ -159,7 +159,7 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
   const centerArea = d3
     .arc()
     .innerRadius(0)
-    .outerRadius(radius - innerMargin * 1.33 - lineWidth * calendars.length)
+    .outerRadius(radius - innerMargin * 1.1 - lineWidth * calendars.length)
     .startAngle(0)
     .endAngle(2 * Math.PI)
   g.append('path')

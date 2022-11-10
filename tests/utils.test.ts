@@ -27,12 +27,16 @@ describe('daysIntoYear', () => {
 })
 
 describe('monthName', () => {
-  test('month number 0 should be January', () => {
-    expect(monthName(0)).toBe('January')
+  test('month number 0 should be JAN', () => {
+    expect(monthName(0)).toBe('JAN')
   })
 
-  test('month number 1 should be February', () => {
-    expect(monthName(1)).toBe('February')
+  test('month number 1 should be FEB', () => {
+    expect(monthName(1)).toBe('FEB')
+  })
+
+  test('month number 2 should be MARCH', () => {
+    expect(monthName(2)).toBe('MARCH')
   })
 })
 

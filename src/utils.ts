@@ -23,7 +23,10 @@ export const monthName = (month: number) => {
   const date = new Date()
   date.setDate(1)
   date.setMonth(month)
-  return date.toLocaleString('en-us', { month: 'long' })
+  const monthName = date
+    .toLocaleString('en-us', { month: 'long' })
+    .toUpperCase()
+  return monthName.length > 5 ? monthName.substring(0, 3) : monthName
 }
 
 export const daysInMonth = (month: number, year: number) => {
