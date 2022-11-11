@@ -94,7 +94,7 @@ export const drawMonths = (
   for (const [i] of labelLines.entries()) {
     group
       .append('text')
-      .attr('dy', '0.5em')
+      .attr('dy', '0.3em')
       .append('textPath')
       .attr('xlink:href', `#${name}_${i + 1}`)
       .style('text-anchor', 'middle')

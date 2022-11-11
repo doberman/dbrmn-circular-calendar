@@ -1,9 +1,9 @@
-<svg width="32" height="30" viewBox="0 0 32 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M1 0V30" stroke="#C1C1C1"/>
-<path d="M16 0V30" stroke="#C1C1C1"/>
-<path d="M31 0V30" stroke="#C1C1C1"/>
-<path d="M21 0V30" stroke="#C1C1C1"/>
-<path d="M26 0V30" stroke="#C1C1C1"/>
-<path d="M11 0V30" stroke="#C1C1C1"/>
-<path d="M6 0V30" stroke="#C1C1C1"/>
+<svg width="27" height="25" viewBox="0 0 27 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1 0V25" stroke="black"/>
+<path d="M13.5 0V25" stroke="black"/>
+<path d="M26 0V25" stroke="black"/>
+<path d="M17.6666 0V25" stroke="black"/>
+<path d="M21.8334 0V25" stroke="black"/>
+<path d="M9.33337 0V25" stroke="black"/>
+<path d="M5.16663 0V25" stroke="black"/>
 </svg>
