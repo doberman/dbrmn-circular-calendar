@@ -56,14 +56,16 @@
       <svg id="calendar" class="hidden grow"></svg>
     </div>
     <script type="module">
+      import { setupCalendars } from './app'
       import {
-        setupCalendars,
         toggleInterval,
         toggleCalendar,
-        initCalendarButtons
-      } from './app'
+        initCalendarButtons,
+        initIntervals
+      } from './buttons'
       import { year } from './config'
       import { getUser } from './state'
+
       const user = getUser()
       const body = document.querySelector('body')
       if (!user && process.env.IS_IN_PRODUCTION === 'true')

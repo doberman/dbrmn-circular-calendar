@@ -1,10 +1,11 @@
 import * as d3 from 'd3'
 
-import { fetchCalendarData } from './calendar'
+import { fetchCalendarData } from './data'
 import { calendars } from './config'
 import { drawDays, drawMonths, drawWeeks } from './intervals'
 import { daysIntoYear, daysToRadians } from './utils'
-import { getExcludedCalendars, setExcludedCalendars } from './state'
+import { getExcludedCalendars } from './state'
+import { initIntervals } from './buttons'
 
 export const setupCalendars = async () => {
   const calendarEl = document.getElementById('calendar')
@@ -202,6 +203,7 @@ export const setupCalendars = async () => {
   drawDays(year, rootGroup, radius, innerMargin, outerMargin)
   drawWeeks(year, rootGroup, radius, innerMargin, outerMargin)
   drawMonths(year, rootGroup, radius, innerMargin)
+  initIntervals()
 
   //handle zoom
   const zoomed = ({ transform }) => {
@@ -252,49 +254,5 @@ const drawCenterText = (
     d3.select('#centerText2').text(dateString)
     d3.select('#centerText2').attr('dy', '1.1em')
     d3.select('#centerText3').text('')
-  }
-}
-
-export const toggleInterval = (name: string) => {
-  const disabledTextColor = 'text-gray-400'
-  const opacity = 'opacity-50'
-  const element = d3.selectAll(`.interval-${name}`)
-  const visibility = element.style('visibility')
-  visibility == 'visible'
-    ? element.style('visibility', 'hidden')
-    : element.style('visibility', 'visible')
-  document.getElementById(name)?.classList.toggle(disabledTextColor)
-  document.getElementById(name)?.classList.toggle(opacity)
-}
-
-export const toggleCalendar = (name: string) => {
-  toggleCalendarButton(name)
-  const elements = d3.selectAll(`.cal-${name}`)
-  let excludedCalendars = getExcludedCalendars()
-  if (!elements.empty()) {
-    excludedCalendars.push(name)
-  } else {
-    excludedCalendars = excludedCalendars.filter(
-      (item: string) => item !== name
-    )
-  }
-  setExcludedCalendars(excludedCalendars)
-  document.getElementById('zoomableGroup')?.remove()
-  setupCalendars()
-}
-
-const toggleCalendarButton = (name: string) => {
-  const disabledTextColor = 'text-gray-400'
-  const opacity = 'opacity-50'
-  const border = 'before:border-0'
-  document.getElementById(name)?.classList.toggle(disabledTextColor)
-  document.getElementById(name)?.classList.toggle(opacity)
-  document.getElementById(name)?.classList.toggle(border)
-}
-
-export const initCalendarButtons = () => {
-  const excludedCalendars = getExcludedCalendars()
-  for (const name of excludedCalendars) {
-    toggleCalendarButton(name)
   }
 }
