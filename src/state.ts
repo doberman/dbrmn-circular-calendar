@@ -8,3 +8,13 @@ export const setCalendarData = (data: any) =>
   ls.set('calendarData', JSON.stringify(data), { ttl: 120 })
 export const getCalendarData = () =>
   JSON.parse(ls.get('calendarData') ?? 'null')
+
+export const setExcludedCalendars = (list: string[]) =>
+  ls.set('excludedCalendars', JSON.stringify(list))
+export const getExcludedCalendars = () =>
+  JSON.parse(ls.get('excludedCalendars') ?? '[]')
+
+export const setExcludedIntervals = (list: string[]) =>
+  ls.set('excludedIntervals', JSON.stringify(list))
+export const getExcludedIntervals = () =>
+  JSON.parse(ls.get('excludedIntervals') ?? '[]')
