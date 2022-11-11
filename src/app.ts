@@ -11,8 +11,8 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
   const radius = Math.min(width, height) / 2 - 10
   const centerX = width / 2
   const centerY = height / 2
-  const outerMargin = (radius / calendars.length) * 0.8
-  const innerMargin = (radius / calendars.length) * 1.2
+  const outerMargin = radius * 0.12
+  const innerMargin = radius * 0.2
   const lineWidth = (radius - outerMargin - innerMargin) / calendars.length
   const baseFontSize = (radius / 400) * 100
 
@@ -132,7 +132,7 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
   const centerArea = d3
     .arc()
     .innerRadius(0)
-    .outerRadius(radius - innerMargin * 1.1 - lineWidth * calendars.length)
+    .outerRadius(innerMargin * 0.6)
     .startAngle(0)
     .endAngle(2 * Math.PI)
   g.append('path')
@@ -146,15 +146,16 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
 
   g.append('text')
     .attr('id', 'centerTextStart')
-    .attr('dy', '-0.1em')
     .append('textPath')
-    .style('letter-spacing', '-0.025em')
+    .style('letter-spacing', '-0.03em')
     .attr('xlink:href', '#centerArea')
-    .style('font-size', '1em')
+    .style('font-size', '1.05em')
     .attr('startOffset', '100%')
     .style('text-anchor', 'end')
     .attr('font-weight', 800)
-    .text('PREFERABLE FUTURE OF THE YEAR.')
+    .text(
+      'PREFERABLE\u00A0\u00A0FUTURE\u00A0\u00A0OF\u00A0\u00A0THE\u00A0\u00A0YEAR.'
+    )
   g.append('text')
     .attr('id', 'centerText1')
     .attr('d', <any>centerArea)
