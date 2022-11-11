@@ -148,8 +148,9 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
     .attr('id', 'centerTextStart')
     .attr('dy', '-0.1em')
     .append('textPath')
+    .style('letter-spacing', '-0.025em')
     .attr('xlink:href', '#centerArea')
-    .style('font-size', '0.96em')
+    .style('font-size', '1em')
     .attr('startOffset', '100%')
     .style('text-anchor', 'end')
     .attr('font-weight', 800)
@@ -229,7 +230,6 @@ const drawCenterText = (
     d3.select('#centerText1').attr('dy', '-1.0em')
     d3.select('#centerText2').text(location)
     d3.select('#centerText2').attr('dy', '0.3em')
-
     d3.select('#centerText3').text(dateString)
     d3.select('#centerText3').attr('dy', '1.6em')
   } else {
