@@ -56,7 +56,12 @@
       <svg id="calendar" class="hidden grow"></svg>
     </div>
     <script type="module">
-      import { setupCalendars, toggleInterval, toggleCalendar } from './app'
+      import {
+        setupCalendars,
+        toggleInterval,
+        toggleCalendar,
+        initCalendarButtons
+      } from './app'
       import { year } from './config'
       import { getUser } from './state'
       const user = getUser()
@@ -65,12 +70,11 @@
         location.replace('index.html')
 
       const init = async () => {
-        const calendarEl = document.getElementById('calendar')
-
-        await setupCalendars(calendarEl)
+        initCalendarButtons()
+        await setupCalendars()
 
         document.getElementById('loading').classList.replace('flex', 'hidden')
-        calendarEl.classList.replace('hidden', 'flex')
+        document.getElementById('calendar').classList.replace('hidden', 'flex')
 
         //Interval click handlers
         document

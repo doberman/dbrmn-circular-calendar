@@ -12,4 +12,4 @@ export const getCalendarData = () =>
 export const setExcludedCalendars = (list: string[]) =>
   ls.set('excludedCalendars', JSON.stringify(list))
 export const getExcludedCalendars = () =>
-  JSON.parse(ls.get('excludedCalendars') ?? 'null')
+  JSON.parse(ls.get('excludedCalendars') ?? '[]')
