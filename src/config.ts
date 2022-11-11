@@ -1,12 +1,12 @@
 import type { Calendar } from './types'
 
 export const calendars: Calendar[] = [
-  {
-    name: 'nordic',
-    color: '#F6C899',
-    eventColor: '#FF8100',
-    calendarId: 'DBRMN_NORDIC'
-  },
+  // {
+  //   name: 'nordic',
+  //   color: '#F6C899',
+  //   eventColor: '#FF8100',
+  //   calendarId: 'DBRMN_NORDIC'
+  // },
   {
     name: 'stockholm',
     color: '#F4B5C0',

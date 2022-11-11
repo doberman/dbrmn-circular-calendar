@@ -11,8 +11,8 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
   const radius = Math.min(width, height) / 2 - 10
   const centerX = width / 2
   const centerY = height / 2
-  const outerMargin = (radius / calendars.length) * 0.8
-  const innerMargin = (radius / calendars.length) * 1.2
+  const outerMargin = (radius / calendars.length) * 0.65
+  const innerMargin = (radius / calendars.length) * 1.1
   const lineWidth = (radius - outerMargin - innerMargin) / calendars.length
   const baseFontSize = (radius / 400) * 100
 
@@ -132,7 +132,7 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
   const centerArea = d3
     .arc()
     .innerRadius(0)
-    .outerRadius(radius - innerMargin * 1.1 - lineWidth * calendars.length)
+    .outerRadius(radius - innerMargin * 0.95 - lineWidth * calendars.length)
     .startAngle(0)
     .endAngle(2 * Math.PI)
   g.append('path')
@@ -140,17 +140,17 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
     .attr('d', <any>centerArea)
     .attr('transform', 'rotate(-90)')
     .attr('fill', 'white')
-    .attr('opacity', 0.8)
+    .attr('opacity', 0.7)
   //.style('stroke', 'black')
   //.style('stroke-width', '0.05em')
 
   g.append('text')
     .attr('id', 'centerTextStart')
-    .attr('dy', '-0.1em')
+    .attr('dy', '0.3em')
     .append('textPath')
     .style('letter-spacing', '-0.025em')
     .attr('xlink:href', '#centerArea')
-    .style('font-size', '1em')
+    .style('font-size', '1.25em')
     .attr('startOffset', '100%')
     .style('text-anchor', 'end')
     .attr('font-weight', 800)
