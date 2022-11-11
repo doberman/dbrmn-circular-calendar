@@ -76,6 +76,7 @@ export const drawMonths = (
     .attr('d', <any>outerCircle)
     .attr('stroke', 'black')
     .attr('id', 'outerCircle')
+    .attr('class', `interval-${name}`)
     .style('stroke-width', '0.01em')
 
   //draw labels
