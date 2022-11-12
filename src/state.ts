@@ -9,6 +9,10 @@ export const setCalendarData = (data: any) =>
 export const getCalendarData = () =>
   JSON.parse(ls.get('calendarData') ?? 'null')
 
+export const setLocalData = (data: any) =>
+  ls.set('localData', JSON.stringify(data))
+export const getLocalData = () => JSON.parse(ls.get('localData') ?? 'null')
+
 export const setExcludedCalendars = (list: string[]) =>
   ls.set('excludedCalendars', JSON.stringify(list))
 export const getExcludedCalendars = () =>

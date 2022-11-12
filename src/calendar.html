@@ -57,6 +57,7 @@
     </div>
     <script type="module">
       import { setupCalendars } from './app'
+      import { fetchCalendarData } from './data'
       import {
         toggleInterval,
         toggleCalendar,
@@ -73,7 +74,8 @@
 
       const init = async () => {
         initCalendarButtons()
-        await setupCalendars()
+        const data = await fetchCalendarData(year)
+        await setupCalendars(data)
 
         document.getElementById('loading').classList.replace('flex', 'hidden')
         document.getElementById('calendar').classList.replace('hidden', 'flex')

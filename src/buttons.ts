@@ -7,6 +7,7 @@ import {
   setExcludedIntervals
 } from './state'
 import { setupCalendars } from './app'
+import { fetchLocalData } from './data'
 
 export const toggleInterval = (name: string) => {
   const disabledTextColor = 'text-gray-400'
@@ -53,7 +54,7 @@ export const toggleCalendar = (name: string) => {
   }
   setExcludedCalendars(excludedCalendars)
   document.getElementById('zoomableGroup')?.remove()
-  setupCalendars()
+  setupCalendars(fetchLocalData())
 }
 
 const toggleCalendarButton = (name: string) => {

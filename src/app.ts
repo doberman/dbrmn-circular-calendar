@@ -1,6 +1,5 @@
 import * as d3 from 'd3'
 
-import { fetchCalendarData } from './data'
 import { calendars } from './config'
 import { drawDays, drawMonths, drawWeeks } from './intervals'
 import { daysIntoYear, daysToRadians, daysInYear } from './utils'
@@ -8,7 +7,7 @@ import { getExcludedCalendars } from './state'
 import { initIntervals } from './buttons'
 import logo from '../public/preferable-logo.svg'
 
-export const setupCalendars = async () => {
+export const setupCalendars = async (data: any) => {
   const calendarEl = document.getElementById('calendar')
   const width = calendarEl?.clientWidth || 600
   const height = calendarEl?.clientHeight || 600
@@ -41,8 +40,6 @@ export const setupCalendars = async () => {
 
   const year = today.getFullYear()
 
-  const data = await fetchCalendarData(year)
-
   //draw background
   for (const [index, calendar] of activeCalendars.entries()) {
     if (getExcludedCalendars().includes(calendar.name)) {
@@ -63,14 +60,11 @@ export const setupCalendars = async () => {
 
     //draw events
     if (calendar.calendarId) {
-      console.log(data, calendar.calendarId)
       const calendarData = data.find(
         (el: { key: string }) => el.key == calendar.calendarId
       )
       if (calendarData) {
-        console.log(calendarData)
         for (const item of calendarData.events) {
-          console.log(item.id, item.summary, item.start, item.end)
           const startDate = new Date(item.start.date)
           const endDate = new Date(item.end.date)
           const event = d3
@@ -100,14 +94,11 @@ export const setupCalendars = async () => {
     }
     //draw holidays
     if (calendar.holidayId) {
-      console.log(data, calendar.holidayId)
       const calendarData = data.find(
         (el: { key: string }) => el.key == calendar.holidayId
       )
       if (calendarData) {
-        console.log(calendarData)
         for (const item of calendarData.events) {
-          console.log(item.id, item.summary, item.start, item.end)
           const startDate = new Date(item.start.date)
           const endDate = new Date(item.end.date)
           const event = d3

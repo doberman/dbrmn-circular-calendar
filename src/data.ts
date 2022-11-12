@@ -1,4 +1,9 @@
-import { setCalendarData, getCalendarData } from './state'
+import {
+  setCalendarData,
+  getCalendarData,
+  setLocalData,
+  getLocalData
+} from './state'
 
 export const fetchCalendarData = async (year: number) => {
   let cache = getCalendarData()
@@ -10,8 +15,6 @@ export const fetchCalendarData = async (year: number) => {
     const url =
       'https://europe-west1-dbrmn-circular-calendar.cloudfunctions.net/events'
 
-    console.log(url)
-
     const response = await fetch(url)
     if (!response.ok) {
       console.log`An error has occured: ${response.status}`
@@ -20,6 +23,11 @@ export const fetchCalendarData = async (year: number) => {
     const data = await response.json()
     console.log(data)
     setCalendarData(data)
+    setLocalData(data)
     return data
   }
+}
+
+export const fetchLocalData = () => {
+  return getLocalData()
 }

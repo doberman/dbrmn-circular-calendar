@@ -1,7 +1,7 @@
 import jwtDecode from 'jwt-decode'
 
-import { User } from './models'
 import { setUser } from './state'
+import { User } from './types'
 
 const code = window.location.search.substring(1)
 console.log(code, 'code')
