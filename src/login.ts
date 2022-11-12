@@ -8,7 +8,7 @@ if (
   !process.env.IS_IN_PRODUCTION ||
   process.env.IS_IN_PRODUCTION === 'false'
 )
-  setTimeout(() => location.replace('/calendar.html'), 1000)
+  setTimeout(() => location.replace('/'), 1000)
 else {
   // annars, finns det en login-knapp
   const slackButton = document.querySelector('#slack')! as HTMLAnchorElement

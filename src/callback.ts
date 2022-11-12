@@ -30,7 +30,7 @@ if (code) {
       const { id_token } = json
       const decoded = jwtDecode(id_token) as User
       setUser(decoded)
-      location.replace('calendar.html')
+      location.replace('/')
     })
     .catch((err) => console.error(err))
 } else {
