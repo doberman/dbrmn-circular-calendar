@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import ls from 'localstorage-slim'
 import type { User } from './types'
 
