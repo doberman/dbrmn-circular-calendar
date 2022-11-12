@@ -12,7 +12,7 @@ if (code) {
       code,
       `client_id=${process.env.SIGN_IN_CLIENT_ID}`,
       `client_secret=${process.env.SIGN_IN_CLIENT_SECRET}`,
-      `grant_type=authorization_code`,
+      'grant_type=authorization_code',
       `redirect_uri=${encodeURIComponent(
         `https://${process.env.SIGN_IN_REDIRECT_URL}/callback.html`
       )}`

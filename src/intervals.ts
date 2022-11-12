@@ -17,8 +17,8 @@ export const drawMonths = (
 ) => {
   const name = 'months'
   const numberOfMonths = 12
-  let lines: any[] = []
-  let labelLines: any[] = []
+  const lines: any[] = []
+  const labelLines: any[] = []
   for (let n = 1; n <= numberOfMonths; n++) {
     const angle =
       (2 * Math.PI) /
@@ -113,8 +113,8 @@ export const drawWeeks = (
   const labelMargin = innerMargin * 0.82
   const weekOneOffset = -90 + weekOneStartOffset(year)
 
-  let lines: any[] = []
-  let labelLines: any[] = []
+  const lines: any[] = []
+  const labelLines: any[] = []
   for (let n = 0; n <= numberOfWeeks; n++) {
     const angle = (2 * Math.PI) / (daysInYear(year) / 7)
     const x1 = (radius - outerMargin) * Math.cos(angle * n)
@@ -155,7 +155,7 @@ export const drawWeeks = (
     .append('path')
     .attr('d', (_d: any, i: number) => lines[i])
     .attr('stroke', '#808080')
-    .style('opacity', (_d: any, i: number) => (i == lines.length - 1 ? 0 : 1)) //hide the last week since its into the next year
+    .style('opacity', (_d: any, i: number) => (i === lines.length - 1 ? 0 : 1)) //hide the last week since its into the next year
     .attr('stroke-width', '0.03em')
     .attr('transform', `rotate(${weekOneOffset})`)
     .attr('class', `interval-${name}`)
@@ -171,7 +171,7 @@ export const drawWeeks = (
     .attr('stroke', '#808080')
     .attr('stroke-width', '0.03em')
     .style('opacity', (_d: any, i: number) =>
-      i == labelLines.length - 1 ? 0 : 1
+      i === labelLines.length - 1 ? 0 : 1
     ) //hide the last week since its into the next year
     .attr('class', `interval-${name}`)
     .attr('transform', `rotate(${weekOneOffset})`)
@@ -190,7 +190,7 @@ export const drawWeeks = (
       .style('font-variant-numeric', 'tabular-nums')
       .attr('startOffset', i >= numberOfWeeks / 2 ? '20%' : '80%')
       .attr('class', `interval-${name}`)
-      .text(i == 0 ? '' : padWithZero(i)) //hide the last week since its into the next year
+      .text(i === 0 ? '' : padWithZero(i)) //hide the last week since its into the next year
   }
 }
 
@@ -203,8 +203,8 @@ export const drawDays = (
 ) => {
   const name = 'days'
   const numberOfDays = daysInYear(year)
-  let lines: any[] = []
-  let labelLines: any[] = []
+  const lines: any[] = []
+  const labelLines: any[] = []
   for (let n = 0; n < numberOfDays; n++) {
     const angle = (2 * Math.PI) / numberOfDays
     const x1 = (radius - outerMargin) * Math.cos(angle * n)

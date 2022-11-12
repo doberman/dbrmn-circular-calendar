@@ -5,8 +5,8 @@ import {
   getLocalData
 } from './state'
 
-export const fetchCalendarData = async (year: number) => {
-  let cache = getCalendarData()
+export const fetchCalendarData = async () => {
+  const cache = getCalendarData()
 
   if (cache) {
     return cache

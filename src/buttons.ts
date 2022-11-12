@@ -16,11 +16,11 @@ export const toggleInterval = (name: string) => {
   document.getElementById(name)?.classList.toggle(opacity)
   const elements = d3.selectAll(`.interval-${name}`)
   const visibility = elements.style('visibility')
-  visibility == 'visible'
+  visibility === 'visible'
     ? elements.style('visibility', 'hidden')
     : elements.style('visibility', 'visible')
   let excludedIntervals = getExcludedIntervals()
-  if (visibility == 'visible') {
+  if (visibility === 'visible') {
     excludedIntervals.push(name)
   } else {
     excludedIntervals = excludedIntervals.filter(
@@ -45,12 +45,12 @@ export const toggleCalendar = (name: string) => {
   toggleCalendarButton(name)
   const elements = d3.selectAll(`.cal-${name}`)
   let excludedCalendars = getExcludedCalendars()
-  if (!elements.empty()) {
-    excludedCalendars.push(name)
-  } else {
+  if (elements.empty()) {
     excludedCalendars = excludedCalendars.filter(
       (item: string) => item !== name
     )
+  } else {
+    excludedCalendars.push(name)
   }
   setExcludedCalendars(excludedCalendars)
   document.getElementById('zoomableGroup')?.remove()

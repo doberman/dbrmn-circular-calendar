@@ -63,7 +63,7 @@ export const setupCalendars = async (data: any) => {
     //draw events
     if (calendar.calendarId) {
       const calendarData = data.find(
-        (el: { key: string }) => el.key == calendar.calendarId
+        (el: { key: string }) => el.key === calendar.calendarId
       )
       if (calendarData) {
         for (const item of calendarData.events) {
@@ -97,7 +97,7 @@ export const setupCalendars = async (data: any) => {
     //draw holidays
     if (calendar.holidayId) {
       const calendarData = data.find(
-        (el: { key: string }) => el.key == calendar.holidayId
+        (el: { key: string }) => el.key === calendar.holidayId
       )
       if (calendarData) {
         for (const item of calendarData.events) {
