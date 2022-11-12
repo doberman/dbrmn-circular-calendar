@@ -3,10 +3,10 @@ import * as d3 from 'd3'
 import { fetchCalendarData } from './data'
 import { calendars } from './config'
 import { drawDays, drawMonths, drawWeeks } from './intervals'
-import { daysIntoYear, daysToRadians } from './utils'
+import { daysIntoYear, daysToRadians, daysInYear } from './utils'
 import { getExcludedCalendars } from './state'
 import { initIntervals } from './buttons'
-import logo from '../public/preferable_logo.svg'
+import logo from '../public/preferable-logo.svg'
 
 export const setupCalendars = async () => {
   const calendarEl = document.getElementById('calendar')
@@ -132,18 +132,23 @@ export const setupCalendars = async () => {
   }
 
   //draw today
+  const todayAngle =
+    ((2 * Math.PI) / daysInYear(year)) * (daysIntoYear(today, year) - 0.5) -
+    Math.PI / 2
+  const x1 = (radius - outerMargin * 0.6) * Math.cos(todayAngle)
+  const y1 = (radius - outerMargin * 0.6) * Math.sin(todayAngle)
   const now = d3
-    .arc()
-    .innerRadius(radius - outerMargin - lineWidth * activeCalendars.length)
-    .outerRadius(radius)
-    .startAngle(daysToRadians(daysIntoYear(today, year), year))
-    .endAngle(daysToRadians(daysIntoYear(tomorrow, year), year))
+    .symbol()
+    .type(d3.symbolTriangle)
+    .size(outerMargin * 1.5)
   rootGroup
     .append('path')
-    .attr('class', 'now')
-    .attr('d', <any>now)
+    .attr('d', now)
     .attr('fill', 'black')
-    .attr('opacity', 0.2)
+    .attr(
+      'transform',
+      `translate(${x1}, ${y1}) rotate(${(todayAngle * 180) / Math.PI - 90})`
+    )
 
   //draw center area
   const centerArea = d3
