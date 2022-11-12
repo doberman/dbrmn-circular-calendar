@@ -78,3 +78,12 @@ export const numberOfWeeksInYear = (year: number) => {
 export const padWithZero = (number: number) => {
   return String(number).padStart(2, '0')
 }
+
+export const currentYear = () => {
+  const today = new Date()
+  return today.getFullYear()
+}
+
+export const today = () => {
+  return new Date()
+}

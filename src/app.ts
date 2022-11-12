@@ -2,7 +2,13 @@ import * as d3 from 'd3'
 
 import { calendars } from './config'
 import { drawDays, drawMonths, drawWeeks } from './intervals'
-import { daysIntoYear, daysToRadians, daysInYear } from './utils'
+import {
+  daysIntoYear,
+  daysToRadians,
+  daysInYear,
+  today,
+  currentYear
+} from './utils'
 import { getExcludedCalendars } from './state'
 import { initIntervals } from './buttons'
 import logo from '../public/preferable-logo.svg'
@@ -25,6 +31,8 @@ export const setupCalendars = async (data: any) => {
       : (radius - outerMargin - innerMargin) / activeCalendars.length
   const baseFontSize = (radius / 400) * 100
 
+  const year = currentYear()
+
   const svg = d3.select(calendarEl).attr('viewBox', [0, 0, width, height])
 
   const zoomableGroup = svg.append('g').attr('id', 'zoomableGroup')
@@ -33,12 +41,6 @@ export const setupCalendars = async (data: any) => {
     .append('g')
     .attr('transform', `translate(${centerX},${centerY})`)
     .attr('font-size', `${baseFontSize}%`)
-
-  const today = new Date()
-  const tomorrow = new Date(today)
-  tomorrow.setDate(tomorrow.getDate() + 1)
-
-  const year = today.getFullYear()
 
   //draw background
   for (const [index, calendar] of activeCalendars.entries()) {
@@ -124,7 +126,7 @@ export const setupCalendars = async (data: any) => {
 
   //draw today
   const todayAngle =
-    ((2 * Math.PI) / daysInYear(year)) * (daysIntoYear(today, year) - 0.5) -
+    ((2 * Math.PI) / daysInYear(year)) * (daysIntoYear(today(), year) - 0.5) -
     Math.PI / 2
   const x1 = (radius - outerMargin * 0.6) * Math.cos(todayAngle)
   const y1 = (radius - outerMargin * 0.6) * Math.sin(todayAngle)

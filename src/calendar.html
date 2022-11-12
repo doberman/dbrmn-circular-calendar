@@ -64,7 +64,7 @@
         initCalendarButtons,
         initIntervals
       } from './buttons'
-      import { year } from './config'
+      import { currentYear } from './utils'
       import { getUser } from './state'
 
       const user = getUser()
@@ -74,7 +74,7 @@
 
       const init = async () => {
         initCalendarButtons()
-        const data = await fetchCalendarData(year)
+        const data = await fetchCalendarData(currentYear())
         await setupCalendars(data)
 
         document.getElementById('loading').classList.replace('flex', 'hidden')
