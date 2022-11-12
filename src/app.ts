@@ -170,7 +170,7 @@ export const setupCalendars = async () => {
     .attr('height', innerMargin * 1.45)
     .attr('x', (-innerMargin * 1.45) / 2)
     .attr('y', (-innerMargin * 1.45) / 2)
-    .attr('transform', 'rotate(-90)')
+    .attr('transform', 'rotate(-76)')
   rootGroup
     .append('text')
     .attr('id', 'centerText1')
