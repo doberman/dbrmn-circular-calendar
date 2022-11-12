@@ -6,6 +6,7 @@ import { drawDays, drawMonths, drawWeeks } from './intervals'
 import { daysIntoYear, daysToRadians } from './utils'
 import { getExcludedCalendars } from './state'
 import { initIntervals } from './buttons'
+import logo from '../public/preferable_logo.svg'
 
 export const setupCalendars = async () => {
   const calendarEl = document.getElementById('calendar')
@@ -162,18 +163,14 @@ export const setupCalendars = async () => {
   //.style('stroke-width', '0.05em')
 
   rootGroup
-    .append('text')
-    .attr('id', 'centerTextStart')
-    .append('textPath')
-    .style('letter-spacing', '-0.03em')
-    .attr('xlink:href', '#centerArea')
-    .style('font-size', '1.05em')
-    .attr('startOffset', '100%')
-    .style('text-anchor', 'end')
-    .attr('font-weight', 800)
-    .text(
-      'PREFERABLE\u00A0\u00A0FUTURE\u00A0\u00A0OF\u00A0\u00A0THE\u00A0\u00A0YEAR.'
-    )
+    .append('image')
+    .attr('id', 'centerLogo')
+    .attr('xlink:href', logo)
+    .attr('width', innerMargin * 1.5)
+    .attr('height', innerMargin * 1.5)
+    .attr('x', (-innerMargin * 1.5) / 2)
+    .attr('y', (-innerMargin * 1.5) / 2)
+    .attr('transform', 'rotate(-90)')
   rootGroup
     .append('text')
     .attr('id', 'centerText1')
@@ -232,7 +229,7 @@ const drawCenterText = (
   endDate: Date,
   color: string
 ) => {
-  d3.select('#centerTextStart').text('')
+  d3.select('#centerLogo').style('visibility', 'hidden')
   d3.select('#centerArea').style('fill', color)
   d3.select('#centerText1').text(text)
 
