@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { getUser } from './state'
 
 // kolla om user finns
@@ -12,11 +11,11 @@ if (
   setTimeout(() => location.replace('/'), 1000)
 } else {
   // annars, finns det en login-knapp
-  const slackButton = document.querySelector('#slack')! as HTMLAnchorElement
+  const slackButton = document.querySelector('#slack') as HTMLAnchorElement
   slackButton.href = `https://slack.com/openid/connect/authorize?scope=openid%20email%20profile&response_type=code&redirect_uri=${encodeURIComponent(
     `https://${process.env.SIGN_IN_REDIRECT_URL}/callback.html`
-  )}&client_id=${process.env.SIGN_IN_CLIENT_ID!}`
+  )}&client_id=${process.env.SIGN_IN_CLIENT_ID}`
 
-  const loginEl = document.querySelector('#login')! as HTMLAnchorElement
+  const loginEl = document.querySelector('#login') as HTMLAnchorElement
   loginEl.classList.replace('hidden', 'flex')
 }
