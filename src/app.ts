@@ -42,6 +42,9 @@ export const setupCalendars = async (data: any) => {
     .attr('id', 'rootGroup')
     .attr('transform', `translate(${centerX},${centerY})`)
     .attr('font-size', `${baseFontSize}%`)
+    .on('click', () => {
+      resetCenter()
+    })
   const backgroundAndHolidaysGroup = rootGroup
     .append('g')
     .attr('id', 'backgroundAndHolidaysGroup')
@@ -88,8 +91,9 @@ export const setupCalendars = async (data: any) => {
             .attr('d', <any>event)
             .attr('fill', 'white')
             .style('cursor', 'pointer')
-            .on('click', () => {
+            .on('click', (event) => {
               drawCenterText(item.summary, '', startDate, endDate, 'white')
+              event.stopPropagation()
             })
         }
       }
@@ -119,7 +123,7 @@ export const setupCalendars = async (data: any) => {
             .style('stroke', 'black')
             .style('stroke-width', '0.05em')
             .style('cursor', 'pointer')
-            .on('click', () => {
+            .on('click', (event) => {
               drawCenterText(
                 item.summary,
                 item.location,
@@ -127,6 +131,7 @@ export const setupCalendars = async (data: any) => {
                 endDate,
                 calendar.eventColor
               )
+              event.stopPropagation()
             })
         }
       }
@@ -166,7 +171,9 @@ export const setupCalendars = async (data: any) => {
     .attr('transform', 'rotate(-90)')
     .attr('fill', 'white')
     .attr('opacity', 0.7)
-
+    .style('stroke', 'black')
+    .style('stroke-width', '0.05em')
+    .style('visibility', 'hidden')
   eventsGroup
     .append('image')
     .attr('id', 'centerLogo')
@@ -235,9 +242,8 @@ const drawCenterText = (
   color: string
 ) => {
   d3.select('#centerLogo').style('visibility', 'hidden')
+  d3.select('#centerArea').style('visibility', 'visible')
   d3.select('#centerArea').style('fill', color)
-  d3.select('#centerArea').style('stroke', 'black')
-  d3.select('#centerArea').style('stroke-width', '0.05em')
   d3.select('#centerText1').text(text)
 
   let dateString = `${startDate.getDate()}/${
@@ -259,4 +265,12 @@ const drawCenterText = (
     d3.select('#centerText2').attr('dy', '1.1em')
     d3.select('#centerText3').text('')
   }
+}
+
+const resetCenter = () => {
+  d3.select('#centerText1').text('')
+  d3.select('#centerText2').text('')
+  d3.select('#centerText3').text('')
+  d3.select('#centerArea').style('visibility', 'hidden')
+  d3.select('#centerLogo').style('visibility', 'visible')
 }
