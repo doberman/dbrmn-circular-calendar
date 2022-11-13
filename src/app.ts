@@ -50,6 +50,7 @@ export const setupCalendars = async (data: any) => {
     .attr('id', 'backgroundAndHolidaysGroup')
   const intervalsGroup = rootGroup.append('g').attr('id', 'intervalsGroup')
   const eventsGroup = rootGroup.append('g').attr('id', 'eventsGroup')
+  const infoGroup = rootGroup.append('g').attr('id', 'infoGroup')
 
   //draw background
   for (const [index, calendar] of activeCalendars.entries()) {
@@ -92,9 +93,39 @@ export const setupCalendars = async (data: any) => {
             .attr('fill', 'white')
             .style('cursor', 'pointer')
             .on('click', (event) => {
-              drawCenterText(item.summary, '', startDate, endDate, 'white')
+              drawCenterText(
+                item.id,
+                item.summary,
+                '',
+                startDate,
+                endDate,
+                'white'
+              )
               event.stopPropagation()
             })
+
+          //draw event line
+          const angle =
+            ((2 * Math.PI) / daysInYear(year)) *
+              (daysIntoYear(startDate, year) - 1) -
+            Math.PI / 2
+          const x1 =
+            (radius - outerMargin - lineWidth * (index + 1)) * Math.cos(angle)
+          const y1 =
+            (radius - outerMargin - lineWidth * (index + 1)) * Math.sin(angle)
+          const x2 = innerMargin * 0.6 * Math.cos(angle)
+          const y2 = innerMargin * 0.6 * Math.sin(angle)
+          infoGroup
+            .append('line')
+            .attr('id', `line-${item.id}`)
+            .attr('class', 'eventLine')
+            .attr('x1', x1)
+            .attr('y1', y1)
+            .attr('x2', x2)
+            .attr('y2', y2)
+            .style('stroke', 'black')
+            .style('stroke-width', '0.05em')
+            .style('visibility', 'hidden')
         }
       }
     }
@@ -125,6 +156,7 @@ export const setupCalendars = async (data: any) => {
             .style('cursor', 'pointer')
             .on('click', (event) => {
               drawCenterText(
+                item.id,
                 item.summary,
                 item.location,
                 startDate,
@@ -133,6 +165,29 @@ export const setupCalendars = async (data: any) => {
               )
               event.stopPropagation()
             })
+
+          //draw event line
+          const angle =
+            ((2 * Math.PI) / daysInYear(year)) *
+              (daysIntoYear(startDate, year) - 1) -
+            Math.PI / 2
+          const x1 =
+            (radius - outerMargin - lineWidth * (index + 1)) * Math.cos(angle)
+          const y1 =
+            (radius - outerMargin - lineWidth * (index + 1)) * Math.sin(angle)
+          const x2 = innerMargin * 0.6 * Math.cos(angle)
+          const y2 = innerMargin * 0.6 * Math.sin(angle)
+          infoGroup
+            .append('line')
+            .attr('id', `line-${item.id}`)
+            .attr('class', 'eventLine')
+            .attr('x1', x1)
+            .attr('y1', y1)
+            .attr('x2', x2)
+            .attr('y2', y2)
+            .style('stroke', 'black')
+            .style('stroke-width', '0.05em')
+            .style('visibility', 'hidden')
         }
       }
     }
@@ -164,7 +219,7 @@ export const setupCalendars = async (data: any) => {
     .outerRadius(innerMargin * 0.6)
     .startAngle(0)
     .endAngle(2 * Math.PI)
-  eventsGroup
+  infoGroup
     .append('path')
     .attr('id', 'centerArea')
     .attr('d', <any>centerArea)
@@ -174,7 +229,7 @@ export const setupCalendars = async (data: any) => {
     .style('stroke', 'black')
     .style('stroke-width', '0.05em')
     .style('visibility', 'hidden')
-  eventsGroup
+  infoGroup
     .append('image')
     .attr('id', 'centerLogo')
     .attr('xlink:href', logo)
@@ -183,7 +238,7 @@ export const setupCalendars = async (data: any) => {
     .attr('x', (-innerMargin * 1.45) / 2)
     .attr('y', (-innerMargin * 1.45) / 2)
     .attr('transform', 'rotate(-76)')
-  eventsGroup
+  infoGroup
     .append('text')
     .attr('id', 'centerText1')
     .attr('d', <any>centerArea)
@@ -191,7 +246,7 @@ export const setupCalendars = async (data: any) => {
     .style('text-anchor', 'middle')
     .style('font-size', '0.7em')
     .text('')
-  eventsGroup
+  infoGroup
     .append('text')
     .attr('id', 'centerText2')
     .attr('d', <any>centerArea)
@@ -199,7 +254,7 @@ export const setupCalendars = async (data: any) => {
     .style('text-anchor', 'middle')
     .style('font-size', '0.7em')
     .text('')
-  eventsGroup
+  infoGroup
     .append('text')
     .attr('id', 'centerText3')
     .attr('d', <any>centerArea)
@@ -235,6 +290,7 @@ export const setupCalendars = async (data: any) => {
 }
 
 const drawCenterText = (
+  id: string,
   text: string,
   location: string,
   startDate: Date,
@@ -242,9 +298,11 @@ const drawCenterText = (
   color: string
 ) => {
   d3.select('#centerLogo').style('visibility', 'hidden')
+  d3.selectAll('.eventLine').style('visibility', 'hidden')
   d3.select('#centerArea').style('visibility', 'visible')
   d3.select('#centerArea').style('fill', color)
   d3.select('#centerText1').text(text)
+  d3.select(`#line-${id}`).style('visibility', 'visible')
 
   let dateString = `${startDate.getDate()}/${
     startDate.getMonth() + 1
@@ -272,5 +330,6 @@ const resetCenter = () => {
   d3.select('#centerText2').text('')
   d3.select('#centerText3').text('')
   d3.select('#centerArea').style('visibility', 'hidden')
+  d3.selectAll('.eventLine').style('visibility', 'hidden')
   d3.select('#centerLogo').style('visibility', 'visible')
 }
