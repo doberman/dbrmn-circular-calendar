@@ -88,7 +88,8 @@ export const setupCalendars = async (data: any) => {
           calendar.name,
           innerMargin,
           infoGroup,
-          'white'
+          'white',
+          false
         )
       }
     }
@@ -110,7 +111,8 @@ export const setupCalendars = async (data: any) => {
           calendar.name,
           innerMargin,
           infoGroup,
-          calendar.eventColor
+          calendar.eventColor,
+          true
         )
       }
     }
@@ -268,7 +270,8 @@ const drawEvents = (
   calendarName: string,
   innerMargin: number,
   infoGroup: any,
-  color: string
+  color: string,
+  border: boolean
 ) => {
   for (const item of calendarData.events) {
     const startDate = new Date(item.start.date)
@@ -285,6 +288,8 @@ const drawEvents = (
       .attr('id', item.id)
       .attr('d', <any>event)
       .attr('fill', color)
+      .style('stroke', 'black')
+      .style('stroke-width', border ? '0.05em' : '0')
       .style('cursor', 'pointer')
       .on('click', (event) => {
         drawCenterText(
