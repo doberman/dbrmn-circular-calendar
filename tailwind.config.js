@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./src/**/*.{html,js,ts,jsx,tsx}'],
@@ -9,8 +10,8 @@ module.exports = {
       colors: {
         'bright-orange': '#FF8100',
         'bright-red': '#FF002D',
-        'light-pink': '#F3BAFA',
-        'light-purple': '#D4B9F9',
+        'bright-pink': '#E300FF',
+        'bright-purple': '#6C00FF',
         'bright-blue': '#004EFF',
         'lime-green': '#ADFF00'
       }
