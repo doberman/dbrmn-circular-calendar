@@ -12,7 +12,6 @@ import {
 import { getExcludedCalendars } from './state'
 import { initIntervals } from './buttons'
 import logo from '../public/preferable-logo.svg'
-import { Calendar } from './types'
 
 export const setupCalendars = async (data: any) => {
   const calendarEl = document.getElementById('calendar')
@@ -24,7 +23,7 @@ export const setupCalendars = async (data: any) => {
   const outerMargin = radius * 0.12
   const innerMargin = radius * 0.2
   const activeCalendars = calendars.filter(
-    (calendar: Calendar) => !getExcludedCalendars().includes(calendar.name)
+    (calendar: any) => !getExcludedCalendars().includes(calendar.name)
   )
   const lineWidth =
     activeCalendars.length === 0
@@ -77,19 +76,57 @@ export const setupCalendars = async (data: any) => {
         (el: { key: string }) => el.key === calendar.holidayId
       )
       if (calendarData) {
-        drawEvents(
-          calendarData,
-          radius,
-          outerMargin,
-          lineWidth,
-          index,
-          year,
-          backgroundAndHolidaysGroup,
-          calendar.name,
-          innerMargin,
-          infoGroup,
-          'white'
-        )
+        for (const item of calendarData.events) {
+          const startDate = new Date(item.start.date)
+          const endDate = new Date(item.end.date)
+          const event = d3
+            .arc()
+            .innerRadius(radius - outerMargin - lineWidth * index)
+            .outerRadius(radius - outerMargin - lineWidth * (index + 1))
+            .startAngle(daysToRadians(daysIntoYear(startDate, year), year))
+            .endAngle(daysToRadians(daysIntoYear(endDate, year), year))
+          backgroundAndHolidaysGroup
+            .append('path')
+            .attr('class', `cal-${calendar.name}`)
+            .attr('id', item.id)
+            .attr('d', <any>event)
+            .attr('fill', 'white')
+            .style('cursor', 'pointer')
+            .on('click', (event) => {
+              drawCenterText(
+                item.id,
+                item.summary,
+                '',
+                startDate,
+                endDate,
+                'white'
+              )
+              event.stopPropagation()
+            })
+
+          //draw event line
+          const angle =
+            ((2 * Math.PI) / daysInYear(year)) *
+              (daysIntoYear(startDate, year) - 1) -
+            Math.PI / 2
+          const x1 =
+            (radius - outerMargin - lineWidth * (index + 1)) * Math.cos(angle)
+          const y1 =
+            (radius - outerMargin - lineWidth * (index + 1)) * Math.sin(angle)
+          const x2 = innerMargin * 0.6 * Math.cos(angle)
+          const y2 = innerMargin * 0.6 * Math.sin(angle)
+          infoGroup
+            .append('line')
+            .attr('id', `line-${item.id}`)
+            .attr('class', 'eventLine')
+            .attr('x1', x1)
+            .attr('y1', y1)
+            .attr('x2', x2)
+            .attr('y2', y2)
+            .style('stroke', 'black')
+            .style('stroke-width', '0.05em')
+            .style('visibility', 'hidden')
+        }
       }
     }
 
@@ -99,19 +136,59 @@ export const setupCalendars = async (data: any) => {
         (el: { key: string }) => el.key === calendar.calendarId
       )
       if (calendarData) {
-        drawEvents(
-          calendarData,
-          radius,
-          outerMargin,
-          lineWidth,
-          index,
-          year,
-          eventsGroup,
-          calendar.name,
-          innerMargin,
-          infoGroup,
-          calendar.eventColor
-        )
+        for (const item of calendarData.events) {
+          const startDate = new Date(item.start.date)
+          const endDate = new Date(item.end.date)
+          const event = d3
+            .arc()
+            .innerRadius(radius - outerMargin - lineWidth * index)
+            .outerRadius(radius - outerMargin - lineWidth * (index + 1))
+            .startAngle(daysToRadians(daysIntoYear(startDate, year), year))
+            .endAngle(daysToRadians(daysIntoYear(endDate, year), year))
+          eventsGroup
+            .append('path')
+            .attr('class', `cal-${calendar.name}`)
+            .attr('id', item.id)
+            .attr('d', <any>event)
+            .attr('fill', calendar.eventColor)
+            .style('stroke', 'black')
+            .style('stroke-width', '0.05em')
+            .style('cursor', 'pointer')
+            .on('click', (event) => {
+              drawCenterText(
+                item.id,
+                item.summary,
+                item.location,
+                startDate,
+                endDate,
+                calendar.eventColor
+              )
+              event.stopPropagation()
+            })
+
+          //draw event line
+          const angle =
+            ((2 * Math.PI) / daysInYear(year)) *
+              (daysIntoYear(startDate, year) - 1) -
+            Math.PI / 2
+          const x1 =
+            (radius - outerMargin - lineWidth * (index + 1)) * Math.cos(angle)
+          const y1 =
+            (radius - outerMargin - lineWidth * (index + 1)) * Math.sin(angle)
+          const x2 = innerMargin * 0.6 * Math.cos(angle)
+          const y2 = innerMargin * 0.6 * Math.sin(angle)
+          infoGroup
+            .append('line')
+            .attr('id', `line-${item.id}`)
+            .attr('class', 'eventLine')
+            .attr('x1', x1)
+            .attr('y1', y1)
+            .attr('x2', x2)
+            .attr('y2', y2)
+            .style('stroke', 'black')
+            .style('stroke-width', '0.05em')
+            .style('visibility', 'hidden')
+        }
       }
     }
   }
@@ -255,69 +332,4 @@ const resetCenter = () => {
   d3.select('#centerArea').style('visibility', 'hidden')
   d3.selectAll('.eventLine').style('visibility', 'hidden')
   d3.select('#centerLogo').style('visibility', 'visible')
-}
-
-const drawEvents = (
-  calendarData: any,
-  radius: number,
-  outerMargin: number,
-  lineWidth: number,
-  index: number,
-  year: number,
-  eventsGroup: any,
-  calendarName: string,
-  innerMargin: number,
-  infoGroup: any,
-  color: string
-) => {
-  for (const item of calendarData.events) {
-    const startDate = new Date(item.start.date)
-    const endDate = new Date(item.end.date)
-    const event = d3
-      .arc()
-      .innerRadius(radius - outerMargin - lineWidth * index)
-      .outerRadius(radius - outerMargin - lineWidth * (index + 1))
-      .startAngle(daysToRadians(daysIntoYear(startDate, year), year))
-      .endAngle(daysToRadians(daysIntoYear(endDate, year), year))
-    eventsGroup
-      .append('path')
-      .attr('class', `cal-${calendarName}`)
-      .attr('id', item.id)
-      .attr('d', <any>event)
-      .attr('fill', color)
-      .style('cursor', 'pointer')
-      .on('click', (event) => {
-        drawCenterText(
-          item.id,
-          item.summary,
-          item.location,
-          startDate,
-          endDate,
-          color
-        )
-        event.stopPropagation()
-      })
-
-    //draw event line
-    const angle =
-      ((2 * Math.PI) / daysInYear(year)) * (daysIntoYear(startDate, year) - 1) -
-      Math.PI / 2
-    const x1 =
-      (radius - outerMargin - lineWidth * (index + 1)) * Math.cos(angle)
-    const y1 =
-      (radius - outerMargin - lineWidth * (index + 1)) * Math.sin(angle)
-    const x2 = innerMargin * 0.6 * Math.cos(angle)
-    const y2 = innerMargin * 0.6 * Math.sin(angle)
-    infoGroup
-      .append('line')
-      .attr('id', `line-${item.id}`)
-      .attr('class', 'eventLine')
-      .attr('x1', x1)
-      .attr('y1', y1)
-      .attr('x2', x2)
-      .attr('y2', y2)
-      .style('stroke', 'black')
-      .style('stroke-width', '0.05em')
-      .style('visibility', 'hidden')
-  }
 }
