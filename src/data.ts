@@ -12,8 +12,7 @@ export const fetchCalendarData = async (year: number) => {
     return cache
   } else {
     //https://developers.google.com/calendar/api/v3/reference/events/list
-    const url =
-      'https://europe-west1-dbrmn-circular-calendar.cloudfunctions.net/events'
+    const url = `https://europe-west1-dbrmn-circular-calendar.cloudfunctions.net/events?year=${year}`
 
     const response = await fetch(url)
     if (!response.ok) {
