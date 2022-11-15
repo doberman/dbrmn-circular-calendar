@@ -83,10 +83,15 @@ export const events = functions.region('europe-west1').https.onRequest(
       ]
     })
     console.log('got auth', auth)
+    const year = req.query.year || 2022
     const data = await Promise.all(
       calendars.map(async (calendar) => {
         functions.logger.log('id', calendar.id)
-        const res = await fetchCalendarData(auth, calendar.id as string, 2022)
+        const res = await fetchCalendarData(
+          auth,
+          calendar.id as string,
+          year as number
+        )
         return { key: calendar.key, events: res }
       })
     )

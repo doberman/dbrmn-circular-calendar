@@ -11,49 +11,51 @@
 
   <body class="hidden">
     <div class="flex flex-col w-screen h-[90vh] md:h-screen">
-      <div
-        id="filter"
-        class="flex flex-row justify-between m-3 text-sm md:text-base">
-        <div class="grid grid-cols-2 lg:flex lg:flex-row lg:space-x-2">
-          <button id="nordic" class="p-2 btn-calendar before:bg-bright-orange">
+      <div id="filter" class="flex flex-row justify-between m-6">
+        <div
+          class="flex flex-col max-md:space-y-5 md:grid md:grid-cols-2 md:max-xl:gap-5 xl:flex xl:flex-row xl:space-x-5">
+          <button id="nordic" class="btn-calendar before:bg-bright-orange">
             Nordic
           </button>
-          <button id="stockholm" class="p-2 btn-calendar before:bg-bright-red">
+          <button id="stockholm" class="btn-calendar before:bg-bright-red">
             Stockholm
           </button>
-          <button
-            id="copenhagen"
-            class="p-2 btn-calendar before:bg-bright-pink">
+          <button id="copenhagen" class="btn-calendar before:bg-bright-pink">
             Copenhagen
           </button>
-          <button id="oslo" class="p-2 btn-calendar before:bg-bright-purple">
+          <button id="oslo" class="btn-calendar before:bg-bright-purple">
             Oslo
           </button>
-          <button id="helsinki" class="p-2 btn-calendar before:bg-bright-blue">
+          <button id="helsinki" class="btn-calendar before:bg-bright-blue">
             Helsinki
           </button>
-          <button id="ey" class="p-2 btn-calendar before:bg-lime-green">
-            EY
-          </button>
+          <button id="ey" class="btn-calendar before:bg-lime-green">EY</button>
         </div>
-        <div class="flex flex-col lg:flex-row lg:space-x-2">
-          <button id="days" class="p-2 flex items-center">
+        <div
+          class="flex flex-col max-xl:space-y-5 xl:flex xl:flex-row xl:space-x-5">
+          <button id="year_prev" class="btn-year"></button>
+          <button id="year_now" class="btn-year"></button>
+          <button id="year_next" class="btn-year"></button>
+        </div>
+
+        <div class="flex flex-col max-xl:space-y-5 xl:flex-row xl:space-x-5">
+          <button id="days" class="flex items-center">
             <img
-              class="mr-[15px]"
+              class="mr-[12px]"
               width="27px"
               alt="days"
               src="../public/days-icon.svg" /><span>Days</span>
           </button>
-          <button id="weeks" class="p-2 flex items-center">
+          <button id="weeks" class="flex items-center">
             <img
-              class="mr-[15px]"
+              class="mr-[12px]"
               width="27px"
               alt="weeks"
               src="../public/weeks-icon.svg" /><span>Weeks</span>
           </button>
-          <button id="months" class="p-2 flex items-center">
+          <button id="months" class="flex items-center">
             <img
-              class="mr-[15px]"
+              class="mr-[12px]"
               width="27px"
               alt="months"
               src="../public/months-icon.svg" /><span>Months</span>
@@ -72,10 +74,12 @@
         toggleInterval,
         toggleCalendar,
         initCalendarButtons,
-        initIntervals
+        initIntervals,
+        initYear,
+        selectYear
       } from './buttons'
       import { currentYear } from './utils'
-      import { getUser } from './state'
+      import { getUser, getYear } from './state'
 
       const user = getUser()
       const body = document.querySelector('body')
@@ -84,7 +88,8 @@
 
       const init = async () => {
         initCalendarButtons()
-        const data = await fetchCalendarData(currentYear())
+        initYear()
+        const data = await fetchCalendarData(getYear())
         await setupCalendars(data)
 
         document.getElementById('loading').classList.replace('flex', 'hidden')
@@ -102,6 +107,22 @@
         document
           .getElementById('months')
           .addEventListener('click', () => toggleInterval('months'))
+
+        //Year click handlers
+        const yearPrev = document.getElementById('year_prev')
+        yearPrev.addEventListener('click', () =>
+          selectYear(parseInt(yearPrev.textContent))
+        )
+
+        const yearNow = document.getElementById('year_now')
+        yearNow.addEventListener('click', () =>
+          selectYear(parseInt(yearNow.textContent))
+        )
+
+        const yearNext = document.getElementById('year_next')
+        yearNext.addEventListener('click', () =>
+          selectYear(parseInt(yearNext.textContent))
+        )
 
         //Calendar click handlers
         document
