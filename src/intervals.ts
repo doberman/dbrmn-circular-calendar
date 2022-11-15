@@ -168,11 +168,7 @@ export const drawWeeks = (
     .append('path')
     .attr('id', (_d: any, i: number) => `${name}_${i}`)
     .attr('d', (_d: any, i: number) => labelLines[i])
-    .attr('stroke', '#808080')
-    .attr('stroke-width', '0.03em')
-    .style('opacity', (_d: any, i: number) =>
-      i === labelLines.length - 1 ? 0 : 1
-    ) //hide the last week since its into the next year
+    .style('opacity', 0)
     .attr('class', `interval-${name}`)
     .attr('transform', `rotate(${weekOneOffset})`)
   for (let i = 0; i <= labelLines.length; i++) {
