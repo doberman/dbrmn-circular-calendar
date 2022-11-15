@@ -33,9 +33,9 @@
         </div>
         <div
           class="flex flex-col max-xl:space-y-5 xl:flex xl:flex-row xl:space-x-5">
-          <button id="year_prev" class="btn-year">2021</button>
-          <button id="year_now" class="btn-year">2022</button>
-          <button id="year_next" class="btn-year">2023</button>
+          <button id="year_prev" class="btn-year"></button>
+          <button id="year_now" class="btn-year"></button>
+          <button id="year_next" class="btn-year"></button>
         </div>
 
         <div class="flex flex-col max-xl:space-y-5 xl:flex-row xl:space-x-5">
@@ -74,10 +74,12 @@
         toggleInterval,
         toggleCalendar,
         initCalendarButtons,
-        initIntervals
+        initIntervals,
+        initYear,
+        selectYear
       } from './buttons'
       import { currentYear } from './utils'
-      import { getUser } from './state'
+      import { getUser, getYear } from './state'
 
       const user = getUser()
       const body = document.querySelector('body')
@@ -86,7 +88,8 @@
 
       const init = async () => {
         initCalendarButtons()
-        const data = await fetchCalendarData(currentYear())
+        initYear()
+        const data = await fetchCalendarData(getYear())
         await setupCalendars(data)
 
         document.getElementById('loading').classList.replace('flex', 'hidden')
@@ -104,6 +107,22 @@
         document
           .getElementById('months')
           .addEventListener('click', () => toggleInterval('months'))
+
+        //Year click handlers
+        const yearPrev = document.getElementById('year_prev')
+        yearPrev.addEventListener('click', () =>
+          selectYear(parseInt(yearPrev.textContent))
+        )
+
+        const yearNow = document.getElementById('year_now')
+        yearNow.addEventListener('click', () =>
+          selectYear(parseInt(yearNow.textContent))
+        )
+
+        const yearNext = document.getElementById('year_next')
+        yearNext.addEventListener('click', () =>
+          selectYear(parseInt(yearNext.textContent))
+        )
 
         //Calendar click handlers
         document

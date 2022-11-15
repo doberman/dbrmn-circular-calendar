@@ -5,8 +5,8 @@ import {
   getLocalData
 } from './state'
 
-export const fetchCalendarData = async () => {
-  const cache = getCalendarData()
+export const fetchCalendarData = async (year: number) => {
+  const cache = getCalendarData(year)
 
   if (cache) {
     return cache
@@ -22,12 +22,17 @@ export const fetchCalendarData = async () => {
     }
     const data = await response.json()
     console.log(data)
-    setCalendarData(data)
-    setLocalData(data)
+    setCalendarData(data, year)
+    setLocalData(data, year)
     return data
   }
 }
 
-export const fetchLocalData = () => {
-  return getLocalData()
+export const fetchLocalData = async (year: number) => {
+  const localData = getLocalData(year)
+  if (localData) {
+    return localData
+  } else {
+    return await fetchCalendarData(year)
+  }
 }
