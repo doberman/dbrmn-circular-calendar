@@ -16,9 +16,14 @@ import { Calendar } from './types'
 
 export const setupCalendars = async (data: any) => {
   const calendarEl = document.getElementById('calendar')
-  const width = calendarEl?.clientWidth || 600
-  const height = calendarEl?.clientHeight || 600
-  const radius = Math.min(width, height) / 2 - 10
+  const filterEl = document.getElementById('filter')
+  const windowMargin = 0.94
+  const width = window.innerWidth - windowMargin
+  const height =
+    window.innerHeight - (filterEl?.clientHeight || 0) * windowMargin
+  const radius = (Math.min(width, height) / 2) * windowMargin
+  console.log(width, height, radius)
+
   const centerX = width / 2
   const centerY = height / 2
   const outerMargin = radius * 0.12
