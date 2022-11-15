@@ -146,7 +146,7 @@ export const setupCalendars = async (data: any) => {
   const centerArea = d3
     .arc()
     .innerRadius(0)
-    .outerRadius(innerMargin * 0.6)
+    .outerRadius(innerMargin * 0.72)
     .startAngle(0)
     .endAngle(2 * Math.PI)
   infoGroup
@@ -234,11 +234,11 @@ const drawCenterText = (
   d3.select('#centerText1').text(text)
   d3.select(`#line-${id}`).style('visibility', 'visible')
 
-  let dateString = `${startDate.getDate()}/${
+  let dateString = `${startDate.getDate()}.${
     startDate.getMonth() + 1
-  } - ${endDate.getDate()}/${endDate.getMonth() + 1}`
+  } - ${endDate.getDate()}.${endDate.getMonth() + 1}`
   if (endDate.valueOf() - startDate.valueOf() <= 24 * 60 * 60 * 1000) {
-    dateString = `${startDate.getDate()}/${startDate.getMonth() + 1}`
+    dateString = `${startDate.getDate()}.${startDate.getMonth() + 1}`
   }
 
   if (location) {
@@ -296,7 +296,7 @@ const drawEvents = (
       .style('stroke', 'black')
       .style('stroke-width', border ? '0.05em' : '0')
       .style('cursor', 'pointer')
-      .on('click', (event) => {
+      .on('click', (event: any) => {
         drawCenterText(
           item.id,
           item.summary,
@@ -316,8 +316,8 @@ const drawEvents = (
       (radius - outerMargin - lineWidth * (index + 1)) * Math.cos(angle)
     const y1 =
       (radius - outerMargin - lineWidth * (index + 1)) * Math.sin(angle)
-    const x2 = innerMargin * 0.6 * Math.cos(angle)
-    const y2 = innerMargin * 0.6 * Math.sin(angle)
+    const x2 = innerMargin * 0.72 * Math.cos(angle)
+    const y2 = innerMargin * 0.72 * Math.sin(angle)
     infoGroup
       .append('line')
       .attr('id', `line-${item.id}`)
