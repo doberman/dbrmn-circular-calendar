@@ -17,7 +17,7 @@ import { Calendar } from './types'
 export const setupCalendars = async (data: any) => {
   const calendarEl = document.getElementById('calendar')
   const filterEl = document.getElementById('filter')
-  const windowMargin = 0.94
+  const windowMargin = 0.92
   const width = window.innerWidth - windowMargin
   const height =
     window.innerHeight - (filterEl?.clientHeight || 0) * windowMargin
