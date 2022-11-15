@@ -1,7 +1,7 @@
 import jwtDecode from 'jwt-decode'
 
-import { User } from './models'
 import { setUser } from './state'
+import { User } from './types'
 
 const code = window.location.search.substring(1)
 console.log(code, 'code')
@@ -12,7 +12,7 @@ if (code) {
       code,
       `client_id=${process.env.SIGN_IN_CLIENT_ID}`,
       `client_secret=${process.env.SIGN_IN_CLIENT_SECRET}`,
-      `grant_type=authorization_code`,
+      'grant_type=authorization_code',
       `redirect_uri=${encodeURIComponent(
         `https://${process.env.SIGN_IN_REDIRECT_URL}/callback.html`
       )}`
@@ -30,7 +30,7 @@ if (code) {
       const { id_token } = json
       const decoded = jwtDecode(id_token) as User
       setUser(decoded)
-      location.replace('calendar.html')
+      location.replace('/')
     })
     .catch((err) => console.error(err))
 } else {

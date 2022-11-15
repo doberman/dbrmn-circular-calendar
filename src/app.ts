@@ -1,175 +1,191 @@
 import * as d3 from 'd3'
 
-import { fetchCalendarData } from './calendar'
 import { calendars } from './config'
 import { drawDays, drawMonths, drawWeeks } from './intervals'
-import { daysIntoYear, daysToRadians } from './utils'
+import {
+  daysIntoYear,
+  daysToRadians,
+  daysInYear,
+  today,
+  currentYear
+} from './utils'
+import { getExcludedCalendars } from './state'
+import { initIntervals } from './buttons'
+import logo from '../public/preferable-logo.svg'
+import { Calendar } from './types'
 
-export const setupCalendars = async (calendarEl: HTMLElement) => {
-  const width = calendarEl?.clientWidth || 600
-  const height = calendarEl?.clientHeight || 600
-  const radius = Math.min(width, height) / 2 - 10
+export const setupCalendars = async (data: any) => {
+  const calendarEl = document.getElementById('calendar')
+  const filterEl = document.getElementById('filter')
+  const windowMargin = 0.92
+  const width = window.innerWidth - windowMargin
+  const height =
+    window.innerHeight - (filterEl?.clientHeight || 0) * windowMargin
+  const radius = (Math.min(width, height) / 2) * windowMargin
+  console.log(width, height, radius)
+
   const centerX = width / 2
   const centerY = height / 2
-  const outerMargin = (radius / calendars.length) * 0.8
-  const innerMargin = (radius / calendars.length) * 1.2
-  const lineWidth = (radius - outerMargin - innerMargin) / calendars.length
+  const outerMargin = radius * 0.12
+  const innerMargin = radius * 0.2
+  const activeCalendars = calendars.filter(
+    (calendar: Calendar) => !getExcludedCalendars().includes(calendar.name)
+  )
+  const lineWidth =
+    activeCalendars.length === 0
+      ? radius - outerMargin - innerMargin
+      : (radius - outerMargin - innerMargin) / activeCalendars.length
   const baseFontSize = (radius / 400) * 100
+
+  const year = currentYear()
 
   const svg = d3.select(calendarEl).attr('viewBox', [0, 0, width, height])
 
-  const og = svg.append('g')
-
-  const g = og
+  //create groups for layering
+  const zoomableGroup = svg.append('g').attr('id', 'zoomableGroup')
+  const rootGroup = zoomableGroup
     .append('g')
+    .attr('id', 'rootGroup')
     .attr('transform', `translate(${centerX},${centerY})`)
     .attr('font-size', `${baseFontSize}%`)
-
-  const today = new Date()
-  const tomorrow = new Date(today)
-  tomorrow.setDate(tomorrow.getDate() + 1)
-
-  const year = today.getFullYear()
-
-  const data = await fetchCalendarData(year)
+    .on('click', () => {
+      resetCenter()
+    })
+  const backgroundAndHolidaysGroup = rootGroup
+    .append('g')
+    .attr('id', 'backgroundAndHolidaysGroup')
+  const intervalsGroup = rootGroup.append('g').attr('id', 'intervalsGroup')
+  const eventsGroup = rootGroup.append('g').attr('id', 'eventsGroup')
+  const infoGroup = rootGroup.append('g').attr('id', 'infoGroup')
 
   //draw background
-  for (const [index, calendar] of calendars.entries()) {
+  for (const [index, calendar] of activeCalendars.entries()) {
+    if (getExcludedCalendars().includes(calendar.name)) {
+      break
+    }
     const temp = d3
       .arc()
       .innerRadius(radius - outerMargin - lineWidth * index)
       .outerRadius(radius - outerMargin - lineWidth * (index + 1))
       .startAngle(0)
       .endAngle(2 * Math.PI)
-    g.append('path')
+    backgroundAndHolidaysGroup
+      .append('path')
       .attr('class', `cal-${calendar.name}`)
       .attr('d', <any>temp)
       .attr('fill', calendar.color)
       .attr('opacity', 0.5)
 
-    //draw events
-    if (calendar.calendarId) {
-      console.log(data, calendar.calendarId)
-      const calendarData = data.find(
-        (el: { key: string }) => el.key == calendar.calendarId
-      )
-      if (calendarData) {
-        console.log(calendarData)
-        for (const item of calendarData.events) {
-          console.log(item.id, item.summary, item.start, item.end)
-          const startDate = new Date(item.start.date)
-          const endDate = new Date(item.end.date)
-          const event = d3
-            .arc()
-            .innerRadius(radius - outerMargin - lineWidth * index)
-            .outerRadius(radius - outerMargin - lineWidth * (index + 1))
-            .startAngle(daysToRadians(daysIntoYear(startDate, year), year))
-            .endAngle(daysToRadians(daysIntoYear(endDate, year), year))
-          g.append('path')
-            .attr('class', `cal-${calendar.name}`)
-            .attr('id', item.id)
-            .attr('d', <any>event)
-            .attr('fill', calendar.eventColor)
-            .style('cursor', 'pointer')
-            .on('click', () => {
-              drawCenterText(
-                item.summary,
-                item.location,
-                startDate,
-                endDate,
-                calendar.eventColor
-              )
-            })
-        }
-      }
-    }
     //draw holidays
     if (calendar.holidayId) {
-      console.log(data, calendar.holidayId)
       const calendarData = data.find(
-        (el: { key: string }) => el.key == calendar.holidayId
+        (el: { key: string }) => el.key === calendar.holidayId
       )
       if (calendarData) {
-        console.log(calendarData)
-        for (const item of calendarData.events) {
-          console.log(item.id, item.summary, item.start, item.end)
-          const startDate = new Date(item.start.date)
-          const endDate = new Date(item.end.date)
-          const event = d3
-            .arc()
-            .innerRadius(radius - outerMargin - lineWidth * index)
-            .outerRadius(radius - outerMargin - lineWidth * (index + 1))
-            .startAngle(daysToRadians(daysIntoYear(startDate, year), year))
-            .endAngle(daysToRadians(daysIntoYear(endDate, year), year))
-          g.append('path')
-            .attr('class', `cal-${calendar.name}`)
-            .attr('id', item.id)
-            .attr('d', <any>event)
-            .attr('fill', 'white')
-            .style('cursor', 'pointer')
-            .on('click', () => {
-              drawCenterText(item.summary, '', startDate, endDate, 'white')
-            })
-        }
+        drawEvents(
+          calendarData,
+          radius,
+          outerMargin,
+          lineWidth,
+          index,
+          year,
+          backgroundAndHolidaysGroup,
+          calendar.name,
+          innerMargin,
+          infoGroup,
+          'white',
+          false
+        )
+      }
+    }
+
+    //draw events
+    if (calendar.calendarId) {
+      const calendarData = data.find(
+        (el: { key: string }) => el.key === calendar.calendarId
+      )
+      if (calendarData) {
+        drawEvents(
+          calendarData,
+          radius,
+          outerMargin,
+          lineWidth,
+          index,
+          year,
+          eventsGroup,
+          calendar.name,
+          innerMargin,
+          infoGroup,
+          calendar.eventColor,
+          true
+        )
       }
     }
   }
 
   //draw today
+  const todayAngle =
+    ((2 * Math.PI) / daysInYear(year)) * (daysIntoYear(today(), year) - 0.5) -
+    Math.PI / 2
+  const x1 = (radius - outerMargin * 0.6) * Math.cos(todayAngle)
+  const y1 = (radius - outerMargin * 0.6) * Math.sin(todayAngle)
   const now = d3
-    .arc()
-    .innerRadius(radius - outerMargin - lineWidth * calendars.length)
-    .outerRadius(radius)
-    .startAngle(daysToRadians(daysIntoYear(today, year), year))
-    .endAngle(daysToRadians(daysIntoYear(tomorrow, year), year))
-  g.append('path')
-    .attr('class', 'now')
-    .attr('d', <any>now)
+    .symbol()
+    .type(d3.symbolTriangle)
+    .size(outerMargin * 1.5)
+  intervalsGroup
+    .append('path')
+    .attr('d', now)
     .attr('fill', 'black')
-    .attr('opacity', 0.2)
+    .attr(
+      'transform',
+      `translate(${x1}, ${y1}) rotate(${(todayAngle * 180) / Math.PI - 90})`
+    )
 
   //draw center area
   const centerArea = d3
     .arc()
     .innerRadius(0)
-    .outerRadius(radius - innerMargin * 1.1 - lineWidth * calendars.length)
+    .outerRadius(innerMargin * 0.72)
     .startAngle(0)
     .endAngle(2 * Math.PI)
-  g.append('path')
+  infoGroup
+    .append('path')
     .attr('id', 'centerArea')
     .attr('d', <any>centerArea)
     .attr('transform', 'rotate(-90)')
     .attr('fill', 'white')
-    .attr('opacity', 0.8)
-  //.style('stroke', 'black')
-  //.style('stroke-width', '0.05em')
-
-  g.append('text')
-    .attr('id', 'centerTextStart')
-    .attr('dy', '-0.1em')
-    .append('textPath')
-    .style('letter-spacing', '-0.025em')
-    .attr('xlink:href', '#centerArea')
-    .style('font-size', '1em')
-    .attr('startOffset', '100%')
-    .style('text-anchor', 'end')
-    .attr('font-weight', 800)
-    .text('PREFERABLE FUTURE OF THE YEAR.')
-  g.append('text')
+    .attr('opacity', 0.7)
+    .style('stroke', 'black')
+    .style('stroke-width', '0.05em')
+    .style('visibility', 'hidden')
+  infoGroup
+    .append('image')
+    .attr('id', 'centerLogo')
+    .attr('xlink:href', logo)
+    .attr('width', innerMargin * 1.45)
+    .attr('height', innerMargin * 1.45)
+    .attr('x', (-innerMargin * 1.45) / 2)
+    .attr('y', (-innerMargin * 1.45) / 2)
+    .attr('transform', 'rotate(-76)')
+  infoGroup
+    .append('text')
     .attr('id', 'centerText1')
     .attr('d', <any>centerArea)
     .attr('dy', '-1.0em')
     .style('text-anchor', 'middle')
     .style('font-size', '0.7em')
     .text('')
-  g.append('text')
+  infoGroup
+    .append('text')
     .attr('id', 'centerText2')
     .attr('d', <any>centerArea)
     .attr('dy', '0.3em')
     .style('text-anchor', 'middle')
     .style('font-size', '0.7em')
     .text('')
-  g.append('text')
+  infoGroup
+    .append('text')
     .attr('id', 'centerText3')
     .attr('d', <any>centerArea)
     .attr('dy', '1.6em')
@@ -177,20 +193,15 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
     .style('font-size', '0.7em')
     .text()
 
-  drawDays(year, g, radius, lineWidth, calendars.length, outerMargin)
-  drawWeeks(
-    year,
-    g,
-    radius,
-    lineWidth,
-    calendars.length,
-    outerMargin,
-    baseFontSize
-  )
-  drawMonths(year, g, radius, lineWidth, calendars.length, outerMargin)
+  //draw intervals
+  drawDays(year, intervalsGroup, radius, innerMargin, outerMargin)
+  drawWeeks(year, intervalsGroup, radius, innerMargin, outerMargin)
+  drawMonths(year, intervalsGroup, radius, innerMargin)
+  initIntervals()
 
+  //handle zoom
   const zoomed = ({ transform }) => {
-    og.attr(
+    zoomableGroup.attr(
       'transform',
       `translate(${transform.x},${transform.y}) scale(${transform.k})`
     )
@@ -209,21 +220,25 @@ export const setupCalendars = async (calendarEl: HTMLElement) => {
 }
 
 const drawCenterText = (
+  id: string,
   text: string,
   location: string,
   startDate: Date,
   endDate: Date,
   color: string
 ) => {
-  d3.select('#centerTextStart').text('')
+  d3.select('#centerLogo').style('visibility', 'hidden')
+  d3.selectAll('.eventLine').style('visibility', 'hidden')
+  d3.select('#centerArea').style('visibility', 'visible')
   d3.select('#centerArea').style('fill', color)
   d3.select('#centerText1').text(text)
+  d3.select(`#line-${id}`).style('visibility', 'visible')
 
-  let dateString = `${startDate.getDate()}/${
+  let dateString = `${startDate.getDate()}.${
     startDate.getMonth() + 1
-  } - ${endDate.getDate()}/${endDate.getMonth() + 1}`
+  } - ${endDate.getDate()}.${endDate.getMonth() + 1}`
   if (endDate.valueOf() - startDate.valueOf() <= 24 * 60 * 60 * 1000) {
-    dateString = `${startDate.getDate()}/${startDate.getMonth() + 1}`
+    dateString = `${startDate.getDate()}.${startDate.getMonth() + 1}`
   }
 
   if (location) {
@@ -240,28 +255,79 @@ const drawCenterText = (
   }
 }
 
-export const toggleInterval = (name: string) => {
-  const disabledTextColor = 'text-gray-400'
-  const opacity = 'opacity-50'
-  const element = d3.selectAll(`.interval-${name}`)
-  const visibility = element.style('visibility')
-  visibility == 'visible'
-    ? element.style('visibility', 'hidden')
-    : element.style('visibility', 'visible')
-  document.getElementById(name)?.classList.toggle(disabledTextColor)
-  document.getElementById(name)?.classList.toggle(opacity)
+const resetCenter = () => {
+  d3.select('#centerText1').text('')
+  d3.select('#centerText2').text('')
+  d3.select('#centerText3').text('')
+  d3.select('#centerArea').style('visibility', 'hidden')
+  d3.selectAll('.eventLine').style('visibility', 'hidden')
+  d3.select('#centerLogo').style('visibility', 'visible')
 }
 
-export const toggleCalendar = (name: string) => {
-  const disabledTextColor = 'text-gray-400'
-  const opacity = 'opacity-50'
-  const border = 'before:border-0'
-  const element = d3.selectAll(`.cal-${name}`)
-  const visibility = element.style('visibility')
-  visibility == 'visible'
-    ? element.style('visibility', 'hidden')
-    : element.style('visibility', 'visible')
-  document.getElementById(name)?.classList.toggle(disabledTextColor)
-  document.getElementById(name)?.classList.toggle(opacity)
-  document.getElementById(name)?.classList.toggle(border)
+const drawEvents = (
+  calendarData: any,
+  radius: number,
+  outerMargin: number,
+  lineWidth: number,
+  index: number,
+  year: number,
+  eventsGroup: any,
+  calendarName: string,
+  innerMargin: number,
+  infoGroup: any,
+  color: string,
+  border: boolean
+) => {
+  for (const item of calendarData.events) {
+    const startDate = new Date(item.start.date)
+    const endDate = new Date(item.end.date)
+    const event = d3
+      .arc()
+      .innerRadius(radius - outerMargin - lineWidth * index)
+      .outerRadius(radius - outerMargin - lineWidth * (index + 1))
+      .startAngle(daysToRadians(daysIntoYear(startDate, year), year))
+      .endAngle(daysToRadians(daysIntoYear(endDate, year), year))
+    eventsGroup
+      .append('path')
+      .attr('class', `cal-${calendarName}`)
+      .attr('id', item.id)
+      .attr('d', <any>event)
+      .attr('fill', color)
+      .style('stroke', 'black')
+      .style('stroke-width', border ? '0.05em' : '0')
+      .style('cursor', 'pointer')
+      .on('click', (event: any) => {
+        drawCenterText(
+          item.id,
+          item.summary,
+          item.location,
+          startDate,
+          endDate,
+          color
+        )
+        event.stopPropagation()
+      })
+
+    //draw event line
+    const angle =
+      ((2 * Math.PI) / daysInYear(year)) * (daysIntoYear(startDate, year) - 1) -
+      Math.PI / 2
+    const x1 =
+      (radius - outerMargin - lineWidth * (index + 1)) * Math.cos(angle)
+    const y1 =
+      (radius - outerMargin - lineWidth * (index + 1)) * Math.sin(angle)
+    const x2 = innerMargin * 0.72 * Math.cos(angle)
+    const y2 = innerMargin * 0.72 * Math.sin(angle)
+    infoGroup
+      .append('line')
+      .attr('id', `line-${item.id}`)
+      .attr('class', 'eventLine')
+      .attr('x1', x1)
+      .attr('y1', y1)
+      .attr('x2', x2)
+      .attr('y2', y2)
+      .style('stroke', 'black')
+      .style('stroke-width', '0.05em')
+      .style('visibility', 'hidden')
+  }
 }

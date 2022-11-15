@@ -1,5 +1,5 @@
 export const daysIntoYear = (date: Date, year: number) => {
-  if (date.getFullYear() == year) {
+  if (date.getFullYear() === year) {
     return (
       (Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) -
         Date.UTC(date.getFullYear(), 0, 0)) /
@@ -16,7 +16,7 @@ export const daysIntoYear = (date: Date, year: number) => {
 }
 
 export const daysInYear = (year: number) => {
-  return (year % 4 === 0 && year % 100 > 0) || year % 400 == 0 ? 366 : 365
+  return (year % 4 === 0 && year % 100 > 0) || year % 400 === 0 ? 366 : 365
 }
 
 export const monthName = (month: number) => {
@@ -68,7 +68,7 @@ export const weekOneStartOffset = (year: number) => {
 
 export const numberOfWeeksInYear = (year: number) => {
   const date = new Date(year, 0, 1, 12)
-  const isLeap = daysInYear(year) == 366
+  const isLeap = daysInYear(year) === 366
 
   //check for a Jan 1 that's a Thursday or a leap year that has a
   //Wednesday Jan 1. Otherwise it's 52
@@ -77,4 +77,13 @@ export const numberOfWeeksInYear = (year: number) => {
 
 export const padWithZero = (number: number) => {
   return String(number).padStart(2, '0')
+}
+
+export const currentYear = () => {
+  const today = new Date()
+  return today.getFullYear()
+}
+
+export const today = () => {
+  return new Date()
 }
