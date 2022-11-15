@@ -19,8 +19,9 @@ export const setupCalendars = async (data: any) => {
   const filterEl = document.getElementById('filter')
   const windowMargin = 0.94
   const width = window.innerWidth - windowMargin
-  const height = window.innerHeight - (filterEl?.clientHeight || 0) * windowMargin
-  const radius = Math.min(width, height) / 2 * windowMargin
+  const height =
+    window.innerHeight - (filterEl?.clientHeight || 0) * windowMargin
+  const radius = (Math.min(width, height) / 2) * windowMargin
   console.log(width, height, radius)
 
   const centerX = width / 2
