@@ -25,7 +25,7 @@ export const setupCalendars = async (data: any) => {
   console.log(width, height, radius)
 
   const centerX = width / 2
-  const centerY = height / 2
+  const centerY = (height + (filterEl?.clientHeight || 0)) / 2
   const outerMargin = radius * 0.12
   const innerMargin = radius * 0.2
   const activeCalendars = calendars.filter(
