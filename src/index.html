@@ -79,7 +79,7 @@
         selectYear
       } from './buttons'
       import { currentYear } from './utils'
-      import { getUser, getYear } from './state'
+      import { getUser, getSelectedYear } from './state'
 
       const user = getUser()
       const body = document.querySelector('body')
@@ -89,7 +89,7 @@
       const init = async () => {
         initCalendarButtons()
         initYear()
-        const data = await fetchCalendarData(getYear())
+        const data = await fetchCalendarData(getSelectedYear())
         await setupCalendars(data)
 
         document.getElementById('loading').classList.replace('flex', 'hidden')
