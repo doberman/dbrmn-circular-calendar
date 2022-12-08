@@ -11,8 +11,18 @@
 
   <body class="hidden">
     <div class="flex flex-col w-screen h-[90vh] md:h-screen">
-      <button id="filterToggle" class="md:hidden z-10">Filter</button>
-      <div id="filter" class="hidden absolute md:block z-0">
+      <div
+        id="filterShow"
+        class="absolute md:hidden flex justify-end bg-white w-screen">
+        <button class="flex self-end py-6 px-10 items-center">
+          <img
+            class="mr-[12px]"
+            width="27px"
+            alt="filter"
+            src="../public/filter-icon.svg" /><span>Filter</span>
+        </button>
+      </div>
+      <div id="filter" class="hidden absolute md:block bg-white">
         <div class="flex flex-row justify-between p-6 w-screen">
           <div
             class="flex flex-col max-md:space-y-5 md:grid md:grid-cols-2 md:max-xl:gap-5 xl:flex xl:flex-row xl:space-x-5">
@@ -64,6 +74,15 @@
                 alt="months"
                 src="../public/months-icon.svg" /><span>Months</span>
             </button>
+            <button
+              id="filterHide"
+              class="md:hidden flex items-center !mt-auto">
+              <img
+                class="mr-[12px]"
+                width="27px"
+                alt="filter"
+                src="../public/hide-icon.svg" /><span>Hide</span>
+            </button>
           </div>
         </div>
       </div>
@@ -100,12 +119,16 @@
         document.getElementById('loading').classList.replace('flex', 'hidden')
         document.getElementById('calendar').classList.replace('hidden', 'flex')
 
-        //Filter toggle click handler
-        document
-          .getElementById('filterToggle')
-          .addEventListener('click', () => {
-            document.getElementById('filter').classList.toggle('hidden')
-          })
+        //Filter toggle click handlers
+        document.getElementById('filterShow').addEventListener('click', () => {
+          document.getElementById('filter').classList.toggle('hidden')
+          document.getElementById('filterShow').classList.toggle('hidden')
+        })
+
+        document.getElementById('filterHide').addEventListener('click', () => {
+          document.getElementById('filter').classList.toggle('hidden')
+          document.getElementById('filterShow').classList.toggle('hidden')
+        })
 
         //Interval click handlers
         document
