@@ -13,16 +13,17 @@ import { getExcludedCalendars, getSelectedYear } from './state'
 import { initIntervals } from './buttons'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import logo from '../public/preferable-logo.svg' 
+import logo from '../public/preferable-logo.svg'
 import { Calendar } from './types'
 
 export const setupCalendars = async (data: any) => {
   const calendarEl = document.getElementById('calendar')
-  const filterEl = document.getElementById('filter')
+  //const filterEl = document.getElementById('filter')
   const windowMargin = 0.92
   const width = window.innerWidth - windowMargin
-  const height =
-    window.innerHeight - (filterEl?.clientHeight || 0) * windowMargin
+  //const height =
+  //  window.innerHeight - (filterEl?.clientHeight || 0) * windowMargin
+  const height = window.innerHeight - windowMargin
   const radius = (Math.min(width, height) / 2) * windowMargin
   console.log(width, height, radius)
 
