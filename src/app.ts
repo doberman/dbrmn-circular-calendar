@@ -11,7 +11,9 @@ import {
 } from './utils'
 import { getExcludedCalendars, getSelectedYear } from './state'
 import { initIntervals } from './buttons'
-import logo from '../public/preferable-logo.svg'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import logo from '../public/preferable-logo.svg' 
 import { Calendar } from './types'
 
 export const setupCalendars = async (data: any) => {
