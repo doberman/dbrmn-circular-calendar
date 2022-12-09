@@ -11,55 +11,79 @@
 
   <body class="hidden">
     <div class="flex flex-col w-screen h-[90vh] md:h-screen">
-      <div id="filter" class="flex flex-row justify-between m-6">
-        <div
-          class="flex flex-col max-md:space-y-5 md:grid md:grid-cols-2 md:max-xl:gap-5 xl:flex xl:flex-row xl:space-x-5">
-          <button id="nordic" class="btn-calendar before:bg-bright-orange">
-            Nordic
-          </button>
-          <button id="stockholm" class="btn-calendar before:bg-bright-red">
-            Stockholm
-          </button>
-          <button id="copenhagen" class="btn-calendar before:bg-bright-pink">
-            Copenhagen
-          </button>
-          <button id="oslo" class="btn-calendar before:bg-bright-purple">
-            Oslo
-          </button>
-          <button id="helsinki" class="btn-calendar before:bg-bright-blue">
-            Helsinki
-          </button>
-          <button id="ey" class="btn-calendar before:bg-lime-green">EY</button>
-        </div>
-        <div
-          class="flex flex-col max-xl:space-y-5 xl:flex xl:flex-row xl:space-x-5">
-          <button id="year_prev" class="btn-year"></button>
-          <button id="year_now" class="btn-year"></button>
-          <button id="year_next" class="btn-year"></button>
-        </div>
+      <div
+        id="filterShow"
+        class="absolute md:hidden flex justify-end bg-white w-screen">
+        <button class="flex self-end py-6 px-10 items-center">
+          <img
+            class="mr-[12px]"
+            width="27px"
+            alt="filter"
+            src="../public/filter-icon.svg" /><span>Filter</span>
+        </button>
+      </div>
+      <div id="filter" class="hidden absolute md:block bg-white">
+        <div class="flex flex-row justify-between p-6 w-screen">
+          <div
+            class="flex flex-col max-md:space-y-5 md:grid md:grid-cols-2 md:max-xl:gap-5 xl:flex xl:flex-row xl:space-x-5">
+            <button id="nordic" class="btn-calendar before:bg-bright-orange">
+              Nordic
+            </button>
+            <button id="stockholm" class="btn-calendar before:bg-bright-red">
+              Stockholm
+            </button>
+            <button id="copenhagen" class="btn-calendar before:bg-bright-pink">
+              Copenhagen
+            </button>
+            <button id="oslo" class="btn-calendar before:bg-bright-purple">
+              Oslo
+            </button>
+            <button id="helsinki" class="btn-calendar before:bg-bright-blue">
+              Helsinki
+            </button>
+            <button id="ey" class="btn-calendar before:bg-lime-green">
+              EY
+            </button>
+          </div>
+          <div
+            class="flex flex-col max-xl:space-y-5 xl:flex xl:flex-row xl:space-x-5">
+            <button id="year_prev" class="btn-year"></button>
+            <button id="year_now" class="btn-year"></button>
+            <button id="year_next" class="btn-year"></button>
+          </div>
 
-        <div class="flex flex-col max-xl:space-y-5 xl:flex-row xl:space-x-5">
-          <button id="days" class="flex items-center">
-            <img
-              class="mr-[12px]"
-              width="27px"
-              alt="days"
-              src="../public/days-icon.svg" /><span>Days</span>
-          </button>
-          <button id="weeks" class="flex items-center">
-            <img
-              class="mr-[12px]"
-              width="27px"
-              alt="weeks"
-              src="../public/weeks-icon.svg" /><span>Weeks</span>
-          </button>
-          <button id="months" class="flex items-center">
-            <img
-              class="mr-[12px]"
-              width="27px"
-              alt="months"
-              src="../public/months-icon.svg" /><span>Months</span>
-          </button>
+          <div class="flex flex-col max-xl:space-y-5 xl:flex-row xl:space-x-5">
+            <button id="days" class="flex items-center">
+              <img
+                class="mr-[12px]"
+                width="27px"
+                alt="days"
+                src="../public/days-icon.svg" /><span>Days</span>
+            </button>
+            <button id="weeks" class="flex items-center">
+              <img
+                class="mr-[12px]"
+                width="27px"
+                alt="weeks"
+                src="../public/weeks-icon.svg" /><span>Weeks</span>
+            </button>
+            <button id="months" class="flex items-center">
+              <img
+                class="mr-[12px]"
+                width="27px"
+                alt="months"
+                src="../public/months-icon.svg" /><span>Months</span>
+            </button>
+            <button
+              id="filterHide"
+              class="md:hidden flex items-center !mt-auto">
+              <img
+                class="mr-[12px]"
+                width="27px"
+                alt="filter"
+                src="../public/hide-icon.svg" /><span>Hide</span>
+            </button>
+          </div>
         </div>
       </div>
       <div id="loading" class="flex grow items-center justify-center">
@@ -79,7 +103,7 @@
         selectYear
       } from './buttons'
       import { currentYear } from './utils'
-      import { getUser, getYear } from './state'
+      import { getUser, getSelectedYear } from './state'
 
       const user = getUser()
       const body = document.querySelector('body')
@@ -89,11 +113,22 @@
       const init = async () => {
         initCalendarButtons()
         initYear()
-        const data = await fetchCalendarData(getYear())
+        const data = await fetchCalendarData(getSelectedYear())
         await setupCalendars(data)
 
         document.getElementById('loading').classList.replace('flex', 'hidden')
         document.getElementById('calendar').classList.replace('hidden', 'flex')
+
+        //Filter toggle click handlers
+        document.getElementById('filterShow').addEventListener('click', () => {
+          document.getElementById('filter').classList.toggle('hidden')
+          document.getElementById('filterShow').classList.toggle('hidden')
+        })
+
+        document.getElementById('filterHide').addEventListener('click', () => {
+          document.getElementById('filter').classList.toggle('hidden')
+          document.getElementById('filterShow').classList.toggle('hidden')
+        })
 
         //Interval click handlers
         document

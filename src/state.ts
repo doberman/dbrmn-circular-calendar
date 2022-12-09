@@ -24,5 +24,7 @@ export const setExcludedIntervals = (list: string[]) =>
 export const getExcludedIntervals = () =>
   JSON.parse(ls.get('excludedIntervals') ?? '[]')
 
-export const setYear = (year: number) => ls.set('year', JSON.stringify(year))
-export const getYear = () => parseInt(JSON.parse(ls.get('year') ?? 'null'))
+export const setSelectedYear = (year: number) =>
+  ls.set('year', JSON.stringify(year))
+export const getSelectedYear = () =>
+  parseInt(JSON.parse(ls.get('year') ?? 'null'))

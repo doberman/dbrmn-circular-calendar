@@ -9,18 +9,21 @@ import {
   today,
   currentYear
 } from './utils'
-import { getExcludedCalendars } from './state'
+import { getExcludedCalendars, getSelectedYear } from './state'
 import { initIntervals } from './buttons'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import logo from '../public/preferable-logo.svg'
 import { Calendar } from './types'
 
 export const setupCalendars = async (data: any) => {
   const calendarEl = document.getElementById('calendar')
-  const filterEl = document.getElementById('filter')
+  //const filterEl = document.getElementById('filter')
   const windowMargin = 0.92
   const width = window.innerWidth - windowMargin
-  const height =
-    window.innerHeight - (filterEl?.clientHeight || 0) * windowMargin
+  //const height =
+  //  window.innerHeight - (filterEl?.clientHeight || 0) * windowMargin
+  const height = window.innerHeight - windowMargin
   const radius = (Math.min(width, height) / 2) * windowMargin
   console.log(width, height, radius)
 
@@ -124,23 +127,25 @@ export const setupCalendars = async (data: any) => {
   }
 
   //draw today
-  const todayAngle =
-    ((2 * Math.PI) / daysInYear(year)) * (daysIntoYear(today(), year) - 0.5) -
-    Math.PI / 2
-  const x1 = (radius - outerMargin * 0.6) * Math.cos(todayAngle)
-  const y1 = (radius - outerMargin * 0.6) * Math.sin(todayAngle)
-  const now = d3
-    .symbol()
-    .type(d3.symbolTriangle)
-    .size(outerMargin * 1.5)
-  intervalsGroup
-    .append('path')
-    .attr('d', now)
-    .attr('fill', 'black')
-    .attr(
-      'transform',
-      `translate(${x1}, ${y1}) rotate(${(todayAngle * 180) / Math.PI - 90})`
-    )
+  if (getSelectedYear() === currentYear()) {
+    const todayAngle =
+      ((2 * Math.PI) / daysInYear(year)) * (daysIntoYear(today(), year) - 0.5) -
+      Math.PI / 2
+    const x1 = (radius - outerMargin * 0.6) * Math.cos(todayAngle)
+    const y1 = (radius - outerMargin * 0.6) * Math.sin(todayAngle)
+    const now = d3
+      .symbol()
+      .type(d3.symbolTriangle)
+      .size(outerMargin * 1.5)
+    intervalsGroup
+      .append('path')
+      .attr('d', now)
+      .attr('fill', 'black')
+      .attr(
+        'transform',
+        `translate(${x1}, ${y1}) rotate(${(todayAngle * 180) / Math.PI - 90})`
+      )
+  }
 
   //draw center area
   const centerArea = d3

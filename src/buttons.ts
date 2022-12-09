@@ -6,8 +6,8 @@ import {
   setExcludedCalendars,
   getExcludedIntervals,
   setExcludedIntervals,
-  getYear,
-  setYear
+  getSelectedYear,
+  setSelectedYear
 } from './state'
 import { setupCalendars } from './app'
 import { fetchLocalData } from './data'
@@ -58,7 +58,7 @@ export const toggleCalendar = async (name: string) => {
   }
   setExcludedCalendars(excludedCalendars)
   document.getElementById('zoomableGroup')?.remove()
-  setupCalendars(await fetchLocalData(getYear()))
+  setupCalendars(await fetchLocalData(getSelectedYear()))
 }
 
 const toggleCalendarButton = (name: string) => {
@@ -95,7 +95,7 @@ export const initYear = () => {
   document.getElementById('year_prev')!.textContent = (yearNow - 1).toString()
   document.getElementById('year_next')!.textContent = (yearNow + 1).toString()
 
-  const selectedYear = getYear() || currentYear()
+  const selectedYear = getSelectedYear() || currentYear()
   if (selectedYear === yearNow) {
     toggleYearButton('year_prev', false)
     toggleYearButton('year_next', false)
@@ -106,14 +106,13 @@ export const initYear = () => {
     toggleYearButton('year_now', false)
     toggleYearButton('year_prev', false)
   }
-  setYear(selectedYear)
+  setSelectedYear(selectedYear)
 }
 
 export const selectYear = async (year: number) => {
   const yearNow = currentYear()
-  if (year !== getYear()) {
-    console.log(year)
-    setYear(year)
+  if (year !== getSelectedYear()) {
+    setSelectedYear(year)
     if (year === yearNow) {
       toggleYearButton('year_now', true)
       toggleYearButton('year_prev', false)
