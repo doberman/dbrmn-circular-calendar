@@ -128,7 +128,7 @@ export const setupCalendars = async (data: any) => {
   //draw today
   if (getSelectedYear() === currentYear()) {
     const todayAngle =
-      ((2 * Math.PI) / daysInYear(year)) * (daysIntoYear(today(), year) - 0.5) -
+      ((2 * Math.PI) / daysInYear(year)) * (daysIntoYear(today()) - 0.5) -
       Math.PI / 2
     const x1 = (radius - outerMargin * 0.6) * Math.cos(todayAngle)
     const y1 = (radius - outerMargin * 0.6) * Math.sin(todayAngle)
@@ -289,8 +289,8 @@ const drawEvents = (
       .arc()
       .innerRadius(radius - outerMargin - lineWidth * index)
       .outerRadius(radius - outerMargin - lineWidth * (index + 1))
-      .startAngle(daysToRadians(daysIntoYear(startDate, year), year))
-      .endAngle(daysToRadians(daysIntoYear(endDate, year), year))
+      .startAngle(daysToRadians(daysIntoYear(startDate), year))
+      .endAngle(daysToRadians(daysIntoYear(endDate), year))
     eventsGroup
       .append('path')
       .attr('class', `cal-${calendarName}`)
@@ -314,7 +314,7 @@ const drawEvents = (
 
     //draw event line
     const angle =
-      ((2 * Math.PI) / daysInYear(year)) * (daysIntoYear(startDate, year) - 1) -
+      ((2 * Math.PI) / daysInYear(year)) * (daysIntoYear(startDate) - 1) -
       Math.PI / 2
     const x1 =
       (radius - outerMargin - lineWidth * (index + 1)) * Math.cos(angle)
