@@ -9,7 +9,7 @@ export const daysIntoYear = (date: Date, year: number) => {
       1000
     )
   } else if (date.getFullYear() > year) {
-    return daysInYear(year)
+    return daysInYear(year) + 1 // special case for new years eve
   } else {
     return 0
   }

@@ -20,9 +20,16 @@ describe('daysIntoYear', () => {
   })
 
   test('31/12 2024 should be day number 366', () => {
-    const year = 2022
+    const year = 2024
     const date = new Date(year, 11, 31, 12)
-    expect(daysIntoYear(date, year)).toBe(365)
+    expect(daysIntoYear(date, year)).toBe(366)
+  })
+
+  // special case for end date for new years eve
+  test('1/1 2023 in year 2022 should be day number 366', () => {
+    const year = 2022
+    const date = new Date(2023, 1, 1, 12)
+    expect(daysIntoYear(date, year)).toBe(366)
   })
 })
 
