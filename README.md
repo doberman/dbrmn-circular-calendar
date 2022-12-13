@@ -27,7 +27,7 @@ Good to know, is that the Google API key can only read from public calendars, an
 ## Environments
 
 This tiny project has a production environment, connected to the `main` branch.
-We use PR preview on render, to review and test the code before hand.
+We use PR preview on Firebase, to review and test the code before hand.
 
 ## Tests
 
