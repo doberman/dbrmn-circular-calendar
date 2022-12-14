@@ -59,7 +59,7 @@ const fetchCalendarData = async (
   const res = await api.events.list({
     calendarId: calendarId,
     timeMin: `${year}-01-01T00:00:00Z`,
-    timeMax: `${year}-12-31T23:59:59Z`,
+    timeMax: `${year}-12-31T12:00:00Z`,
     singleEvents: true,
     orderBy: 'startTime'
   })
