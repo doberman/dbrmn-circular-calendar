@@ -59,7 +59,7 @@ const fetchCalendarData = async (
   const res = await api.events.list({
     calendarId: calendarId,
     timeMin: `${year}-01-01T00:00:00Z`,
-    timeMax: `${year}-12-31T00:00:00Z`,
+    timeMax: `${year}-12-31T23:59:59Z`,
     singleEvents: true,
     orderBy: 'startTime'
   })
@@ -82,7 +82,7 @@ export const events = functions.region('europe-west1').https.onRequest(
         'https://www.googleapis.com/auth/calendar'
       ]
     })
-    console.log('got auth', auth)
+    //console.log('got auth', auth)
     const year = req.query.year || 2022
     const data = await Promise.all(
       calendars.map(async (calendar) => {
