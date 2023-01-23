@@ -87,3 +87,7 @@ export const currentYear = () => {
 export const today = () => {
   return new Date()
 }
+
+export const truncate = (text: string, limit = 0, end = '') => {
+  return text.length <= limit ? text : text.substring(0, limit).concat(end)
+}

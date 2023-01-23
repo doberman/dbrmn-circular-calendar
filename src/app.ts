@@ -7,7 +7,8 @@ import {
   daysToRadians,
   daysInYear,
   today,
-  currentYear
+  currentYear,
+  truncate
 } from './utils'
 import { getExcludedCalendars, getSelectedYear } from './state'
 import { initIntervals } from './buttons'
@@ -235,7 +236,7 @@ const drawCenterText = (
   d3.selectAll('.eventLine').style('visibility', 'hidden')
   d3.select('#centerArea').style('visibility', 'visible')
   d3.select('#centerArea').style('fill', color)
-  d3.select('#centerText1').text(text)
+  d3.select('#centerText1').text(truncate(text, 24))
   d3.select(`#line-${id}`).style('visibility', 'visible')
 
   let dateString = `${startDate.getDate()}.${
