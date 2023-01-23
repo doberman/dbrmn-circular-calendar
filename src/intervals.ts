@@ -215,7 +215,7 @@ export const drawDays = (
         [x2, y2]
       ])
     )
-    if (n > numberOfDays / 2) {
+    if (n >= numberOfDays / 2) {
       labelLines.push(
         d3.line()([
           [x3, y3],

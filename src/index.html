@@ -107,8 +107,9 @@
 
       const user = getUser()
       const body = document.querySelector('body')
-      if (!user && process.env.IS_IN_PRODUCTION === 'true')
+      if (!user && process.env.IS_IN_PRODUCTION === 'true') {
         location.replace('login.html')
+      }
 
       const init = async () => {
         initCalendarButtons()
