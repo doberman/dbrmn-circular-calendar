@@ -38,7 +38,7 @@ export const setupCalendars = async (data: any) => {
     activeCalendars.length === 0
       ? radius - outerMargin - innerMargin
       : (radius - outerMargin - innerMargin) / activeCalendars.length
-  const baseFontSize = (radius / 400) * 100
+  const baseFontSize = (radius / 420) * 100
 
   const year = getSelectedYear()
 
